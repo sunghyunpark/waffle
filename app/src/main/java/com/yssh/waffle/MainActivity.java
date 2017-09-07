@@ -1,7 +1,9 @@
 package com.yssh.waffle;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
+import butterknife.ButterKnife;
 
 /**
  * Created SungHyun 2017-09-07
@@ -9,8 +11,8 @@ import android.os.Bundle;
  * 1. git init
  * 2. git status
  * 3. git commit -am "commit"
- * 4. git push origin master / git push origin nts
- * 5. git merge nts
+ * 4. git push origin master / git push origin sunghyun
+ * 5. git merge sunghyun
  * 6. git push
  */
 public class MainActivity extends AppCompatActivity {
@@ -19,5 +21,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
     }
 }

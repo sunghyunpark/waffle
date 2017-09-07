@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">waffle</string>
+    <string name="app_name">WAFFLE</string>
+
+    <!--tab menu-->
+    <string name="tab1_menu_txt">내 주변</string>
+    <string name="tab2_menu_txt">HOT</string>
+    <string name="tab3_menu_txt">이슈</string>
+    <string name="tab4_menu_txt">나의 맛집</string>
+    <string name="tab5_menu_txt">더 보기</string>
 </resources>
