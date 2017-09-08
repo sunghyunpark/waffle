@@ -7,8 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.yssh.waffle.R;
 
 import java.util.ArrayList;
@@ -47,10 +50,16 @@ public class TabFragment1 extends Fragment {
         adapter = new RecyclerAdapter(listItems);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        /* recyclerview 구분선
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(getActivity(),new LinearLayoutManager(getActivity()).getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        */
         CafeModel cafeModel;
-        for (int i=0;i<10;i++){
+        for (int i=1;i<7;i++){
             cafeModel = new CafeModel();
             cafeModel.setCafeName(""+i);
+            cafeModel.setCafeThumbnail("http://ustserver.cafe24.com/sh_test/test"+i+".jpg");
             listItems.add(cafeModel);
         }
 
@@ -94,6 +103,17 @@ public class TabFragment1 extends Fragment {
 
                 VHitem.cafeName.setText(currentItem.getCafeName());
 
+                //Glide Options
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.placeholder(R.mipmap.ic_launcher);
+                requestOptions.error(R.mipmap.ic_launcher);
+                requestOptions.circleCrop();    //circle
+
+                Glide.with(getActivity())
+                        .setDefaultRequestOptions(requestOptions)
+                        .load(currentItem.getCafeThumbnail())
+                        .into(VHitem.cafeThumbnail);
+
             }else if(holder instanceof Header_Vh){
 
             }
@@ -104,10 +124,12 @@ public class TabFragment1 extends Fragment {
          */
         private class Cafe_VH extends RecyclerView.ViewHolder{
             TextView cafeName;
+            ImageView cafeThumbnail;
 
             private Cafe_VH(View itemView){
                 super(itemView);
                 cafeName = (TextView)itemView.findViewById(R.id.cafe_name_txt);
+                cafeThumbnail = (ImageView)itemView.findViewById(R.id.cafe_thumb_img);
             }
         }
 
