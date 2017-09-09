@@ -63,14 +63,15 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:layout_marginTop="8dp"
+                    android:src="@mipmap/tab_location_img"/>
                 <TextView
                     android:id="@+id/tab1_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tab1_menu_txt"
                     android:textSize="11dp"
+                    android:layout_marginTop="3dp"
                     android:layout_below="@+id/tab1_img"
                     android:layout_centerHorizontal="true"/>
             </RelativeLayout>
@@ -85,14 +86,15 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:layout_marginTop="8dp"
+                    android:src="@mipmap/tab_hot_img"/>
                 <TextView
                     android:id="@+id/tab2_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tab2_menu_txt"
                     android:textSize="11dp"
+                    android:layout_marginTop="3dp"
                     android:layout_below="@+id/tab2_img"
                     android:layout_centerHorizontal="true"/>
             </RelativeLayout>
@@ -107,13 +109,14 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:layout_marginTop="8dp"
+                    android:src="@mipmap/tab_selected_issue_img"/>
                 <TextView
                     android:id="@+id/tab3_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tab3_menu_txt"
+                    android:layout_marginTop="3dp"
                     android:textSize="11dp"
                     android:layout_below="@+id/tab3_img"
                     android:layout_centerHorizontal="true"/>
@@ -129,13 +132,14 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:layout_marginTop="8dp"
+                    android:src="@mipmap/tab_my_favorite_img"/>
                 <TextView
                     android:id="@+id/tab4_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tab4_menu_txt"
+                    android:layout_marginTop="3dp"
                     android:textSize="11dp"
                     android:layout_below="@+id/tab4_img"
                     android:layout_centerHorizontal="true"/>
@@ -151,13 +155,14 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:layout_marginTop="8dp"
+                    android:src="@mipmap/tab_more_img"/>
                 <TextView
                     android:id="@+id/tab5_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/tab5_menu_txt"
+                    android:layout_marginTop="3dp"
                     android:textSize="11dp"
                     android:layout_below="@+id/tab5_img"
                     android:layout_centerHorizontal="true"/>
