@@ -10,7 +10,7 @@
 
     <!-- tab1 -->
     <string name="tab1_title_txt">내 주변 카페</string>
-    <string name="tab1_sub_txt">내 주변 카페들을 가까운 순으로 보여줍니다.</string>
+    <string name="tab1_sub_txt">GPS를 켜면 내 주변 카페들을 가까운 순으로 보여줍니다.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

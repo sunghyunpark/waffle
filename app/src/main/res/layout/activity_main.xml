@@ -57,6 +57,7 @@
                 android:id="@+id/tab_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/tab1_img"
@@ -80,6 +81,8 @@
                 android:id="@+id/tab_2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/tab2_img"
@@ -103,6 +106,8 @@
                 android:id="@+id/tab_3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/tab3_img"
@@ -126,6 +131,8 @@
                 android:id="@+id/tab_4"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/tab4_img"
@@ -149,6 +156,7 @@
                 android:id="@+id/tab_5"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
                 android:layout_weight="1">
                 <ImageView
                     android:id="@+id/tab5_img"
