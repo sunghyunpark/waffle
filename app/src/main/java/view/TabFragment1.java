@@ -59,7 +59,7 @@ public class TabFragment1 extends Fragment {
         for (int i=1;i<7;i++){
             cafeModel = new CafeModel();
             cafeModel.setCafeName("cafe"+i);
-            cafeModel.setCafeThumbnail("http://ustserver.cafe24.com/sh_test/test"+i+".jpg");
+            cafeModel.setCafeThumbnail("http://13.124.188.3/img/test"+i+".jpg");
             listItems.add(cafeModel);
         }
 
