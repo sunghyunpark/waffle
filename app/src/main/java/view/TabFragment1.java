@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.yssh.waffle.AppConfig;
 import com.yssh.waffle.R;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class TabFragment1 extends Fragment {
     RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private ArrayList<CafeModel> listItems;
+    AppConfig appConfig;
 
     public TabFragment1() {
         // Required empty public constructor
@@ -35,6 +37,8 @@ public class TabFragment1 extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        appConfig = (AppConfig)getActivity().getApplicationContext();
 
     }
 
@@ -59,7 +63,7 @@ public class TabFragment1 extends Fragment {
         for (int i=1;i<7;i++){
             cafeModel = new CafeModel();
             cafeModel.setCafeName("cafe"+i);
-            cafeModel.setCafeThumbnail("http://13.124.188.3/img/test"+i+".jpg");
+            cafeModel.setCafeThumbnail(appConfig.getServerAddress()+"img/test"+i+".jpg");
             listItems.add(cafeModel);
         }
 
