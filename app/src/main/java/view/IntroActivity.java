@@ -14,6 +14,7 @@ import com.yssh.waffle.AppConfig;
 import com.yssh.waffle.R;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class IntroActivity extends AppCompatActivity {
@@ -28,6 +29,7 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
+        ButterKnife.bind(this);
 
         appConfig = (AppConfig)getApplicationContext();
 
