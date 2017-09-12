@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -18,7 +20,15 @@ import com.yssh.waffle.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import api.ApiClient;
+import api.ApiInterface;
+import api.response.CafeResponse;
+import butterknife.BindString;
+import butterknife.ButterKnife;
 import model.CafeModel;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class TabFragment1 extends Fragment {
 
@@ -28,7 +38,9 @@ public class TabFragment1 extends Fragment {
     RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private ArrayList<CafeModel> listItems;
-    AppConfig appConfig;
+
+    @BindString(R.string.cafe_info_weekdays_time_txt) String cafeInfoWeekdaysTime;
+    @BindString(R.string.cafe_info_weekend_time_txt) String cafeInfoWeekendTime;
 
     public TabFragment1() {
         // Required empty public constructor
@@ -38,8 +50,6 @@ public class TabFragment1 extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        appConfig = (AppConfig)getActivity().getApplicationContext();
-
     }
 
     @Override
@@ -47,6 +57,8 @@ public class TabFragment1 extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_tab_fragment1, container, false);
+
+        ButterKnife.bind(this, v);
         //recyclerview 초기화
         listItems = new ArrayList<CafeModel>();
         recyclerView = (RecyclerView)v.findViewById(R.id.recyclerView);
@@ -59,16 +71,50 @@ public class TabFragment1 extends Fragment {
                 new DividerItemDecoration(getActivity(),new LinearLayoutManager(getActivity()).getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
         */
-        CafeModel cafeModel;
-        for (int i=1;i<7;i++){
-            cafeModel = new CafeModel();
-            cafeModel.setCafeName("cafe"+i);
-            cafeModel.setCafeThumbnail(appConfig.getServerAddress()+"img/test"+i+".jpg");
-            listItems.add(cafeModel);
-        }
 
-        recyclerView.setAdapter(adapter);
+        LoadCafeList();
+
         return v;
+    }
+
+    private void LoadCafeList(){
+        ApiInterface apiService =
+                ApiClient.getClient().create(ApiInterface.class);
+
+        Call<CafeResponse> call = apiService.GetCafeListFromMyLocation("cafe_list_from_user_location", "0");
+        call.enqueue(new Callback<CafeResponse>() {
+            @Override
+            public void onResponse(Call<CafeResponse> call, Response<CafeResponse> response) {
+                CafeResponse cafeResponse = response.body();
+                if(!cafeResponse.isError()){
+                    CafeModel cafeModel;
+                    int listSize = cafeResponse.getCafeList().size();
+                    for (int i=0;i<listSize;i++){
+                        cafeModel = new CafeModel();
+                        cafeModel.setCafeName(cafeResponse.getCafeList().get(i).getCafeName());
+                        cafeModel.setCafeThumbnail(cafeResponse.getCafeList().get(i).getCafeThumbnail());
+                        cafeModel.setCafeWeekDaysOpenTime(cafeResponse.getCafeList().get(i).getCafeWeekDaysOpenTime());
+                        cafeModel.setCafeWeekDaysCloseTime(cafeResponse.getCafeList().get(i).getCafeWeekDaysCloseTime());
+                        cafeModel.setCafeWeekendOpenTime(cafeResponse.getCafeList().get(i).getCafeWeekendOpenTime());
+                        cafeModel.setCafeWeekendCloseTime(cafeResponse.getCafeList().get(i).getCafeWeekendCloseTime());
+                        cafeModel.setCafeAddress(cafeResponse.getCafeList().get(i).getCafeAddress());
+                        cafeModel.setCafePhoneNum(cafeResponse.getCafeList().get(i).getCafePhoneNum());
+                        listItems.add(cafeModel);
+                    }
+                    recyclerView.setAdapter(adapter);
+                }else{
+
+                }
+                Toast.makeText(getActivity(), cafeResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<CafeResponse> call, Throwable t) {
+                // Log error here since request failed
+                Log.e("tag", t.toString());
+                Toast.makeText(getActivity(), "네트워크 연결상태를 확인해주세요.",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -115,8 +161,14 @@ public class TabFragment1 extends Fragment {
 
                 Glide.with(getActivity())
                         .setDefaultRequestOptions(requestOptions)
-                        .load(currentItem.getCafeThumbnail())
+                        .load(AppConfig.ServerAddress+currentItem.getCafeThumbnail())
                         .into(VHitem.cafeThumbnail);
+
+                VHitem.cafe_weekdays_open_close_time_tv.setText(cafeInfoWeekdaysTime + " " +currentItem.getCafeWeekDaysOpenTime() + " ~ "+currentItem.getCafeWeekDaysCloseTime());
+                VHitem.cafe_weekend_open_close_time_tv.setText(cafeInfoWeekendTime + " " + currentItem.getCafeWeekendOpenTime() + " ~ "+currentItem.getCafeWeekendCloseTime());
+
+                VHitem.cafe_address_tv.setText(currentItem.getCafeAddress());
+                VHitem.cafe_phone_tv.setText(currentItem.getCafePhoneNum());
 
             }else if(holder instanceof Header_Vh){
 
@@ -129,11 +181,19 @@ public class TabFragment1 extends Fragment {
         private class Cafe_VH extends RecyclerView.ViewHolder{
             TextView cafeName;
             ImageView cafeThumbnail;
+            TextView cafe_weekdays_open_close_time_tv;
+            TextView cafe_weekend_open_close_time_tv;
+            TextView cafe_address_tv;
+            TextView cafe_phone_tv;
 
             private Cafe_VH(View itemView){
                 super(itemView);
                 cafeName = (TextView)itemView.findViewById(R.id.cafe_name_txt);
                 cafeThumbnail = (ImageView)itemView.findViewById(R.id.cafe_thumb_img);
+                cafe_weekdays_open_close_time_tv = (TextView)itemView.findViewById(R.id.weekdays_open_close_time_txt);
+                cafe_weekend_open_close_time_tv = (TextView)itemView.findViewById(R.id.weekend_open_close_time_txt);
+                cafe_address_tv = (TextView)itemView.findViewById(R.id.cafe_address_txt);
+                cafe_phone_tv = (TextView)itemView.findViewById(R.id.cafe_phone_txt);
             }
         }
 

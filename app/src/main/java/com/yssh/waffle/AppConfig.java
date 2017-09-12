@@ -9,11 +9,7 @@ import android.content.res.Configuration;
 
 public class AppConfig extends Application {
 
-    private String ServerAddress = "http://13.124.188.3/";
-
-    public String getServerAddress() {
-        return ServerAddress;
-    }
+    public static String ServerAddress = "http://13.124.188.3/waffle/";
 
     @Override
     public void onCreate() {

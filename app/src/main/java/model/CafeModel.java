@@ -1,5 +1,7 @@
 package model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by SungHyun on 2017-09-07.
  * Cafe Model
@@ -17,21 +19,32 @@ package model;
  */
 
 public class CafeModel {
+    @SerializedName("cafe_name")
     private String cafeName;
+    @SerializedName("cafe_thumbnail")
     private String cafeThumbnail;
-    private boolean cafeState;
+    @SerializedName("cafe_weekdays_open_time")
     private String cafeWeekDaysOpenTime;
+    @SerializedName("cafe_weekdays_close_time")
     private String cafeWeekDaysCloseTime;
+    @SerializedName("cafe_weekend_open_time")
     private String cafeWeekendOpenTime;
+    @SerializedName("cafe_weekend_close_time")
     private String cafeWeekendCloseTime;
-    private String cafeDistance;
+    @SerializedName("cafe_latitude")
+    private String cafeLatitude;
+    @SerializedName("cafe_longitude")
+    private String cafeLongitude;
+    @SerializedName("cafe_address")
     private String cafeAddress;
+    @SerializedName("cafe_phone")
     private String cafePhoneNum;
+    /*
     private boolean FullTimeState;
     private boolean WifiState;
     private boolean SmokeState;
     private boolean ParkingState;
-
+*/
     public String getCafeName() {
         return cafeName;
     }
@@ -46,14 +59,6 @@ public class CafeModel {
 
     public void setCafeThumbnail(String cafeThumbnail) {
         this.cafeThumbnail = cafeThumbnail;
-    }
-
-    public boolean isCafeState() {
-        return cafeState;
-    }
-
-    public void setCafeState(boolean cafeState) {
-        this.cafeState = cafeState;
     }
 
     public String getCafeWeekDaysOpenTime() {
@@ -88,13 +93,22 @@ public class CafeModel {
         this.cafeWeekendCloseTime = cafeWeekendCloseTime;
     }
 
-    public String getCafeDistance() {
-        return cafeDistance;
+    public String getCafeLatitude() {
+        return cafeLatitude;
     }
 
-    public void setCafeDistance(String cafeDistance) {
-        this.cafeDistance = cafeDistance;
+    public void setCafeLatitude(String cafeLatitude) {
+        this.cafeLatitude = cafeLatitude;
     }
+
+    public String getCafeLongitude() {
+        return cafeLongitude;
+    }
+
+    public void setCafeLongitude(String cafeLongitude) {
+        this.cafeLongitude = cafeLongitude;
+    }
+
 
     public String getCafeAddress() {
         return cafeAddress;
@@ -111,7 +125,7 @@ public class CafeModel {
     public void setCafePhoneNum(String cafePhoneNum) {
         this.cafePhoneNum = cafePhoneNum;
     }
-
+/*
     public boolean isFullTimeState() {
         return FullTimeState;
     }
@@ -143,4 +157,5 @@ public class CafeModel {
     public void setParkingState(boolean parkingState) {
         ParkingState = parkingState;
     }
+    */
 }
