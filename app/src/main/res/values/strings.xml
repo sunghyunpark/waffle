@@ -17,6 +17,8 @@
     <!--cafe info-->
     <string name="cafe_info_weekdays_time_txt">주중 : </string>
     <string name="cafe_info_weekend_time_txt">주말 : </string>
+    <string name="cafe_open_state_txt">OPEN</string>
+    <string name="cafe_close_state_txt">CLOSE</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

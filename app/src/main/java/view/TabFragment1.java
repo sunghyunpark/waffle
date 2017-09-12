@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,7 +20,10 @@ import com.bumptech.glide.request.RequestOptions;
 import com.yssh.waffle.AppConfig;
 import com.yssh.waffle.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import api.ApiClient;
@@ -43,6 +47,8 @@ public class TabFragment1 extends Fragment {
 
     @BindString(R.string.cafe_info_weekdays_time_txt) String cafeInfoWeekdaysTimeStr;
     @BindString(R.string.cafe_info_weekend_time_txt) String cafeInfoWeekendTimeStr;
+    @BindString(R.string.cafe_open_state_txt) String cafeOpenStateStr;
+    @BindString(R.string.cafe_close_state_txt) String cafeCloseStateStr;
     @BindString(R.string.network_error_txt) String networkErrorStr;
 
     public TabFragment1() {
@@ -125,6 +131,9 @@ public class TabFragment1 extends Fragment {
         private static final int TYPE_ITEM = 0;
         private static final int TYPE_HEADER = 1;
 
+        Calendar cal= Calendar.getInstance();
+        long time = System.currentTimeMillis();
+        SimpleDateFormat dayTime = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss a");
         List<CafeModel> listItems;
 
         private RecyclerAdapter(List<CafeModel> listItems) {
@@ -179,6 +188,17 @@ public class TabFragment1 extends Fragment {
                         CallPhone(currentItem.getCafePhoneNum());
                     }
                 });
+                if(isOpenState(position)){
+                    //open
+                    VHitem.cafe_open_state_layout.setBackgroundResource(R.drawable.cafe_open_state_shape);
+                    VHitem.cafe_open_state_tv.setText(cafeOpenStateStr);
+                    VHitem.cafe_open_state_tv.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorSky));
+                }else{
+                    //close
+                    VHitem.cafe_open_state_layout.setBackgroundResource(R.drawable.cafe_close_state_shape);
+                    VHitem.cafe_open_state_tv.setText(cafeCloseStateStr);
+                    VHitem.cafe_open_state_tv.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorGray));
+                }
 
             }else if(holder instanceof Header_Vh){
 
@@ -196,6 +216,8 @@ public class TabFragment1 extends Fragment {
             TextView cafe_address_tv;
             TextView cafe_phone_tv;
             ViewGroup cafe_phone_btn;
+            ViewGroup cafe_open_state_layout;
+            TextView cafe_open_state_tv;
 
             private Cafe_VH(View itemView){
                 super(itemView);
@@ -206,6 +228,8 @@ public class TabFragment1 extends Fragment {
                 cafe_address_tv = (TextView)itemView.findViewById(R.id.cafe_address_txt);
                 cafe_phone_tv = (TextView)itemView.findViewById(R.id.cafe_phone_txt);
                 cafe_phone_btn = (ViewGroup)itemView.findViewById(R.id.cafe_phone_btn);
+                cafe_open_state_layout = (ViewGroup)itemView.findViewById(R.id.cafe_open_state_layout);
+                cafe_open_state_tv = (TextView)itemView.findViewById(R.id.cafe_open_state_txt);
             }
         }
 
@@ -227,6 +251,64 @@ public class TabFragment1 extends Fragment {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+phoneNum));
             startActivity(intent);
 
+        }
+
+        private boolean isOpenState(int position){
+            int day = cal.get(Calendar.DAY_OF_WEEK);    //일요일 -> 1, 월요일 -> 2...
+            int today_hour = Integer.parseInt(dayTime.format(new Date(time)).substring(11,13));
+
+            int open_hour, close_hour;
+            boolean isOpen;
+            Log.d("cafeTime", "today_hour : "+today_hour);
+            if((day == 1) || (day == 7)){
+                //주말
+                String weekend_open = getItem(position).getCafeWeekendOpenTime();
+                String weekend_close = getItem(position).getCafeWeekendCloseTime();
+                String timeState = weekend_close.substring(0,2);
+                open_hour = Integer.parseInt(weekend_open.substring(3,5));
+                Log.d("cafeTime","주말");
+                Log.d("cafeTime", "open_hour : "+open_hour);
+                if(timeState.equals("AM")){
+                    close_hour = Integer.parseInt(weekend_close.substring(3,5)) + 24;
+                }else{
+                    close_hour = Integer.parseInt(weekend_close.substring(3,5));
+                }
+                Log.d("cafeTime", "close_hour : "+close_hour);
+                if((today_hour >= open_hour) && (today_hour <= close_hour)){
+                    //open
+                    Log.d("cafeTime", "open");
+                    isOpen = true;
+                }else{
+                    Log.d("cafeTime", "close");
+                    isOpen = false;
+                }
+                //isOpen = ((today_hour >= open_hour) && (today_hour <= close_hour));
+            }else{
+                //주중
+                String weekdays_open = getItem(position).getCafeWeekDaysOpenTime();
+                String weekdays_close = getItem(position).getCafeWeekDaysCloseTime();
+                String timeState = weekdays_close.substring(0,2);
+                open_hour = Integer.parseInt(weekdays_open.substring(3,5));
+                Log.d("cafeTime","주중");
+                Log.d("cafeTime", "open_hour : "+open_hour);
+                if(timeState.equals("AM")){
+                    close_hour = Integer.parseInt(weekdays_close.substring(3,5)) + 24;
+                }else{
+                    close_hour = Integer.parseInt(weekdays_close.substring(3,5));
+                }
+                Log.d("cafeTime", "close_hour : "+close_hour);
+                if((today_hour >= open_hour) && (today_hour <= close_hour)){
+                    //open
+                    Log.d("cafeTime", "open");
+                    isOpen = true;
+                }else{
+                    Log.d("cafeTime", "close");
+                    isOpen = false;
+                }
+                //isOpen = ((today_hour >= open_hour) && (today_hour <= close_hour));
+            }
+
+            return isOpen;
         }
 
 
