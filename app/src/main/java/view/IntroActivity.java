@@ -47,7 +47,7 @@ public class IntroActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "facebook", Toast.LENGTH_SHORT).show();
     }
     @OnClick(R.id.register_btn) void registerClick(){
-        
+
     }
     @OnClick(R.id.login_btn) void loginClick(){
 

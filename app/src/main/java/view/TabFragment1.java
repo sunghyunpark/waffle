@@ -167,8 +167,8 @@ public class TabFragment1 extends Fragment {
 
                 //Glide Options
                 RequestOptions requestOptions = new RequestOptions();
-                requestOptions.placeholder(R.mipmap.ic_launcher);
-                requestOptions.error(R.mipmap.ic_launcher);
+                requestOptions.placeholder(R.mipmap.not_cafe_img);
+                requestOptions.error(R.mipmap.not_cafe_img);
                 requestOptions.circleCrop();    //circle
 
                 Glide.with(getActivity())
