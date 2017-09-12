@@ -30,21 +30,21 @@ import view.TabFragment5;
  */
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R2.id.tab_1) ViewGroup tabBtn1;
-    @BindView(R2.id.tab_2) ViewGroup tabBtn2;
-    @BindView(R2.id.tab_3) ViewGroup tabBtn3;
-    @BindView(R2.id.tab_4) ViewGroup tabBtn4;
-    @BindView(R2.id.tab_5) ViewGroup tabBtn5;
-    @BindView(R2.id.tab1_img) ImageView tab1_iv;
-    @BindView(R2.id.tab2_img) ImageView tab2_iv;
-    @BindView(R2.id.tab3_img) ImageView tab3_iv;
-    @BindView(R2.id.tab4_img) ImageView tab4_iv;
-    @BindView(R2.id.tab5_img) ImageView tab5_iv;
-    @BindView(R2.id.tab1_txt) TextView tab1_tv;
-    @BindView(R2.id.tab2_txt) TextView tab2_tv;
-    @BindView(R2.id.tab3_txt) TextView tab3_tv;
-    @BindView(R2.id.tab4_txt) TextView tab4_tv;
-    @BindView(R2.id.tab5_txt) TextView tab5_tv;
+    @BindView(R.id.tab_1) ViewGroup tabBtn1;
+    @BindView(R.id.tab_2) ViewGroup tabBtn2;
+    @BindView(R.id.tab_3) ViewGroup tabBtn3;
+    @BindView(R.id.tab_4) ViewGroup tabBtn4;
+    @BindView(R.id.tab_5) ViewGroup tabBtn5;
+    @BindView(R.id.tab1_img) ImageView tab1_iv;
+    @BindView(R.id.tab2_img) ImageView tab2_iv;
+    @BindView(R.id.tab3_img) ImageView tab3_iv;
+    @BindView(R.id.tab4_img) ImageView tab4_iv;
+    @BindView(R.id.tab5_img) ImageView tab5_iv;
+    @BindView(R.id.tab1_txt) TextView tab1_tv;
+    @BindView(R.id.tab2_txt) TextView tab2_tv;
+    @BindView(R.id.tab3_txt) TextView tab3_tv;
+    @BindView(R.id.tab4_txt) TextView tab4_tv;
+    @BindView(R.id.tab5_txt) TextView tab5_tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick({R2.id.tab_1, R2.id.tab_2, R2.id.tab_3, R2.id.tab_4, R2.id.tab_5}) void click(View v){
+    @OnClick({R.id.tab_1, R.id.tab_2, R.id.tab_3, R.id.tab_4, R.id.tab_5}) void click(View v){
         Fragment fragment = null;
         Bundle bundle = new Bundle();
         InitTabIcon(v.getId());

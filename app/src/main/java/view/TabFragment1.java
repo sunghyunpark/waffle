@@ -39,8 +39,9 @@ public class TabFragment1 extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private ArrayList<CafeModel> listItems;
 
-    @BindString(R.string.cafe_info_weekdays_time_txt) String cafeInfoWeekdaysTime;
-    @BindString(R.string.cafe_info_weekend_time_txt) String cafeInfoWeekendTime;
+    @BindString(R.string.cafe_info_weekdays_time_txt) String cafeInfoWeekdaysTimeStr;
+    @BindString(R.string.cafe_info_weekend_time_txt) String cafeInfoWeekendTimeStr;
+    @BindString(R.string.network_error_txt) String networkErrorStr;
 
     public TabFragment1() {
         // Required empty public constructor
@@ -112,7 +113,7 @@ public class TabFragment1 extends Fragment {
             public void onFailure(Call<CafeResponse> call, Throwable t) {
                 // Log error here since request failed
                 Log.e("tag", t.toString());
-                Toast.makeText(getActivity(), "네트워크 연결상태를 확인해주세요.",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), networkErrorStr,Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -164,8 +165,8 @@ public class TabFragment1 extends Fragment {
                         .load(AppConfig.ServerAddress+currentItem.getCafeThumbnail())
                         .into(VHitem.cafeThumbnail);
 
-                VHitem.cafe_weekdays_open_close_time_tv.setText(cafeInfoWeekdaysTime + " " +currentItem.getCafeWeekDaysOpenTime() + " ~ "+currentItem.getCafeWeekDaysCloseTime());
-                VHitem.cafe_weekend_open_close_time_tv.setText(cafeInfoWeekendTime + " " + currentItem.getCafeWeekendOpenTime() + " ~ "+currentItem.getCafeWeekendCloseTime());
+                VHitem.cafe_weekdays_open_close_time_tv.setText(cafeInfoWeekdaysTimeStr + " " +currentItem.getCafeWeekDaysOpenTime() + " ~ "+currentItem.getCafeWeekDaysCloseTime());
+                VHitem.cafe_weekend_open_close_time_tv.setText(cafeInfoWeekendTimeStr + " " + currentItem.getCafeWeekendOpenTime() + " ~ "+currentItem.getCafeWeekendCloseTime());
 
                 VHitem.cafe_address_tv.setText(currentItem.getCafeAddress());
                 VHitem.cafe_phone_tv.setText(currentItem.getCafePhoneNum());

@@ -12,6 +12,8 @@
     <string name="tab1_title_txt">내 주변 카페</string>
     <string name="tab1_sub_txt">GPS를 켜면 내 주변 카페들을 가까운 순으로 보여줍니다.</string>
 
+    <!--error-->
+    <string name="network_error_txt">네트워크 연결상태를 확인해주세요.</string>
     <!--cafe info-->
     <string name="cafe_info_weekdays_time_txt">주중 : </string>
     <string name="cafe_info_weekend_time_txt">주말 : </string>
