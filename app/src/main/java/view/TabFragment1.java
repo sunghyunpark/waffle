@@ -1,5 +1,7 @@
 package view;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -171,6 +173,13 @@ public class TabFragment1 extends Fragment {
                 VHitem.cafe_address_tv.setText(currentItem.getCafeAddress());
                 VHitem.cafe_phone_tv.setText(currentItem.getCafePhoneNum());
 
+                VHitem.cafe_phone_btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CallPhone(currentItem.getCafePhoneNum());
+                    }
+                });
+
             }else if(holder instanceof Header_Vh){
 
             }
@@ -186,6 +195,7 @@ public class TabFragment1 extends Fragment {
             TextView cafe_weekend_open_close_time_tv;
             TextView cafe_address_tv;
             TextView cafe_phone_tv;
+            ViewGroup cafe_phone_btn;
 
             private Cafe_VH(View itemView){
                 super(itemView);
@@ -195,6 +205,7 @@ public class TabFragment1 extends Fragment {
                 cafe_weekend_open_close_time_tv = (TextView)itemView.findViewById(R.id.weekend_open_close_time_txt);
                 cafe_address_tv = (TextView)itemView.findViewById(R.id.cafe_address_txt);
                 cafe_phone_tv = (TextView)itemView.findViewById(R.id.cafe_phone_txt);
+                cafe_phone_btn = (ViewGroup)itemView.findViewById(R.id.cafe_phone_btn);
             }
         }
 
@@ -207,6 +218,17 @@ public class TabFragment1 extends Fragment {
 
             }
         }
+
+        /**
+         * Call Cafe Phone
+         * @param phoneNum
+         */
+        private void CallPhone(String phoneNum){
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+phoneNum));
+            startActivity(intent);
+
+        }
+
 
         private boolean isPositionHeader(int position){
             return position == 0;
