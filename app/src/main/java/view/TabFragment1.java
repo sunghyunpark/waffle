@@ -255,60 +255,39 @@ public class TabFragment1 extends Fragment {
 
         private boolean isOpenState(int position){
             int day = cal.get(Calendar.DAY_OF_WEEK);    //일요일 -> 1, 월요일 -> 2...
-            int today_hour = Integer.parseInt(dayTime.format(new Date(time)).substring(11,13));
-
-            int open_hour, close_hour;
-            boolean isOpen;
-            Log.d("cafeTime", "today_hour : "+today_hour);
+            int today_hour = Integer.parseInt(dayTime.format(new Date(time)).substring(11,13));    //오늘 현재 시간
+            int open_hour, close_hour;    //카페 오픈, 마감 시간
+            String cafe_open, cafe_close, timeState;
+            //Log.d("cafeTime", "today_hour : "+today_hour);
             if((day == 1) || (day == 7)){
                 //주말
-                String weekend_open = getItem(position).getCafeWeekendOpenTime();
-                String weekend_close = getItem(position).getCafeWeekendCloseTime();
-                String timeState = weekend_close.substring(0,2);
-                open_hour = Integer.parseInt(weekend_open.substring(3,5));
+                cafe_open = getItem(position).getCafeWeekendOpenTime();
+                cafe_close = getItem(position).getCafeWeekendCloseTime();
+                timeState = cafe_close.substring(0,2);
+
+                open_hour = Integer.parseInt(cafe_open.substring(3,5));
+                close_hour = (timeState.equals("AM")) ? Integer.parseInt(cafe_close.substring(3,5)) + 24 : Integer.parseInt(cafe_close.substring(3,5));
+                /*
                 Log.d("cafeTime","주말");
                 Log.d("cafeTime", "open_hour : "+open_hour);
-                if(timeState.equals("AM")){
-                    close_hour = Integer.parseInt(weekend_close.substring(3,5)) + 24;
-                }else{
-                    close_hour = Integer.parseInt(weekend_close.substring(3,5));
-                }
                 Log.d("cafeTime", "close_hour : "+close_hour);
-                if((today_hour >= open_hour) && (today_hour <= close_hour)){
-                    //open
-                    Log.d("cafeTime", "open");
-                    isOpen = true;
-                }else{
-                    Log.d("cafeTime", "close");
-                    isOpen = false;
-                }
-                //isOpen = ((today_hour >= open_hour) && (today_hour <= close_hour));
+                */
             }else{
                 //주중
-                String weekdays_open = getItem(position).getCafeWeekDaysOpenTime();
-                String weekdays_close = getItem(position).getCafeWeekDaysCloseTime();
-                String timeState = weekdays_close.substring(0,2);
-                open_hour = Integer.parseInt(weekdays_open.substring(3,5));
+                cafe_open = getItem(position).getCafeWeekDaysOpenTime();
+                cafe_close = getItem(position).getCafeWeekDaysCloseTime();
+                timeState = cafe_close.substring(0,2);
+
+                open_hour = Integer.parseInt(cafe_open.substring(3,5));
+                close_hour = (timeState.equals("AM")) ? Integer.parseInt(cafe_close.substring(3,5)) + 24 : Integer.parseInt(cafe_close.substring(3,5));
+                /*
                 Log.d("cafeTime","주중");
                 Log.d("cafeTime", "open_hour : "+open_hour);
-                if(timeState.equals("AM")){
-                    close_hour = Integer.parseInt(weekdays_close.substring(3,5)) + 24;
-                }else{
-                    close_hour = Integer.parseInt(weekdays_close.substring(3,5));
-                }
                 Log.d("cafeTime", "close_hour : "+close_hour);
-                if((today_hour >= open_hour) && (today_hour <= close_hour)){
-                    //open
-                    Log.d("cafeTime", "open");
-                    isOpen = true;
-                }else{
-                    Log.d("cafeTime", "close");
-                    isOpen = false;
-                }
-                //isOpen = ((today_hour >= open_hour) && (today_hour <= close_hour));
+                */
             }
 
-            return isOpen;
+            return ((today_hour >= open_hour) && (today_hour <= close_hour));
         }
 
 
