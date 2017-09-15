@@ -33,6 +33,9 @@
     <string name="password_edit_box_hint_txt">비밀번호(8자 이상)</string>
     <string name="name_edit_box_hint_txt">이름(별명)</string>
     <string name="register_btn_txt">가입하기</string>
+    <string name="register_error_input_email_txt">올바른 이메일 형식이 아닙니다.</string>
+    <string name="error_not_exist_input_txt">정보를 입력해주세요.</string>
+    <string name="register_error_input_pw_txt">비밀번호가 너무 짧습니다.</string>
 
     <!--Login-->
     <string name="email_login_title_txt">이메일로 로그인</string>
