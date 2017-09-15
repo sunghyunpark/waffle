@@ -16,6 +16,16 @@ import retrofit2.http.Query;
 public interface ApiInterface {
 
     /**
+     * Email Login
+     * @param tag -> login
+     * @param email
+     * @param password
+     * @return
+     */
+    @GET("login/login.php")
+    Call<LoginResponse> GetUserDataByLogin(@Query("tag") String tag, @Query("email") String email,
+                                           @Query("password") String password);
+    /**
      * Email Register
      * @param tag -> register
      * @param nick_name

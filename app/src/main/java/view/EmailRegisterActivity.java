@@ -85,6 +85,7 @@ public class EmailRegisterActivity extends AppCompatActivity {
 
                 }
                 Toast.makeText(getApplicationContext(), cafeResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+                finish();
             }
 
             @Override
