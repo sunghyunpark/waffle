@@ -1,5 +1,6 @@
 package view;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -48,8 +49,13 @@ public class IntroActivity extends AppCompatActivity {
     @OnClick(R.id.facebook_btn) void facebookClick(){
         Toast.makeText(getApplicationContext(), "facebook", Toast.LENGTH_SHORT).show();
     }
-    @OnClick(R.id.register_btn) void registerClick(){
 
+    /**
+     * Email Register Activity 로 이동
+     */
+    @OnClick(R.id.register_btn) void registerClick(){
+        Intent intent = new Intent(getApplicationContext(), EmailRegisterActivity.class);
+        startActivity(intent);
     }
     @OnClick(R.id.login_btn) void loginClick(){
 
