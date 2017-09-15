@@ -17,6 +17,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import database.RealmUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,6 +32,8 @@ public class EmailLoginActivity extends AppCompatActivity {
     @BindString(R.string.register_error_input_email_txt) String inputEmailErrorStr;
     @BindString(R.string.error_not_exist_input_txt) String notExistErrorStr;
     @BindString(R.string.register_error_input_pw_txt) String inputPwErrorStr;
+
+    RealmUtil realmUtil = new RealmUtil();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,13 +74,21 @@ public class EmailLoginActivity extends AppCompatActivity {
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                LoginResponse cafeResponse = response.body();
-                if(!cafeResponse.isError()){
-
+                LoginResponse loginResponse = response.body();
+                if(!loginResponse.isError()){
+                    String uid = loginResponse.getUser().getUid();
+                    String email = loginResponse.getUser().getEmail();
+                    String nickName = loginResponse.getUser().getNick_name();
+                    String fb_id = loginResponse.getUser().getFb_id();
+                    String created_at = loginResponse.getUser().getCreated_at();
+                    String profile_img = loginResponse.getUser().getProfile_img();
+                    String profile_img_thumb = loginResponse.getUser().getProfile_img_thumb();
+                    String intro = loginResponse.getUser().getIntro();
+                    realmUtil.InsertDB(getApplicationContext(), uid, email, nickName, fb_id, created_at, profile_img, profile_img_thumb, intro);
                 }else{
 
                 }
-                Toast.makeText(getApplicationContext(), cafeResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), loginResponse.getError_msg(),Toast.LENGTH_SHORT).show();
                 finish();
             }
 
