@@ -21,7 +21,7 @@
     <string name="cafe_close_state_txt">CLOSE</string>
 
     <!--intro -->
-    <string name="register_btn_txt">이메일로 가입</string>
+    <string name="email_register_btn_txt">이메일로 가입</string>
     <string name="login_btn_txt">이메일로 로그인</string>
     <string name="facebook_login_txt">페이스북으로 간편 로그인</string>
     <string name="intro_sub_title_txt">카페 및 디저트 맛집, WAFFLE</string>
@@ -29,6 +29,10 @@
 
     <!--Register-->
     <string name="email_register_title_txt">이메일로 가입</string>
+    <string name="email_edit_box_hint_txt">이메일 주소</string>
+    <string name="password_edit_box_hint_txt">비밀번호(8자 이상)</string>
+    <string name="name_edit_box_hint_txt">이름(별명)</string>
+    <string name="register_btn_txt">가입하기</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

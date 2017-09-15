@@ -73,7 +73,7 @@
                     android:layout_marginLeft="10dp"
                     android:textColor="@color/colorSky"
                     android:background="@drawable/intro_register_btn_shape"
-                    android:text="@string/register_btn_txt"/>
+                    android:text="@string/email_register_btn_txt"/>
 
                 <Button
                     android:id="@+id/login_btn"

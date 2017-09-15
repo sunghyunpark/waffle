@@ -11,4 +11,6 @@
     <color name="colorGray">#565656</color>
     <color name="colorSky">#40C4FF</color>
     <color name="colorHalfBlue">#661565C0</color>
+    <color name="colorBackgroundGray">#F5F5F5</color>
+    <color name="colorTextHintGray">#BDBDBD</color>
 </resources>
