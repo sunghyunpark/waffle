@@ -58,6 +58,11 @@ public class EmailLoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Get User Data By Login
+     * @param email
+     * @param password
+     */
     private void GetUserData(String email, String password){
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
