@@ -84,7 +84,7 @@
                     android:layout_marginRight="10dp"
                     android:textColor="@color/colorWhite"
                     android:background="@drawable/intro_login_btn_shape"
-                    android:text="@string/login_btn_txt"/>
+                    android:text="@string/email_login_btn_txt"/>
             </LinearLayout>
             <TextView
                 android:layout_width="match_parent"

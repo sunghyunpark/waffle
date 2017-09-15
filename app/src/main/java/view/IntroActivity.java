@@ -57,7 +57,12 @@ public class IntroActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), EmailRegisterActivity.class);
         startActivity(intent);
     }
-    @OnClick(R.id.login_btn) void loginClick(){
 
+    /**
+     * Email Login Activity 로 이동
+     */
+    @OnClick(R.id.login_btn) void loginClick(){
+        Intent intent = new Intent(getApplicationContext(), EmailLoginActivity.class);
+        startActivity(intent);
     }
 }
