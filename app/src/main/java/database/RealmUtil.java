@@ -11,6 +11,18 @@ import io.realm.Realm;
 
 public class RealmUtil {
 
+    /**
+     * User Data 를 Realm 에 Insert
+     * @param context
+     * @param uid
+     * @param email
+     * @param nick_name
+     * @param fb_id
+     * @param created_at
+     * @param profile_img
+     * @param profile_img_thumb
+     * @param intro
+     */
     public void InsertDB(Context context, String uid, String email, String nick_name, String fb_id, String created_at, String profile_img, String profile_img_thumb, String intro){
         Realm mRealm;
         RealmConfig realmConfig;
@@ -31,6 +43,7 @@ public class RealmUtil {
 
         mRealm.copyToRealmOrUpdate(userVO);
         mRealm.commitTransaction();
-
     }
+
+
 }
