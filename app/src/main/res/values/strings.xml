@@ -43,6 +43,15 @@
     <string name="login_password_edit_box_hint_txt">비밀번호</string>
     <string name="login_btn_txt">로그인하기</string>
 
+    <!--tab5-->
+    <string name="menu1_txt">프로필 수정</string>
+    <string name="menu2_txt">와플 앱 평가하기</string>
+    <string name="menu3_txt">맛집 등록하기</string>
+    <string name="help1_txt">이용약관</string>
+    <string name="help2_txt">개인정보 취급 방침</string>
+    <string name="help3_txt">버전 정보</string>
+    <string name="logout_btn_txt">로그아웃</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
