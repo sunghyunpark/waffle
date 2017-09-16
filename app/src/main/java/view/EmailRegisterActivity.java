@@ -1,5 +1,6 @@
 package view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -8,7 +9,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.yssh.waffle.MainActivity;
 import com.yssh.waffle.R;
+import com.yssh.waffle.SessionManager;
 
 import api.ApiClient;
 import api.ApiInterface;
@@ -17,11 +20,15 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import database.RealmUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EmailRegisterActivity extends AppCompatActivity {
+
+    private SessionManager sessionManager;
+    RealmUtil realmUtil = new RealmUtil();
 
     @BindView(R.id.back_btn) ImageButton backBtn;
     @BindView(R.id.register_btn) Button registerBtn;
@@ -39,6 +46,8 @@ public class EmailRegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_email_register);
 
         ButterKnife.bind(this);
+
+        sessionManager = new SessionManager(getApplicationContext());
     }
 
     @OnClick(R.id.back_btn) void goBack(){
@@ -78,14 +87,29 @@ public class EmailRegisterActivity extends AppCompatActivity {
         call.enqueue(new Callback<LoginResponse>() {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                LoginResponse cafeResponse = response.body();
-                if(!cafeResponse.isError()){
+                LoginResponse loginResponse = response.body();
+                if(!loginResponse.isError()){
+                    String uid = loginResponse.getUser().getUid();
+                    String email = loginResponse.getUser().getEmail();
+                    String nickName = loginResponse.getUser().getNick_name();
+                    String fb_id = loginResponse.getUser().getFb_id();
+                    String created_at = loginResponse.getUser().getCreated_at();
+                    String profile_img = loginResponse.getUser().getProfile_img();
+                    String profile_img_thumb = loginResponse.getUser().getProfile_img_thumb();
+                    String intro = loginResponse.getUser().getIntro();
+
+                    realmUtil.InsertDB(getApplicationContext(), uid, email, nickName, fb_id, created_at, profile_img, profile_img_thumb, intro);
+                    sessionManager.setLogin(true);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
 
                 }else{
 
                 }
-                Toast.makeText(getApplicationContext(), cafeResponse.getError_msg(),Toast.LENGTH_SHORT).show();
-                finish();
+                Toast.makeText(getApplicationContext(), loginResponse.getError_msg(),Toast.LENGTH_SHORT).show();
             }
 
             @Override

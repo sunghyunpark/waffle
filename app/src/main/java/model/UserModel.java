@@ -2,7 +2,7 @@ package model;
 
 /**
  * Created by SungHyun on 2017-09-15.
- * User Model
+ * User Model Singleton
  * - uid
  * - nick_name
  * - email
@@ -14,6 +14,8 @@ package model;
  */
 
 public class UserModel {
+    private static volatile UserModel user = null;
+
     private String uid;
     private String nick_name;
     private String email;
@@ -22,6 +24,17 @@ public class UserModel {
     private String profile_img;
     private String profile_img_thumb;
     private String intro;
+
+    public static  UserModel getInstance(){
+        if(user == null)
+            synchronized (UserModel.class){
+                if(user==null){
+                    user = new UserModel();
+                }
+            }
+
+        return user;
+    }
 
     public String getUid() {
         return uid;

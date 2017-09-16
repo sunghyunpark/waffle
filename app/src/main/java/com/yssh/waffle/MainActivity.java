@@ -1,9 +1,11 @@
 package com.yssh.waffle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,6 +14,11 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import database.RealmConfig;
+import database.model.UserVO;
+import io.realm.Realm;
+import model.UserModel;
+import view.IntroActivity;
 import view.TabFragment1;
 import view.TabFragment2;
 import view.TabFragment3;
@@ -52,12 +59,48 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        InitTabIcon(R.id.tab_1);
+        SessionManager sessionManager = new SessionManager(getApplicationContext());
 
-        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = fm.beginTransaction();
-        fragmentTransaction.replace(R.id.main_frame, new TabFragment1());
-        fragmentTransaction.commit();
+        if(sessionManager.isLoggedIn()){
+            InitTabIcon(R.id.tab_1);
+
+            android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = fm.beginTransaction();
+            fragmentTransaction.replace(R.id.main_frame, new TabFragment1());
+            fragmentTransaction.commit();
+
+            SetUserDataFromRealm();
+        }else{
+            startActivity(new Intent(getApplicationContext(), IntroActivity.class));
+            finish();
+        }
+    }
+
+    /**
+     * Insert UserModel(Singleton) From RealmData
+     */
+    private void SetUserDataFromRealm(){
+        Realm mRealm;
+        RealmConfig realmConfig;
+        realmConfig = new RealmConfig();
+        mRealm = Realm.getInstance(realmConfig.UserRealmVersion(getApplicationContext()));
+
+        UserVO user = mRealm.where(UserVO.class).equalTo("no",1).findFirst();
+        UserModel.getInstance().setUid(user.getUid());
+        UserModel.getInstance().setEmail(user.getEmail());
+        UserModel.getInstance().setNick_name(user.getNick_name());
+        UserModel.getInstance().setFb_id(user.getFb_id());
+        UserModel.getInstance().setProfile_img(user.getProfile_img());
+        UserModel.getInstance().setProfile_img_thumb(user.getProfile_img_thumb());
+        UserModel.getInstance().setIntro(user.getIntro());
+        UserModel.getInstance().setCreated_at(user.getCreated_at());
+        Log.d("UserInfo", "UserUid : "+user.getUid()+"");
+        Log.d("UserInfo", "UserEmail : "+user.getEmail());
+        Log.d("UserInfo", "UserName : "+user.getNick_name());
+        Log.d("UserInfo", "Created_at : "+user.getCreated_at());
+        Log.d("UserInfo", "Profile_img : "+user.getProfile_img());
+        Log.d("UserInfo", "Fb_id : "+user.getFb_id());
+        Log.d("UserInfo", "Intro : "+user.getIntro());
     }
 
     /**

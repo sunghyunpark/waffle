@@ -1,14 +1,17 @@
 package view;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.yssh.waffle.MainActivity;
 import com.yssh.waffle.R;
+import com.yssh.waffle.SessionManager;
 
 import api.ApiClient;
 import api.ApiInterface;
@@ -34,6 +37,7 @@ public class EmailLoginActivity extends AppCompatActivity {
     @BindString(R.string.register_error_input_pw_txt) String inputPwErrorStr;
 
     RealmUtil realmUtil = new RealmUtil();
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,7 @@ public class EmailLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_email_login);
 
         ButterKnife.bind(this);
+        sessionManager = new SessionManager(getApplicationContext());
     }
 
     @OnClick(R.id.back_btn) void goBack(){
@@ -84,12 +89,19 @@ public class EmailLoginActivity extends AppCompatActivity {
                     String profile_img = loginResponse.getUser().getProfile_img();
                     String profile_img_thumb = loginResponse.getUser().getProfile_img_thumb();
                     String intro = loginResponse.getUser().getIntro();
+
                     realmUtil.InsertDB(getApplicationContext(), uid, email, nickName, fb_id, created_at, profile_img, profile_img_thumb, intro);
+                    sessionManager.setLogin(true);    //session OK
+
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
                 }else{
 
                 }
                 Toast.makeText(getApplicationContext(), loginResponse.getError_msg(),Toast.LENGTH_SHORT).show();
-                finish();
             }
 
             @Override
