@@ -16,6 +16,7 @@ import com.google.gson.annotations.SerializedName;
  * - 카페 주소
  * - 카페 전화번호
  * - 카페 특징(24시간 유무, wifi, 흡연실, 주차장)
+ * - 카페 소개
  */
 
 public class CafeModel {
@@ -39,12 +40,17 @@ public class CafeModel {
     private String cafeAddress;
     @SerializedName("cafe_phone")
     private String cafePhoneNum;
-    /*
-    private boolean FullTimeState;
-    private boolean WifiState;
-    private boolean SmokeState;
-    private boolean ParkingState;
-*/
+    @SerializedName("cafe_full_time_state")
+    private String cafeFullTimeState;
+    @SerializedName("cafe_wifi_state")
+    private String cafeWifiState;
+    @SerializedName("cafe_smoke_state")
+    private String cafeSmokeState;
+    @SerializedName("cafe_parking_state")
+    private String cafeParkingState;
+    @SerializedName("cafe_intro")
+    private String cafeIntro;
+
     public String getCafeName() {
         return cafeName;
     }
@@ -125,37 +131,44 @@ public class CafeModel {
     public void setCafePhoneNum(String cafePhoneNum) {
         this.cafePhoneNum = cafePhoneNum;
     }
-/*
-    public boolean isFullTimeState() {
-        return FullTimeState;
+
+    public String getCafeFullTimeState() {
+        return cafeFullTimeState;
     }
 
-    public void setFullTimeState(boolean fullTimeState) {
-        FullTimeState = fullTimeState;
+    public void setCafeFullTimeState(String cafeFullTimeState) {
+        this.cafeFullTimeState = cafeFullTimeState;
     }
 
-    public boolean isWifiState() {
-        return WifiState;
+    public String getCafeWifiState() {
+        return cafeWifiState;
     }
 
-    public void setWifiState(boolean wifiState) {
-        WifiState = wifiState;
+    public void setCafeWifiState(String cafeWifiState) {
+        this.cafeWifiState = cafeWifiState;
     }
 
-    public boolean isSmokeState() {
-        return SmokeState;
+    public String getCafeSmokeState() {
+        return cafeSmokeState;
     }
 
-    public void setSmokeState(boolean smokeState) {
-        SmokeState = smokeState;
+    public void setCafeSmokeState(String cafeSmokeState) {
+        this.cafeSmokeState = cafeSmokeState;
     }
 
-    public boolean isParkingState() {
-        return ParkingState;
+    public String getCafeParkingState() {
+        return cafeParkingState;
     }
 
-    public void setParkingState(boolean parkingState) {
-        ParkingState = parkingState;
+    public void setCafeParkingState(String cafeParkingState) {
+        this.cafeParkingState = cafeParkingState;
     }
-    */
+
+    public String getCafeIntro() {
+        return cafeIntro;
+    }
+
+    public void setCafeIntro(String cafeIntro) {
+        this.cafeIntro = cafeIntro;
+    }
 }

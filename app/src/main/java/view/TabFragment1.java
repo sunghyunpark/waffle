@@ -108,6 +108,11 @@ public class TabFragment1 extends Fragment {
                         cafeModel.setCafeWeekendCloseTime(cafeResponse.getCafeList().get(i).getCafeWeekendCloseTime());
                         cafeModel.setCafeAddress(cafeResponse.getCafeList().get(i).getCafeAddress());
                         cafeModel.setCafePhoneNum(cafeResponse.getCafeList().get(i).getCafePhoneNum());
+                        cafeModel.setCafeFullTimeState(cafeResponse.getCafeList().get(i).getCafeFullTimeState());
+                        cafeModel.setCafeWifiState(cafeResponse.getCafeList().get(i).getCafeWifiState());
+                        cafeModel.setCafeSmokeState(cafeResponse.getCafeList().get(i).getCafeSmokeState());
+                        cafeModel.setCafeParkingState(cafeResponse.getCafeList().get(i).getCafeParkingState());
+                        cafeModel.setCafeIntro(cafeResponse.getCafeList().get(i).getCafeIntro());
                         listItems.add(cafeModel);
                     }
                     recyclerView.setAdapter(adapter);
@@ -200,6 +205,28 @@ public class TabFragment1 extends Fragment {
                     VHitem.cafe_open_state_tv.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorGray));
                 }
 
+                if(cafeFeature(position, 1)){
+                    VHitem.full_time_img.setBackgroundResource(R.mipmap.full_time_img);
+                }else{
+                    VHitem.full_time_img.setBackgroundResource(R.mipmap.not_full_time_img);
+                }
+                if(cafeFeature(position, 2)){
+                    VHitem.wifi_img.setBackgroundResource(R.mipmap.wifi_img);
+                }else{
+                    VHitem.wifi_img.setBackgroundResource(R.mipmap.not_wifi_img);
+                }
+                if(cafeFeature(position, 3)){
+                    VHitem.smoke_img.setBackgroundResource(R.mipmap.smoke_img);
+                }else{
+                    VHitem.smoke_img.setBackgroundResource(R.mipmap.not_smoke_img);
+                }
+                if(cafeFeature(position, 4)){
+                    VHitem.parking_img.setBackgroundResource(R.mipmap.parking_img);
+                }else{
+                    VHitem.parking_img.setBackgroundResource(R.mipmap.not_parking_img);
+                }
+
+
             }else if(holder instanceof Header_Vh){
 
             }
@@ -218,6 +245,10 @@ public class TabFragment1 extends Fragment {
             ViewGroup cafe_phone_btn;
             ViewGroup cafe_open_state_layout;
             TextView cafe_open_state_tv;
+            ImageView full_time_img;
+            ImageView wifi_img;
+            ImageView smoke_img;
+            ImageView parking_img;
 
             private Cafe_VH(View itemView){
                 super(itemView);
@@ -230,7 +261,30 @@ public class TabFragment1 extends Fragment {
                 cafe_phone_btn = (ViewGroup)itemView.findViewById(R.id.cafe_phone_btn);
                 cafe_open_state_layout = (ViewGroup)itemView.findViewById(R.id.cafe_open_state_layout);
                 cafe_open_state_tv = (TextView)itemView.findViewById(R.id.cafe_open_state_txt);
+                full_time_img = (ImageView)itemView.findViewById(R.id.full_time_img);
+                wifi_img = (ImageView)itemView.findViewById(R.id.wifi_img);
+                smoke_img = (ImageView)itemView.findViewById(R.id.smoke_img);
+                parking_img = (ImageView)itemView.findViewById(R.id.parking_img);
             }
+        }
+
+        private boolean cafeFeature(int position, int featureNo){
+            boolean flag = false;
+            switch (featureNo){
+                case 1:
+                    return flag = getItem(position).getCafeFullTimeState().equals("Y");
+
+                case 2:
+                    return flag = getItem(position).getCafeWifiState().equals("Y");
+
+                case 3:
+                    return flag = getItem(position).getCafeSmokeState().equals("Y");
+
+                case 4:
+                    return flag = getItem(position).getCafeParkingState().equals("Y");
+
+            }
+            return flag;
         }
 
         /**
