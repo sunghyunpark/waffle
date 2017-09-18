@@ -1,5 +1,8 @@
 package view;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,10 +15,17 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.yssh.waffle.AppConfig;
+import com.yssh.waffle.MainActivity;
 import com.yssh.waffle.R;
+import com.yssh.waffle.SessionManager;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import database.RealmConfig;
+import database.model.UserVO;
+import io.realm.Realm;
 import model.UserModel;
 
 public class TabFragment5 extends Fragment {
@@ -25,6 +35,8 @@ public class TabFragment5 extends Fragment {
     @BindView(R.id.user_name_txt) TextView user_name_tv;
     @BindView(R.id.user_email_txt) TextView user_email_tv;
     @BindView(R.id.logout_btn) Button logoutBtn;
+    @BindString(R.string.logout_title_txt) String logoutTitleStr;
+    @BindString(R.string.logout_sub_txt) String logoutSubStr;
 
     public TabFragment5() {
         // Required empty public constructor
@@ -62,6 +74,38 @@ public class TabFragment5 extends Fragment {
 
         user_name_tv.setText(UserModel.getInstance().getNick_name());
         user_email_tv.setText(UserModel.getInstance().getEmail());
+    }
+
+    @OnClick(R.id.logout_btn) void Logout(){
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+        alert.setTitle(logoutTitleStr);
+        alert.setMessage(logoutSubStr);
+        alert.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                SessionManager mSessionManager = new SessionManager(getActivity());
+                mSessionManager.setLogin(false);
+                RealmConfig realmConfig = new RealmConfig();
+                Realm mRealm = Realm.getInstance(realmConfig.UserRealmVersion(getActivity()));
+                UserVO userVO = mRealm.where(UserVO.class).equalTo("no",1).findFirst();
+                mRealm.beginTransaction();
+                userVO.deleteFromRealm();
+                mRealm.commitTransaction();
+
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+        alert.setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+
+                    }
+                });
+        alert.show();
     }
 
 }
