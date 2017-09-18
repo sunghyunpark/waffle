@@ -2,6 +2,8 @@ package model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by SungHyun on 2017-09-07.
  * Cafe Model
@@ -19,7 +21,7 @@ import com.google.gson.annotations.SerializedName;
  * - 카페 소개
  */
 
-public class CafeModel {
+public class CafeModel implements Serializable{
     @SerializedName("cafe_name")
     private String cafeName;
     @SerializedName("cafe_thumbnail")
@@ -171,4 +173,5 @@ public class CafeModel {
     public void setCafeIntro(String cafeIntro) {
         this.cafeIntro = cafeIntro;
     }
+
 }

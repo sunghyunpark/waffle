@@ -21,7 +21,8 @@
         </activity>
         <activity android:name="view.IntroActivity" />
         <activity android:name="view.EmailRegisterActivity" />
-        <activity android:name="view.EmailLoginActivity"></activity>
+        <activity android:name="view.EmailLoginActivity" />
+        <activity android:name="view.AboutCafeActivity"></activity>
     </application>
 
 </manifest>

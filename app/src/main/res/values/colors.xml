@@ -13,4 +13,5 @@
     <color name="colorHalfBlue">#661565C0</color>
     <color name="colorBackgroundGray">#F5F5F5</color>
     <color name="colorTextHintGray">#BDBDBD</color>
+    <color name="color_HalfBlack">#77000000</color>
 </resources>

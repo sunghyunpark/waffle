@@ -226,6 +226,15 @@ public class TabFragment1 extends Fragment {
                     VHitem.parking_img.setBackgroundResource(R.mipmap.not_parking_img);
                 }
 
+                VHitem.cafe_item_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), AboutCafeActivity.class);
+                        intent.putExtra("CafeModel", getItem(position));
+                        startActivity(intent);
+                    }
+                });
+
 
             }else if(holder instanceof Header_Vh){
 
@@ -236,6 +245,7 @@ public class TabFragment1 extends Fragment {
          * 카페 아이템
          */
         private class Cafe_VH extends RecyclerView.ViewHolder{
+
             TextView cafeName;
             ImageView cafeThumbnail;
             TextView cafe_weekdays_open_close_time_tv;
@@ -249,6 +259,7 @@ public class TabFragment1 extends Fragment {
             ImageView wifi_img;
             ImageView smoke_img;
             ImageView parking_img;
+            ViewGroup cafe_item_layout;
 
             private Cafe_VH(View itemView){
                 super(itemView);
@@ -265,9 +276,16 @@ public class TabFragment1 extends Fragment {
                 wifi_img = (ImageView)itemView.findViewById(R.id.wifi_img);
                 smoke_img = (ImageView)itemView.findViewById(R.id.smoke_img);
                 parking_img = (ImageView)itemView.findViewById(R.id.parking_img);
+                cafe_item_layout = (ViewGroup)itemView.findViewById(R.id.cafe_item_layout);
             }
         }
 
+        /**
+         * Cafe Feature 분기처리
+         * @param position -> Item position
+         * @param featureNo -> Feature Number(full time/wifi/smoke/parking)
+         * @return
+         */
         private boolean cafeFeature(int position, int featureNo){
             boolean flag = false;
             switch (featureNo){
