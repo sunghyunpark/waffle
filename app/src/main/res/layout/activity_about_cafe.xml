@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorWhite"
     tools:context="view.AboutCafeActivity">
 
     <LinearLayout
@@ -53,6 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <!--
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -95,12 +97,24 @@
                 android:layout_toLeftOf="@+id/cafe_etc_photo_cnt_txt"
                 android:layout_marginRight="7dp"/>
         </RelativeLayout>
+        -->
+
+        <ImageView
+            android:id="@+id/cafe_etc_photo_btn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/cafe_photo_img"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"/>
     </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@color/colorSky">
+            android:layout_height="170dp"
+            android:background="#00BFA5">
 
             <TextView
                 android:id="@+id/cafe_name_txt"
@@ -109,23 +123,36 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="15dp"
                 android:textSize="25dp"
-                android:text="스타벅스"
+                android:layout_marginRight="20dp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:textStyle="bold"
                 android:textColor="@color/colorWhite"/>
 
+            <TextView
+                android:id="@+id/cafe_address_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cafe_name_txt"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:textColor="@color/colorWhite"
+                android:layout_marginTop="5dp"
+                android:textSize="15dp"/>
+
             <LinearLayout
+                android:id="@+id/cafe_feature_layout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:orientation="horizontal"
-                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/cafe_address_txt"
                 android:paddingLeft="20dp">
-
                 <ImageView
                     android:id="@+id/cafe_full_time_state_img"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
                     android:src="@mipmap/about_cafe_full_time_img"/>
-
                 <ImageView
                     android:id="@+id/cafe_wifi_state_img"
                     android:layout_width="30dp"
@@ -133,7 +160,6 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="15dp"
                     android:src="@mipmap/about_cafe_not_wifi_img"/>
-
                 <ImageView
                     android:id="@+id/cafe_smoke_state_img"
                     android:layout_width="30dp"
@@ -141,7 +167,6 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="15dp"
                     android:src="@mipmap/about_cafe_smoke_img"/>
-
                 <ImageView
                     android:id="@+id/cafe_parking_state_img"
                     android:layout_width="30dp"
@@ -149,10 +174,83 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="15dp"
                     android:src="@mipmap/about_cafe_not_parking_img"/>
-
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cafe_feature_layout"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:id="@+id/cafe_comment_img"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@mipmap/cafe_comment_img"
+                        android:layout_marginLeft="20dp"/>
+                    <TextView
+                        android:id="@+id/cafe_comment_cnt_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/cafe_comment_img"
+                        android:textColor="@color/colorWhite"
+                        android:layout_centerVertical="true"
+                        android:text="평가하기"
+                        android:textSize="13dp"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:id="@+id/kakao_share_img"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@mipmap/kakao_share_img"
+                        android:layout_marginLeft="20dp"/>
+                    <TextView
+                        android:id="@+id/kakao_shrare_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/kakao_share_img"
+                        android:textColor="@color/colorWhite"
+                        android:text="카톡공유"
+                        android:textSize="13dp"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:id="@+id/share_img"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@mipmap/cafe_share_img"
+                        android:layout_marginLeft="20dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@id/share_img"
+                        android:textColor="@color/colorWhite"
+                        android:text="공유하기"
+                        android:textSize="13dp"
+                        android:layout_centerVertical="true"/>
+                </RelativeLayout>
+            </LinearLayout>
         </RelativeLayout>
+
 
 
     </LinearLayout>

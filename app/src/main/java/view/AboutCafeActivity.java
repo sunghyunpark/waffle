@@ -20,6 +20,8 @@ public class AboutCafeActivity extends AppCompatActivity {
     CafeModel cafeModel;
     @BindView(R.id.cafe_img) ImageView cafe_img_iv;
     @BindView(R.id.title_txt) TextView title_tv;
+    @BindView(R.id.cafe_name_txt) TextView cafe_name_tv;
+    @BindView(R.id.cafe_address_txt) TextView cafe_address_tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,16 @@ public class AboutCafeActivity extends AppCompatActivity {
         cafeModel = new CafeModel();
         cafeModel = (CafeModel)intent.getExtras().getSerializable("CafeModel");
 
+        SetUI();
+    }
+
+    /**
+     * Init Ui
+     */
+    private void SetUI(){
         title_tv.setText(cafeModel.getCafeName());
+        cafe_name_tv.setText(cafeModel.getCafeName());
+        cafe_address_tv.setText(cafeModel.getCafeAddress());
 
         //Glide Options
         RequestOptions requestOptions = new RequestOptions();
@@ -44,6 +55,5 @@ public class AboutCafeActivity extends AppCompatActivity {
                 .setDefaultRequestOptions(requestOptions)
                 .load(AppConfig.ServerAddress+"img/cafe_etc_photo/1_cafe_etc_photo_1.jpg")
                 .into(cafe_img_iv);
-
     }
 }
