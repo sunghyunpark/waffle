@@ -1,6 +1,7 @@
 package view;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageButton;
@@ -95,5 +96,9 @@ public class AboutCafeActivity extends AppCompatActivity {
 
     @OnClick(R.id.back_btn) void goBack(){
         finish();
+    }
+    @OnClick(R.id.about_cafe_phone_txt) void goCall(){
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+cafeModel.getCafePhoneNum()));
+        startActivity(intent);
     }
 }

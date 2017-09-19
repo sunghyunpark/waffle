@@ -38,6 +38,15 @@
             android:layout_centerVertical="true"
             android:textColor="@color/colorBlack"
             android:textSize="18dp"/>
+
+        <ImageButton
+            android:id="@+id/cafe_like_btn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="@mipmap/about_cafe_not_like_img"/>
     </RelativeLayout>
     <!--구분선-->
     <LinearLayout

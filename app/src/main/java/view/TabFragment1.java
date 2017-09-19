@@ -322,7 +322,6 @@ public class TabFragment1 extends Fragment {
         private void CallPhone(String phoneNum){
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+phoneNum));
             startActivity(intent);
-
         }
 
         private boolean isOpenState(int position){
