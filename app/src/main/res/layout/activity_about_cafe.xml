@@ -7,6 +7,11 @@
     android:orientation="vertical"
     tools:context="view.AboutCafeActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
     <RelativeLayout
         android:id="@+id/app_title_bar"
         android:layout_width="match_parent"
@@ -22,7 +27,7 @@
             android:layout_marginLeft="10dp"
             android:background="@mipmap/back_btn_img"/>
         <TextView
-            android:id="@+id/cafe_name_txt"
+            android:id="@+id/title_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -41,7 +46,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp">
+        android:layout_height="230dp">
 
         <ImageView
             android:id="@+id/cafe_img"
@@ -58,7 +63,7 @@
                 android:id="@+id/like_btn"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/not_like_img"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"/>
 
@@ -66,9 +71,9 @@
                 android:id="@+id/comment_btn"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/comment_img"
                 android:layout_toRightOf="@+id/like_btn"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="20dp"
                 android:layout_centerVertical="true"/>
 
             <TextView
@@ -86,10 +91,69 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_centerVertical="true"
-                android:src="@mipmap/ic_launcher"
+                android:src="@mipmap/photo_img"
                 android:layout_toLeftOf="@+id/cafe_etc_photo_cnt_txt"
                 android:layout_marginRight="7dp"/>
         </RelativeLayout>
     </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@color/colorSky">
+
+            <TextView
+                android:id="@+id/cafe_name_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="15dp"
+                android:textSize="25dp"
+                android:text="스타벅스"
+                android:textColor="@color/colorWhite"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true"
+                android:paddingLeft="20dp">
+
+                <ImageView
+                    android:id="@+id/cafe_full_time_state_img"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@mipmap/about_cafe_full_time_img"/>
+
+                <ImageView
+                    android:id="@+id/cafe_wifi_state_img"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:src="@mipmap/about_cafe_not_wifi_img"/>
+
+                <ImageView
+                    android:id="@+id/cafe_smoke_state_img"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:src="@mipmap/about_cafe_smoke_img"/>
+
+                <ImageView
+                    android:id="@+id/cafe_parking_state_img"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:src="@mipmap/about_cafe_not_parking_img"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
 </LinearLayout>

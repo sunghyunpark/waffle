@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--카페 특징 아이콘 색상 8D6E63 -->
+    <!--카페 특징 아이콘 색상 8D6E63 (갈색) FFCA28(노랑)-->
 
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#00B0FF</color>

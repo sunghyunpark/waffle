@@ -19,7 +19,7 @@ public class AboutCafeActivity extends AppCompatActivity {
 
     CafeModel cafeModel;
     @BindView(R.id.cafe_img) ImageView cafe_img_iv;
-    @BindView(R.id.cafe_name_txt) TextView cafe_name_tv;
+    @BindView(R.id.title_txt) TextView title_tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +32,7 @@ public class AboutCafeActivity extends AppCompatActivity {
         cafeModel = new CafeModel();
         cafeModel = (CafeModel)intent.getExtras().getSerializable("CafeModel");
 
-        cafe_name_tv.setText(cafeModel.getCafeName());
+        title_tv.setText(cafeModel.getCafeName());
 
         //Glide Options
         RequestOptions requestOptions = new RequestOptions();
