@@ -5,9 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/colorWhite"
+    android:background="@color/colorBackgroundGray"
     tools:context="view.AboutCafeActivity">
 
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -151,29 +154,25 @@
                     android:id="@+id/cafe_full_time_state_img"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@mipmap/about_cafe_full_time_img"/>
+                    android:layout_gravity="center_vertical"/>
                 <ImageView
                     android:id="@+id/cafe_wifi_state_img"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
-                    android:src="@mipmap/about_cafe_not_wifi_img"/>
+                    android:layout_marginLeft="15dp"/>
                 <ImageView
                     android:id="@+id/cafe_smoke_state_img"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
-                    android:src="@mipmap/about_cafe_smoke_img"/>
+                    android:layout_marginLeft="15dp"/>
                 <ImageView
                     android:id="@+id/cafe_parking_state_img"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
-                    android:src="@mipmap/about_cafe_not_parking_img"/>
+                    android:layout_marginLeft="15dp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -202,8 +201,8 @@
                         android:layout_toRightOf="@id/cafe_comment_img"
                         android:textColor="@color/colorWhite"
                         android:layout_centerVertical="true"
-                        android:text="평가하기"
-                        android:textSize="13dp"/>
+                        android:text="@string/comment_btn_txt"
+                        android:textSize="14dp"/>
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -223,8 +222,8 @@
                         android:layout_marginLeft="10dp"
                         android:layout_toRightOf="@id/kakao_share_img"
                         android:textColor="@color/colorWhite"
-                        android:text="카톡공유"
-                        android:textSize="13dp"
+                        android:text="@string/kakao_share_btn_txt"
+                        android:textSize="14dp"
                         android:layout_centerVertical="true"/>
                 </RelativeLayout>
 
@@ -244,14 +243,271 @@
                         android:layout_marginLeft="10dp"
                         android:layout_toRightOf="@id/share_img"
                         android:textColor="@color/colorWhite"
-                        android:text="공유하기"
-                        android:textSize="13dp"
+                        android:text="@string/share_btn_txt"
+                        android:textSize="14dp"
                         android:layout_centerVertical="true"/>
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/colorWhite"
+            android:layout_marginTop="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/about_address_img"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp" />
+
+                <TextView
+                    android:id="@+id/about_cafe_address_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/colorGray"
+                    android:singleLine="true"
+                    android:textSize="14dp"
+                    android:ellipsize="end"
+                    android:layout_marginRight="80dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/about_phone_img"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp" />
+
+                <TextView
+                    android:id="@+id/about_cafe_phone_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/colorGray"
+                    android:textSize="14dp"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:layout_marginRight="80dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/colorWhite"
+            android:layout_marginTop="5dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/open_img"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/about_open_img"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/open_img"
+                    android:layout_marginLeft="15dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="14dp"
+                    android:textColor="@color/color_HalfBlack"
+                    android:textStyle="bold"
+                    android:text="@string/about_cafe_open_txt"/>
+
+                <TextView
+                    android:id="@+id/about_cafe_weekdays_open_close_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorGray"
+                    android:singleLine="true"
+                    android:ellipsize="end"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="14dp"
+                    android:textColor="@color/color_HalfBlack"
+                    android:textStyle="bold"
+                    android:text="@string/about_cafe_close_txt"/>
+                <TextView
+                    android:id="@+id/about_cafe_weekend_open_close_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorGray"
+                    android:singleLine="true"
+                    android:ellipsize="end"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/colorWhite"
+            android:layout_marginTop="5dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/main_desert_img"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/about_cafe_mail_desert_img"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/main_desert_img"
+                    android:layout_marginLeft="15dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="14dp"
+                    android:textColor="@color/color_HalfBlack"
+                    android:textStyle="bold"
+                    android:text="@string/about_cafe_main_desert_txt"/>
+
+                <Button
+                    android:id="@+id/go_menu_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:text="@string/about_cafe_go_menu_btn"
+                    android:textColor="@color/colorSky"
+                    android:textSize="14dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/main_desert_1_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="14dp"
+                    android:textColor="@color/color_HalfBlack"
+                    android:textStyle="bold"
+                    android:text="아메리카노"/>
+                <TextView
+                    android:id="@+id/price_1_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorGray"
+                    android:singleLine="true"
+                    android:text="2,500원"
+                    android:ellipsize="end"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/main_desert_2_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="14dp"
+                    android:textColor="@color/color_HalfBlack"
+                    android:textStyle="bold"
+                    android:text="카페라떼"/>
+                <TextView
+                    android:id="@+id/price_2_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorGray"
+                    android:singleLine="true"
+                    android:text="3,500원"
+                    android:ellipsize="end"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/main_desert_3_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="14dp"
+                    android:textColor="@color/color_HalfBlack"
+                    android:textStyle="bold"
+                    android:text="치즈케익"/>
+                <TextView
+                    android:id="@+id/price_3_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorGray"
+                    android:singleLine="true"
+                    android:text="4,800원"
+                    android:ellipsize="end"/>
+            </RelativeLayout>
+        </LinearLayout>
+
 
 
     </LinearLayout>
+    </ScrollView>
 </LinearLayout>
