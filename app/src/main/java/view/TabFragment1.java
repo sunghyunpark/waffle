@@ -100,6 +100,7 @@ public class TabFragment1 extends Fragment {
                     int listSize = cafeResponse.getCafeList().size();
                     for (int i=0;i<listSize;i++){
                         cafeModel = new CafeModel();
+                        cafeModel.setCafeId(cafeResponse.getCafeList().get(i).getCafeId());
                         cafeModel.setCafeName(cafeResponse.getCafeList().get(i).getCafeName());
                         cafeModel.setCafeThumbnail(cafeResponse.getCafeList().get(i).getCafeThumbnail());
                         cafeModel.setCafeWeekDaysOpenTime(cafeResponse.getCafeList().get(i).getCafeWeekDaysOpenTime());

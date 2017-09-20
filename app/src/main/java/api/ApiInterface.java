@@ -1,5 +1,6 @@
 package api;
 
+import api.response.CafeFeatureResponse;
 import api.response.CafeResponse;
 import api.response.LoginResponse;
 import retrofit2.Call;
@@ -51,4 +52,13 @@ public interface ApiInterface {
      */
     @GET("cafe/cafe_info.php")
     Call<CafeResponse> GetCafeListFromMyLocation(@Query("tag") String tag, @Query("uid") String uid);
+
+    /**
+     * About Cafe Etc Info 불러오기
+     * @param tag -> cafe_etc_info
+     * @param cafe_id
+     * @return
+     */
+    @GET("cafe/cafe_info.php")
+    Call<CafeFeatureResponse> GetCafeEtcInfo(@Query("tag") String tag, @Query("cafe_id") String cafe_id);
 }

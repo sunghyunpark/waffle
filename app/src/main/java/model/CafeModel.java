@@ -22,6 +22,9 @@ import java.io.Serializable;
  */
 
 public class CafeModel implements Serializable{
+
+    @SerializedName("cafe_id")
+    private String cafeId;
     @SerializedName("cafe_name")
     private String cafeName;
     @SerializedName("cafe_thumbnail")
@@ -52,6 +55,14 @@ public class CafeModel implements Serializable{
     private String cafeParkingState;
     @SerializedName("cafe_intro")
     private String cafeIntro;
+
+    public String getCafeId() {
+        return cafeId;
+    }
+
+    public void setCafeId(String cafeId) {
+        this.cafeId = cafeId;
+    }
 
     public String getCafeName() {
         return cafeName;
