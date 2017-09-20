@@ -19,9 +19,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="내가 좋아요한 맛집"
+                android:text="@string/tab4_my_favorite_cafe_title"
                 android:textColor="@color/colorBlack"
                 android:textSize="18dp"
+                android:textStyle="bold"
                 android:layout_marginLeft="15dp"/>
 
             <RelativeLayout
@@ -38,9 +39,9 @@
 
                 <ImageView
                     android:id="@+id/like_img"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@mipmap/ic_launcher"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/tab4_like_img"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"/>
 
@@ -48,16 +49,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/like_img"
-                    android:text="3"
+                    android:text="0"
                     android:textSize="14dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="8dp"
                     android:textColor="@color/colorWhite"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="내가 좋아요한 맛집"
+                    android:text="@string/tab4_my_favorite_cafe_title"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:textColor="@color/colorWhite"
@@ -68,15 +69,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="내가 평가한 맛집"
+                android:text="@string/tab4_my_comment_cafe_title"
                 android:textColor="@color/colorBlack"
                 android:textSize="18dp"
+                android:textStyle="bold"
                 android:layout_marginLeft="15dp"/>
 
             <RelativeLayout
@@ -93,9 +95,9 @@
 
                 <ImageView
                     android:id="@+id/comment_img"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@mipmap/ic_launcher"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/tab4_comment_img"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"/>
 
@@ -103,16 +105,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/comment_img"
-                    android:text="3"
+                    android:text="0"
                     android:textSize="14dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="8dp"
                     android:textColor="@color/colorWhite"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="내가 평가한 맛집"
+                    android:text="@string/tab4_my_comment_cafe_title"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:textColor="@color/colorWhite"

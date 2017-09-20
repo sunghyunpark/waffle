@@ -3,6 +3,8 @@ package view;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -37,6 +39,8 @@ public class TabFragment5 extends Fragment {
     @BindView(R.id.logout_btn) Button logoutBtn;
     @BindString(R.string.logout_title_txt) String logoutTitleStr;
     @BindString(R.string.logout_sub_txt) String logoutSubStr;
+    @BindView(R.id.app_version_txt) TextView app_version_tv;
+
 
     public TabFragment5() {
         // Required empty public constructor
@@ -74,6 +78,15 @@ public class TabFragment5 extends Fragment {
 
         user_name_tv.setText(UserModel.getInstance().getNick_name());
         user_email_tv.setText(UserModel.getInstance().getEmail());
+
+        //앱 버전
+        String version;
+        try {
+            PackageInfo i = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0);
+            version = i.versionName;
+            app_version_tv.setText("v"+version);
+        } catch(PackageManager.NameNotFoundException e) { }
+
     }
 
     @OnClick(R.id.logout_btn) void Logout(){
