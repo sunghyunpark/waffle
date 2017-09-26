@@ -45,8 +45,7 @@
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="15dp"
-            android:background="@mipmap/about_cafe_not_like_img"/>
+            android:layout_marginRight="15dp"/>
     </RelativeLayout>
     <!--구분선-->
     <LinearLayout

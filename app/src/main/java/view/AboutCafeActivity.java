@@ -43,10 +43,13 @@ public class AboutCafeActivity extends AppCompatActivity {
     @BindView(R.id.cafe_parking_state_img) ImageView parking_state_iv;
     @BindView(R.id.about_cafe_address_txt) TextView about_cafe_address_tv;
     @BindView(R.id.about_cafe_phone_txt) TextView about_cafe_phone_tv;
+    @BindView(R.id.cafe_like_btn) ImageButton cafeLikeBtn;
     @BindView(R.id.about_cafe_weekdays_open_close_txt) TextView about_cafe_weekdays_open_close_tv;
     @BindView(R.id.about_cafe_weekend_open_close_txt) TextView about_cafe_weekend_open_close_tv;
     @BindString(R.string.network_error_txt) String networkErrorStr;
     private ArrayList<String> cafePhotoList;
+
+    private boolean cafeLikeState = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +99,7 @@ public class AboutCafeActivity extends AppCompatActivity {
         }
 
         LoadCafeEtcInfo(cafeModel.getCafeId());    //Load Cafe Etc Info
+        SetLikeBtn(cafeLikeState);    //Set Cafe Like State
     }
 
     /**
@@ -144,11 +148,31 @@ public class AboutCafeActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Set Like Button
+     * @param likeState -> Like State
+     */
+    private void SetLikeBtn(boolean likeState){
+        if(likeState){
+            //Not Like State -> Like
+            cafeLikeState = true;
+            cafeLikeBtn.setBackgroundResource(R.mipmap.about_cafe_like_img);
+        }else{
+            //Like State -> Not Like
+            cafeLikeState = false;
+            cafeLikeBtn.setBackgroundResource(R.mipmap.about_cafe_not_like_img);
+        }
+    }
+
     @OnClick(R.id.back_btn) void goBack(){
         finish();
     }
     @OnClick(R.id.about_cafe_phone_txt) void goCall(){
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+cafeModel.getCafePhoneNum()));
         startActivity(intent);
+    }
+    @OnClick(R.id.cafe_like_btn) void cafeLike(){
+        cafeLikeState = !cafeLikeState;
+        SetLikeBtn(cafeLikeState);
     }
 }
