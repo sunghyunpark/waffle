@@ -20,11 +20,13 @@ import java.util.ArrayList;
 import api.ApiClient;
 import api.ApiInterface;
 import api.response.CafeFeatureResponse;
+import api.response.CommonResponse;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import model.CafeModel;
+import model.UserModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -98,21 +100,20 @@ public class AboutCafeActivity extends AppCompatActivity {
             parking_state_iv.setBackgroundResource(R.mipmap.about_cafe_not_parking_img);
         }
 
-        LoadCafeEtcInfo(cafeModel.getCafeId());    //Load Cafe Etc Info
-        SetLikeBtn(cafeLikeState);    //Set Cafe Like State
+        LoadCafeEtcInfo(UserModel.getInstance().getUid(), cafeModel.getCafeId());    //Load Cafe Etc Info
     }
 
     /**
      * Load Cafe Etc Info
      * @param cafe_id
      */
-    private void LoadCafeEtcInfo(String cafe_id){
+    private void LoadCafeEtcInfo(String uid, String cafe_id){
         cafePhotoList = new ArrayList<>();
 
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
 
-        Call<CafeFeatureResponse> call = apiService.GetCafeEtcInfo("cafe_etc_info", cafe_id);
+        Call<CafeFeatureResponse> call = apiService.GetCafeEtcInfo("cafe_etc_info", cafe_id, uid);
         call.enqueue(new Callback<CafeFeatureResponse>() {
             @Override
             public void onResponse(Call<CafeFeatureResponse> call, Response<CafeFeatureResponse> response) {
@@ -122,6 +123,7 @@ public class AboutCafeActivity extends AppCompatActivity {
                     for(int i=0;i<size;i++){
                         cafePhotoList.add(cafeFeatureResponse.getCafe_etc_photo_list().get(i));
                     }
+
                     //Glide Options
                     RequestOptions requestOptions = new RequestOptions();
                     requestOptions.placeholder(R.mipmap.not_cafe_img);
@@ -136,6 +138,10 @@ public class AboutCafeActivity extends AppCompatActivity {
                 }else{
 
                 }
+                //cafe like state init
+                cafeLikeState = cafeFeatureResponse.isLike_state();
+                SetLikeBtn(cafeLikeState);
+
                 Toast.makeText(getApplicationContext(), cafeFeatureResponse.getError_msg(),Toast.LENGTH_SHORT).show();
             }
 
@@ -164,6 +170,31 @@ public class AboutCafeActivity extends AppCompatActivity {
         }
     }
 
+    private void PostCafeLike(String uid, String cafe_id, String state){
+        ApiInterface apiService =
+                ApiClient.getClient().create(ApiInterface.class);
+
+        Call<CommonResponse> call = apiService.LikeCafe("like_cafe", uid, cafe_id, state);
+        call.enqueue(new Callback<CommonResponse>() {
+            @Override
+            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+                CommonResponse commonResponse = response.body();
+                if(!commonResponse.isError()){
+                    Toast.makeText(getApplicationContext(), commonResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), commonResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CommonResponse> call, Throwable t) {
+                // Log error here since request failed
+                Log.e("tag", t.toString());
+                Toast.makeText(getApplicationContext(), networkErrorStr,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     @OnClick(R.id.back_btn) void goBack(){
         finish();
     }
@@ -174,5 +205,8 @@ public class AboutCafeActivity extends AppCompatActivity {
     @OnClick(R.id.cafe_like_btn) void cafeLike(){
         cafeLikeState = !cafeLikeState;
         SetLikeBtn(cafeLikeState);
+        String state = cafeLikeState ? "N" : "Y";
+
+        PostCafeLike(UserModel.getInstance().getUid(), cafeModel.getCafeId(), state);
     }
 }

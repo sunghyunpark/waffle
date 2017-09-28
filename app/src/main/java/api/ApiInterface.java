@@ -2,6 +2,7 @@ package api;
 
 import api.response.CafeFeatureResponse;
 import api.response.CafeResponse;
+import api.response.CommonResponse;
 import api.response.LoginResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -60,5 +61,17 @@ public interface ApiInterface {
      * @return
      */
     @GET("cafe/cafe_info.php")
-    Call<CafeFeatureResponse> GetCafeEtcInfo(@Query("tag") String tag, @Query("cafe_id") String cafe_id);
+    Call<CafeFeatureResponse> GetCafeEtcInfo(@Query("tag") String tag, @Query("cafe_id") String cafe_id, @Query("uid") String uid);
+
+    /**
+     * Cafe Like
+     * @param tag -> like_cafe
+     * @param uid
+     * @param cafe_id
+     * @param state -> like state Y/N
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("cafe/cafe_info.php")
+    Call<CommonResponse> LikeCafe(@Field("tag") String tag, @Field("uid") String uid, @Field("cafe_id") String cafe_id, @Field("like_state") String state);
 }

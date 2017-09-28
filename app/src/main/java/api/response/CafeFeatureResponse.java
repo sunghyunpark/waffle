@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class CafeFeatureResponse {
 
     private ArrayList<String> cafe_etc_photo_list;
+    private boolean like_state;
     private boolean error;
     private String error_msg;
 
@@ -19,6 +20,14 @@ public class CafeFeatureResponse {
 
     public void setCafe_etc_photo_list(ArrayList<String> cafe_etc_photo_list) {
         this.cafe_etc_photo_list = cafe_etc_photo_list;
+    }
+
+    public boolean isLike_state() {
+        return like_state;
+    }
+
+    public void setLike_state(boolean like_state) {
+        this.like_state = like_state;
     }
 
     public boolean isError() {
