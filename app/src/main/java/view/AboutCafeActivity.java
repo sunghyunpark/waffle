@@ -136,13 +136,11 @@ public class AboutCafeActivity extends AppCompatActivity {
                             .into(cafe_img_iv);
 
                 }else{
-
+                    Toast.makeText(getApplicationContext(), cafeFeatureResponse.getError_msg(),Toast.LENGTH_SHORT).show();
                 }
                 //cafe like state init
                 cafeLikeState = cafeFeatureResponse.isLike_state();
                 SetLikeBtn(cafeLikeState);
-
-                Toast.makeText(getApplicationContext(), cafeFeatureResponse.getError_msg(),Toast.LENGTH_SHORT).show();
             }
 
             @Override
