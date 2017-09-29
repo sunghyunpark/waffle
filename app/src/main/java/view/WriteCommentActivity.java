@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -16,9 +18,16 @@ import com.bumptech.glide.request.RequestOptions;
 import com.yssh.waffle.AppConfig;
 import com.yssh.waffle.R;
 
+import api.ApiClient;
+import api.ApiInterface;
+import api.response.CommonResponse;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class WriteCommentActivity extends AppCompatActivity implements TextWatcher {
 
@@ -26,8 +35,13 @@ public class WriteCommentActivity extends AppCompatActivity implements TextWatch
     @BindView(R.id.user_profile_img) ImageView user_profile_iv;
     @BindView(R.id.comment_edit_box) EditText comment_et;
     @BindView(R.id.comment_length_txt) TextView comment_length_tv;
+    @BindView(R.id.write_btn) Button writeBtn;
+    @BindString(R.string.network_error_txt) String networkErrorStr;
+    @BindString(R.string.write_comment_activity_error_empty_comment_txt) String emptyCommentErrorStr;
+
     private String user_id, cafe_id;
     private String beforeStr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +71,44 @@ public class WriteCommentActivity extends AppCompatActivity implements TextWatch
         comment_et.addTextChangedListener(this);
     }
 
+    private void PostCafeComment(String cafe_id, String uid, String comment_text){
+        ApiInterface apiService =
+                ApiClient.getClient().create(ApiInterface.class);
+
+        Call<CommonResponse> call = apiService.WriteCafeComment("write_cafe_comment", uid, cafe_id, comment_text);
+        call.enqueue(new Callback<CommonResponse>() {
+            @Override
+            public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
+                CommonResponse commonResponse = response.body();
+                if(!commonResponse.isError()){
+                    Toast.makeText(getApplicationContext(), commonResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+                    finish();
+                }else{
+                    Toast.makeText(getApplicationContext(), commonResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CommonResponse> call, Throwable t) {
+                // Log error here since request failed
+                Log.e("tag", t.toString());
+                Toast.makeText(getApplicationContext(), networkErrorStr,Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     @OnClick(R.id.back_btn) void goBack(){
         finish();
+    }
+    @OnClick(R.id.write_btn) void commentWrite(){
+        String commentStr = comment_et.getText().toString();
+        commentStr = commentStr.trim();
+
+        if(commentStr.equals("")){
+            Toast.makeText(getApplicationContext(), emptyCommentErrorStr, Toast.LENGTH_SHORT).show();
+        }else{
+            PostCafeComment(cafe_id, user_id, commentStr);
+        }
     }
 
     @Override
