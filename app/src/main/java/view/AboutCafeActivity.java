@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,6 +49,7 @@ public class AboutCafeActivity extends AppCompatActivity {
     @BindView(R.id.cafe_like_btn) ImageButton cafeLikeBtn;
     @BindView(R.id.about_cafe_weekdays_open_close_txt) TextView about_cafe_weekdays_open_close_tv;
     @BindView(R.id.about_cafe_weekend_open_close_txt) TextView about_cafe_weekend_open_close_tv;
+    @BindView(R.id.comment_btn_layout) ViewGroup commentBtn;    //상단 리뷰쓰기 버튼
     @BindString(R.string.network_error_txt) String networkErrorStr;
     private ArrayList<String> cafePhotoList;
 
@@ -212,5 +214,11 @@ public class AboutCafeActivity extends AppCompatActivity {
         String state = cafeLikeState ? "N" : "Y";
 
         PostCafeLike(UserModel.getInstance().getUid(), cafeModel.getCafeId(), state);
+    }
+    @OnClick({R.id.comment_btn_layout, R.id.go_comment_btn}) void goComment(){
+        Intent intent = new Intent(getApplicationContext(), WriteCommentActivity.class);
+        intent.putExtra("user_id", UserModel.getInstance().getUid());
+        intent.putExtra("cafe_id", cafeModel.getCafeId());
+        startActivity(intent);
     }
 }

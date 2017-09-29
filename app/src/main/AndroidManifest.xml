@@ -23,7 +23,8 @@
         <activity android:name="view.EmailRegisterActivity" />
         <activity android:name="view.EmailLoginActivity" />
         <activity android:name="view.AboutCafeActivity" />
-        <activity android:name="view.ImageViewer"></activity>
+        <activity android:name="view.ImageViewer" />
+        <activity android:name="view.WriteCommentActivity"></activity>
     </application>
 
 </manifest>

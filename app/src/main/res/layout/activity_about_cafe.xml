@@ -193,6 +193,7 @@
                 android:orientation="horizontal">
 
                 <RelativeLayout
+                    android:id="@+id/comment_btn_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
