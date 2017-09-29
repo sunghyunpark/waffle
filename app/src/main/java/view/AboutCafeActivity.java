@@ -168,6 +168,12 @@ public class AboutCafeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Post Like State
+     * @param uid
+     * @param cafe_id
+     * @param state -> N/Y
+     */
     private void PostCafeLike(String uid, String cafe_id, String state){
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);

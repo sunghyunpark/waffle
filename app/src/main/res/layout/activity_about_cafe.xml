@@ -344,7 +344,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_centerVertical="true"
                     android:textSize="14dp"
-                    android:textColor="@color/color_HalfBlack"
+                    android:textColor="@color/colorGray"
                     android:textStyle="bold"
                     android:text="@string/about_cafe_open_txt"/>
 
@@ -371,7 +371,7 @@
                     android:layout_marginLeft="50dp"
                     android:layout_centerVertical="true"
                     android:textSize="14dp"
-                    android:textColor="@color/color_HalfBlack"
+                    android:textColor="@color/colorGray"
                     android:textStyle="bold"
                     android:text="@string/about_cafe_close_txt"/>
                 <TextView
@@ -415,7 +415,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_centerVertical="true"
                     android:textSize="14dp"
-                    android:textColor="@color/color_HalfBlack"
+                    android:textColor="@color/colorBlack"
                     android:textStyle="bold"
                     android:text="@string/about_cafe_main_desert_txt"/>
 
@@ -512,6 +512,67 @@
                     android:singleLine="true"
                     android:text="4,800원"
                     android:ellipsize="end"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/colorWhite"
+            android:minHeight="200dp"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:textColor="@color/colorBlack"
+                android:layout_marginLeft="50dp"
+                android:textStyle="bold"
+                android:layout_marginTop="15dp"
+                android:text="@string/about_cafe_review_title_txt"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/empty_comment_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minHeight="200dp">
+
+                    <TextView
+                        android:id="@+id/empty_comment_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/about_cafe_empty_comment_txt"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="50dp"
+                        android:textSize="15dp"
+                        android:textColor="@color/colorGray"/>
+
+                    <Button
+                        android:id="@+id/go_comment_btn"
+                        android:layout_width="100dp"
+                        android:layout_height="48dp"
+                        android:layout_below="@+id/empty_comment_txt"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/about_cafe_activity_comment_btn_shape"
+                        android:text="@string/comment_btn_txt"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/colorSky"
+                        android:textSize="15dp"/>
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"/>
+
             </RelativeLayout>
         </LinearLayout>
 
