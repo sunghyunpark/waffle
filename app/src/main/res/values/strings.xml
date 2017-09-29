@@ -69,6 +69,7 @@
 
     <!--write comment-->
     <string name="write_comment_activity_title_txt">리뷰 쓰기</string>
+    <string name="write_comment_activity_edit_box_hint_txt">리뷰를 작성해 주세요.(150자 이내)</string>
 
     <!--tab4-->
     <string name="tab4_my_favorite_cafe_title">내가 좋아요한 맛집</string>

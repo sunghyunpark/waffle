@@ -60,7 +60,6 @@ public class TabFragment5 extends Fragment {
 
         SetUI();
 
-
         return v;
     }
 
