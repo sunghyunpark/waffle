@@ -3,6 +3,10 @@
     package="com.yssh.waffle">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!--사진 로컬 권한-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
 
     <application
         android:name=".AppConfig"
