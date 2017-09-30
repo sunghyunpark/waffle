@@ -74,6 +74,13 @@ public class TabFragment5 extends Fragment {
                 .setDefaultRequestOptions(requestOptions)
                 .load(AppConfig.ServerAddress)
                 .into(user_profile_iv);
+        user_profile_iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), ImageCropActivity.class);
+                startActivity(intent);
+            }
+        });
 
         user_name_tv.setText(UserModel.getInstance().getNick_name());
         user_email_tv.setText(UserModel.getInstance().getEmail());

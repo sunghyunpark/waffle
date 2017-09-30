@@ -24,7 +24,9 @@
         <activity android:name="view.EmailLoginActivity" />
         <activity android:name="view.AboutCafeActivity" />
         <activity android:name="view.ImageViewer" />
-        <activity android:name="view.WriteCommentActivity"></activity>
+        <activity android:name="view.WriteCommentActivity" />
+        <activity android:name="view.ImageCropActivity"></activity>
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
     </application>
 
 </manifest>
