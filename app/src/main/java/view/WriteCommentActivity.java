@@ -25,6 +25,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import model.UserModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,7 +66,7 @@ public class WriteCommentActivity extends AppCompatActivity implements TextWatch
 
         Glide.with(getApplicationContext())
                 .setDefaultRequestOptions(requestOptions)
-                .load(AppConfig.ServerAddress)
+                .load(AppConfig.ServerAddress+ UserModel.getInstance().getProfile_img())
                 .into(user_profile_iv);
 
         comment_et.addTextChangedListener(this);

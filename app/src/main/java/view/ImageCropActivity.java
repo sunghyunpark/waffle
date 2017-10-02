@@ -58,6 +58,8 @@ public class ImageCropActivity extends AppCompatActivity {
             beginCrop(result.getData());
         } else if (requestCode == Crop.REQUEST_CROP) {
             handleCrop(resultCode, result);
+        }else{
+            finish();
         }
     }
 
@@ -84,6 +86,8 @@ public class ImageCropActivity extends AppCompatActivity {
             }
         } else if (resultCode == Crop.RESULT_ERROR) {
             Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
+        } else {
+            finish();
         }
     }
 
@@ -91,7 +95,9 @@ public class ImageCropActivity extends AppCompatActivity {
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
         final File file = new File(imgPath);
-        final File file2 = new File(Environment.getExternalStorageDirectory()+"/WAFFLE/"+"resize_before.png");
+        String temp = (imgPath.equals(Environment.getExternalStorageDirectory()+"/WAFFLE/"+"resize_before.png")) ? Environment.getExternalStorageDirectory()+"/WAFFLE/"+"resize_after.png"
+                : Environment.getExternalStorageDirectory()+"/WAFFLE/"+"resize_before.png";
+        final File file2 = new File(temp);
 
         final RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         RequestBody Tag_body = RequestBody.create(MediaType.parse("multipart/form-data"), tag);

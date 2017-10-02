@@ -1,6 +1,6 @@
 package api;
 
-import api.response.CafeFeatureResponse;
+import api.response.CafeEtcInfoResponse;
 import api.response.CafeResponse;
 import api.response.CommonResponse;
 import api.response.LoginResponse;
@@ -62,10 +62,11 @@ public interface ApiInterface {
      * About Cafe Etc Info 불러오기
      * @param tag -> cafe_etc_info
      * @param cafe_id
+     * @param all_flag -> Y/N
      * @return
      */
     @GET("cafe/cafe_info.php")
-    Call<CafeFeatureResponse> GetCafeEtcInfo(@Query("tag") String tag, @Query("cafe_id") String cafe_id, @Query("uid") String uid);
+    Call<CafeEtcInfoResponse> GetCafeEtcInfo(@Query("tag") String tag, @Query("cafe_id") String cafe_id, @Query("uid") String uid, @Query("all_flag") String all_flag);
 
     /**
      * Cafe Like

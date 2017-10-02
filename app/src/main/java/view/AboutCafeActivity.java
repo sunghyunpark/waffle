@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -16,21 +20,27 @@ import com.bumptech.glide.request.RequestOptions;
 import com.yssh.waffle.AppConfig;
 import com.yssh.waffle.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import api.ApiClient;
 import api.ApiInterface;
-import api.response.CafeFeatureResponse;
+import api.response.CafeEtcInfoResponse;
 import api.response.CommonResponse;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import model.CafeModel;
+import model.CommentModel;
 import model.UserModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import util.CommonUtil;
 
 public class AboutCafeActivity extends AppCompatActivity {
 
@@ -50,11 +60,23 @@ public class AboutCafeActivity extends AppCompatActivity {
     @BindView(R.id.about_cafe_weekdays_open_close_txt) TextView about_cafe_weekdays_open_close_tv;
     @BindView(R.id.about_cafe_weekend_open_close_txt) TextView about_cafe_weekend_open_close_tv;
     @BindView(R.id.comment_btn_layout) ViewGroup commentBtn;    //상단 리뷰쓰기 버튼
+    @BindView(R.id.empty_comment_layout) ViewGroup emptyCommentLayout;
     @BindString(R.string.network_error_txt) String networkErrorStr;
     private ArrayList<String> cafePhotoList;
+    //리사이클러뷰
+    RecyclerAdapter adapter;
+    RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private ArrayList<CommentModel> commentModelArrayList;
+    CommonUtil commonUtil = new CommonUtil();
 
     private boolean cafeLikeState = false;
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        SetUI();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +88,6 @@ public class AboutCafeActivity extends AppCompatActivity {
         cafeModel = new CafeModel();
         cafeModel = (CafeModel)intent.getExtras().getSerializable("CafeModel");
 
-        SetUI();
     }
 
     /**
@@ -80,6 +101,14 @@ public class AboutCafeActivity extends AppCompatActivity {
         about_cafe_phone_tv.setText(cafeModel.getCafePhoneNum());
         about_cafe_weekdays_open_close_tv.setText(cafeModel.getCafeWeekDaysOpenTime() + " ~ " + cafeModel.getCafeWeekDaysCloseTime());
         about_cafe_weekend_open_close_tv.setText(cafeModel.getCafeWeekendOpenTime() + " ~ " + cafeModel.getCafeWeekendCloseTime());
+
+        //recyclerview 초기화
+        commentModelArrayList = new ArrayList<CommentModel>();
+        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        adapter = new RecyclerAdapter(commentModelArrayList);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
 
         if(cafeModel.getCafeFullTimeState().equals("Y")){
             full_time_state_iv.setBackgroundResource(R.mipmap.about_cafe_full_time_img);
@@ -115,16 +144,33 @@ public class AboutCafeActivity extends AppCompatActivity {
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
 
-        Call<CafeFeatureResponse> call = apiService.GetCafeEtcInfo("cafe_etc_info", cafe_id, uid);
-        call.enqueue(new Callback<CafeFeatureResponse>() {
+        Call<CafeEtcInfoResponse> call = apiService.GetCafeEtcInfo("cafe_etc_info", cafe_id, uid, "N");
+        call.enqueue(new Callback<CafeEtcInfoResponse>() {
             @Override
-            public void onResponse(Call<CafeFeatureResponse> call, Response<CafeFeatureResponse> response) {
-                CafeFeatureResponse cafeFeatureResponse = response.body();
-                if(!cafeFeatureResponse.isError()){
-                    int size = cafeFeatureResponse.getCafe_etc_photo_list().size();
-                    for(int i=0;i<size;i++){
-                        cafePhotoList.add(cafeFeatureResponse.getCafe_etc_photo_list().get(i));
+            public void onResponse(Call<CafeEtcInfoResponse> call, Response<CafeEtcInfoResponse> response) {
+                CafeEtcInfoResponse cafeEtcInfoResponse = response.body();
+                if(!cafeEtcInfoResponse.isError()){
+                    int photo_size = cafeEtcInfoResponse.getCafe_etc_photo_list().size();
+                    for(int i=0;i<photo_size;i++){
+                        cafePhotoList.add(cafeEtcInfoResponse.getCafe_etc_photo_list().get(i));
                     }
+                    try{
+                        int comment_size = cafeEtcInfoResponse.getComment_text_list().size();
+                        if(comment_size > 0){
+                            recyclerView.setVisibility(View.VISIBLE);
+                            emptyCommentLayout.setVisibility(View.GONE);
+                            for(int i=0;i<comment_size;i++){
+                                commentModelArrayList.add(cafeEtcInfoResponse.getComment_text_list().get(i));
+                            }
+                            recyclerView.setAdapter(adapter);
+                        }else{
+                            recyclerView.setVisibility(View.GONE);
+                            emptyCommentLayout.setVisibility(View.VISIBLE);
+                        }
+                    }catch (NullPointerException e){
+                        e.printStackTrace();
+                    }
+
 
                     //Glide Options
                     RequestOptions requestOptions = new RequestOptions();
@@ -138,15 +184,15 @@ public class AboutCafeActivity extends AppCompatActivity {
                             .into(cafe_img_iv);
 
                 }else{
-                    Toast.makeText(getApplicationContext(), cafeFeatureResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), cafeEtcInfoResponse.getError_msg(),Toast.LENGTH_SHORT).show();
                 }
                 //cafe like state init
-                cafeLikeState = cafeFeatureResponse.isLike_state();
+                cafeLikeState = cafeEtcInfoResponse.isLike_state();
                 SetLikeBtn(cafeLikeState);
             }
 
             @Override
-            public void onFailure(Call<CafeFeatureResponse> call, Throwable t) {
+            public void onFailure(Call<CafeEtcInfoResponse> call, Throwable t) {
                 // Log error here since request failed
                 Log.e("tag", t.toString());
                 Toast.makeText(getApplicationContext(), networkErrorStr,Toast.LENGTH_SHORT).show();
@@ -199,6 +245,91 @@ public class AboutCafeActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), networkErrorStr,Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        private static final int TYPE_ITEM = 0;
+
+        List<CommentModel> listItems;
+
+        private RecyclerAdapter(List<CommentModel> listItems) {
+            this.listItems = listItems;
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if (viewType == TYPE_ITEM) {
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_comment_item, parent, false);
+                return new Comment_VH(v);
+            }
+            throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
+        }
+
+        private CommentModel getItem(int position) {
+            return listItems.get(position);
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+
+            if (holder instanceof Comment_VH) {
+                final CommentModel currentItem = getItem(position);
+                final Comment_VH VHitem = (Comment_VH)holder;
+
+                //Glide Options
+                RequestOptions requestOptions = new RequestOptions();
+                requestOptions.placeholder(R.mipmap.user_profile_img);
+                requestOptions.error(R.mipmap.user_profile_img);
+                requestOptions.circleCrop();    //circle
+
+                Glide.with(getApplicationContext())
+                        .setDefaultRequestOptions(requestOptions)
+                        .load(AppConfig.ServerAddress+currentItem.getProfile_img_thumb())
+                        .into(VHitem.userProfile_iv);
+
+                VHitem.userName_tv.setText(currentItem.getNick_name());
+                VHitem.comment_tv.setText(currentItem.getComment_text());
+                Date to = null;
+                try{
+                    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    to = transFormat.parse(currentItem.getCreated_at());
+                }catch (ParseException p){
+                    p.printStackTrace();
+                }
+                VHitem.updated_tv.setText(commonUtil.formatTimeString(to));
+
+            }
+        }
+
+        /**
+         * 리뷰 아이템
+         */
+        private class Comment_VH extends RecyclerView.ViewHolder{
+
+            ImageView userProfile_iv;
+            TextView userName_tv;
+            TextView updated_tv;
+            TextView comment_tv;
+
+            private Comment_VH(View itemView){
+                super(itemView);
+                userProfile_iv = (ImageView)itemView.findViewById(R.id.user_profile_img);
+                userName_tv = (TextView)itemView.findViewById(R.id.user_name_txt);
+                updated_tv = (TextView)itemView.findViewById(R.id.updated_at_txt);
+                comment_tv = (TextView)itemView.findViewById(R.id.comment_txt);
+            }
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return TYPE_ITEM;
+        }
+        //increasing getItemcount to 1. This will be the row of header.
+        @Override
+        public int getItemCount() {
+            return listItems.size();
+        }
     }
 
     @OnClick(R.id.back_btn) void goBack(){

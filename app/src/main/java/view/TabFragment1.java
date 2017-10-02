@@ -96,25 +96,9 @@ public class TabFragment1 extends Fragment {
             public void onResponse(Call<CafeResponse> call, Response<CafeResponse> response) {
                 CafeResponse cafeResponse = response.body();
                 if(!cafeResponse.isError()){
-                    CafeModel cafeModel;
                     int listSize = cafeResponse.getCafeList().size();
                     for (int i=0;i<listSize;i++){
-                        cafeModel = new CafeModel();
-                        cafeModel.setCafeId(cafeResponse.getCafeList().get(i).getCafeId());
-                        cafeModel.setCafeName(cafeResponse.getCafeList().get(i).getCafeName());
-                        cafeModel.setCafeThumbnail(cafeResponse.getCafeList().get(i).getCafeThumbnail());
-                        cafeModel.setCafeWeekDaysOpenTime(cafeResponse.getCafeList().get(i).getCafeWeekDaysOpenTime());
-                        cafeModel.setCafeWeekDaysCloseTime(cafeResponse.getCafeList().get(i).getCafeWeekDaysCloseTime());
-                        cafeModel.setCafeWeekendOpenTime(cafeResponse.getCafeList().get(i).getCafeWeekendOpenTime());
-                        cafeModel.setCafeWeekendCloseTime(cafeResponse.getCafeList().get(i).getCafeWeekendCloseTime());
-                        cafeModel.setCafeAddress(cafeResponse.getCafeList().get(i).getCafeAddress());
-                        cafeModel.setCafePhoneNum(cafeResponse.getCafeList().get(i).getCafePhoneNum());
-                        cafeModel.setCafeFullTimeState(cafeResponse.getCafeList().get(i).getCafeFullTimeState());
-                        cafeModel.setCafeWifiState(cafeResponse.getCafeList().get(i).getCafeWifiState());
-                        cafeModel.setCafeSmokeState(cafeResponse.getCafeList().get(i).getCafeSmokeState());
-                        cafeModel.setCafeParkingState(cafeResponse.getCafeList().get(i).getCafeParkingState());
-                        cafeModel.setCafeIntro(cafeResponse.getCafeList().get(i).getCafeIntro());
-                        listItems.add(cafeModel);
+                        listItems.add(cafeResponse.getCafeList().get(i));
                     }
                     recyclerView.setAdapter(adapter);
                 }else{
