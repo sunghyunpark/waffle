@@ -4,11 +4,15 @@ import api.response.CafeFeatureResponse;
 import api.response.CafeResponse;
 import api.response.CommonResponse;
 import api.response.LoginResponse;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -86,4 +90,9 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("cafe/cafe_info.php")
     Call<CommonResponse> WriteCafeComment(@Field("tag") String tag, @Field("uid") String uid, @Field("cafe_id") String cafe_id, @Field("comment_text") String comment_text);
+
+    @Multipart
+    @POST("upload/upload_img.php")
+    Call<CommonResponse> UploadUserProfile(@Part("tag") RequestBody tag, @Part("uid") RequestBody uid,
+                                           @Part("login_method") RequestBody loginMethod, @Part MultipartBody.Part file);
 }

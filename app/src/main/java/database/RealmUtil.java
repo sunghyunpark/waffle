@@ -4,6 +4,7 @@ import android.content.Context;
 
 import database.model.UserVO;
 import io.realm.Realm;
+import model.UserModel;
 
 /**
  * Created by SungHyun on 2017-09-15.
@@ -43,6 +44,44 @@ public class RealmUtil {
 
         mRealm.copyToRealmOrUpdate(userVO);
         mRealm.commitTransaction();
+    }
+
+    public void UpdateUserProfile(Context context, String uid, String profile, String profileThumb){
+        Realm mRealm;
+        RealmConfig realmConfig;
+        realmConfig = new RealmConfig();
+
+        mRealm = Realm.getInstance(realmConfig.UserRealmVersion(context));
+        UserVO userVO = mRealm.where(UserVO.class).equalTo("no",1).findFirst();
+        try{
+            mRealm.beginTransaction();
+            userVO.setProfile_img(profile);
+            userVO.setProfile_img_thumb(profileThumb);
+        }catch (Exception e){
+
+        }finally {
+            mRealm.commitTransaction();
+            RefreshUserInfo(context, uid);
+        }
+    }
+
+    public void RefreshUserInfo(Context context, String uid){
+        Realm mRealm;
+        RealmConfig realmConfig;
+        realmConfig = new RealmConfig();
+        mRealm = Realm.getInstance(realmConfig.UserRealmVersion(context));
+
+        UserVO userVO = mRealm.where(UserVO.class).equalTo("uid",uid).findFirst();
+
+        UserModel.getInstance().setUid(userVO.getUid());
+        UserModel.getInstance().setEmail(userVO.getEmail());
+        UserModel.getInstance().setNick_name(userVO.getNick_name());
+        UserModel.getInstance().setFb_id(userVO.getFb_id());
+        UserModel.getInstance().setProfile_img(userVO.getProfile_img());
+        UserModel.getInstance().setProfile_img_thumb(userVO.getProfile_img_thumb());
+        UserModel.getInstance().setIntro(userVO.getIntro());
+        UserModel.getInstance().setCreated_at(userVO.getCreated_at());
+
     }
 
 

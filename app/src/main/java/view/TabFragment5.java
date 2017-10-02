@@ -53,12 +53,17 @@ public class TabFragment5 extends Fragment {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+
+        SetUI();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_tab_fragment5, container, false);
         ButterKnife.bind(this, v);
-
-        SetUI();
 
         return v;
     }
@@ -72,7 +77,7 @@ public class TabFragment5 extends Fragment {
 
         Glide.with(getActivity())
                 .setDefaultRequestOptions(requestOptions)
-                .load(AppConfig.ServerAddress)
+                .load(AppConfig.ServerAddress+UserModel.getInstance().getProfile_img())
                 .into(user_profile_iv);
         user_profile_iv.setOnClickListener(new View.OnClickListener() {
             @Override
