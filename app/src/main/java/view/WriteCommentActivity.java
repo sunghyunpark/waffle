@@ -1,13 +1,11 @@
 package view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -44,7 +42,6 @@ public class WriteCommentActivity extends AppCompatActivity implements TextWatch
 
     private String user_id, cafe_id;
     private String beforeStr;
-    private InputMethodManager imm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +58,6 @@ public class WriteCommentActivity extends AppCompatActivity implements TextWatch
     }
 
     private void SetUI(){
-        //keyboard init
-        imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,InputMethodManager.HIDE_IMPLICIT_ONLY);
-
         //Glide Options
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.mipmap.user_profile_img);
@@ -90,6 +83,7 @@ public class WriteCommentActivity extends AppCompatActivity implements TextWatch
                 CommonResponse commonResponse = response.body();
                 if(!commonResponse.isError()){
                     Toast.makeText(getApplicationContext(), commonResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+
                     finish();
                 }else{
                     Toast.makeText(getApplicationContext(), commonResponse.getError_msg(),Toast.LENGTH_SHORT).show();

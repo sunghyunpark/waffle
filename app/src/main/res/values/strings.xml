@@ -66,6 +66,9 @@
     <string name="about_cafe_go_menu_btn">전체 보기</string>
     <string name="about_cafe_empty_comment_txt">등록된 리뷰가 없습니다.</string>
     <string name="about_cafe_review_title_txt">WAFFLE 리뷰</string>
+    <string name="about_cafe_go_comment_btn">전체 보기</string>
+
+    <!--about cafe comment-->
 
 
     <!--write comment-->

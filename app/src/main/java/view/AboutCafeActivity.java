@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,12 +62,12 @@ public class AboutCafeActivity extends AppCompatActivity {
     @BindView(R.id.about_cafe_weekend_open_close_txt) TextView about_cafe_weekend_open_close_tv;
     @BindView(R.id.comment_btn_layout) ViewGroup commentBtn;    //상단 리뷰쓰기 버튼
     @BindView(R.id.empty_comment_layout) ViewGroup emptyCommentLayout;
+    @BindView(R.id.go_all_comment_btn) Button goAllCommentBtn;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindString(R.string.network_error_txt) String networkErrorStr;
     private ArrayList<String> cafePhotoList;
-    //리사이클러뷰
+    //RecyclerView
     RecyclerAdapter adapter;
-    RecyclerView recyclerView;
-    private LinearLayoutManager linearLayoutManager;
     private ArrayList<CommentModel> commentModelArrayList;
     CommonUtil commonUtil = new CommonUtil();
 
@@ -104,8 +105,7 @@ public class AboutCafeActivity extends AppCompatActivity {
 
         //recyclerview 초기화
         commentModelArrayList = new ArrayList<CommentModel>();
-        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-        linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         adapter = new RecyclerAdapter(commentModelArrayList);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setNestedScrollingEnabled(false);
@@ -350,6 +350,12 @@ public class AboutCafeActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), WriteCommentActivity.class);
         intent.putExtra("user_id", UserModel.getInstance().getUid());
         intent.putExtra("cafe_id", cafeModel.getCafeId());
+        startActivity(intent);
+    }
+    @OnClick(R.id.go_all_comment_btn) void goAllComment(){
+        Intent intent = new Intent(getApplicationContext(), AboutCafeCommentActivity.class);
+        intent.putExtra("cafe_id", cafeModel.getCafeId());
+        intent.putExtra("cafe_name", cafeModel.getCafeName());
         startActivity(intent);
     }
 }
