@@ -211,7 +211,6 @@ public class AboutCafeCommentActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.go_comment_btn) void goComment(){
-        Toast.makeText(getApplicationContext(), "gi", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getApplicationContext(), WriteCommentActivity.class);
         intent.putExtra("user_id", UserModel.getInstance().getUid());
         intent.putExtra("cafe_id", cafeId);

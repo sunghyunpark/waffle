@@ -150,9 +150,26 @@ public class AboutCafeActivity extends AppCompatActivity {
             public void onResponse(Call<CafeEtcInfoResponse> call, Response<CafeEtcInfoResponse> response) {
                 CafeEtcInfoResponse cafeEtcInfoResponse = response.body();
                 if(!cafeEtcInfoResponse.isError()){
-                    int photo_size = cafeEtcInfoResponse.getCafe_etc_photo_list().size();
-                    for(int i=0;i<photo_size;i++){
-                        cafePhotoList.add(cafeEtcInfoResponse.getCafe_etc_photo_list().get(i));
+                    String cafePhoto = "";
+                    try {
+                        int photo_size = cafeEtcInfoResponse.getCafe_etc_photo_list().size();
+                        for(int i=0;i<photo_size;i++){
+                            cafePhotoList.add(cafeEtcInfoResponse.getCafe_etc_photo_list().get(i));
+                        }
+                        cafePhoto = AppConfig.ServerAddress+cafeEtcInfoResponse.getCafe_etc_photo_list().get(0);
+                    }catch (NullPointerException e){
+                        e.printStackTrace();
+                    }catch (IndexOutOfBoundsException i){
+                        cafePhoto = null;
+                    } finally {
+                        //Glide Options
+                        RequestOptions requestOptions = new RequestOptions();
+                        requestOptions.centerCrop();
+
+                        Glide.with(getApplicationContext())
+                                .setDefaultRequestOptions(requestOptions)
+                                .load(cafePhoto)
+                                .into(cafe_img_iv);
                     }
                     try{
                         int comment_size = cafeEtcInfoResponse.getComment_text_list().size();
@@ -170,18 +187,6 @@ public class AboutCafeActivity extends AppCompatActivity {
                     }catch (NullPointerException e){
                         e.printStackTrace();
                     }
-
-
-                    //Glide Options
-                    RequestOptions requestOptions = new RequestOptions();
-                    requestOptions.placeholder(R.mipmap.not_cafe_img);
-                    requestOptions.error(R.mipmap.not_cafe_img);
-                    requestOptions.centerCrop();
-
-                    Glide.with(getApplicationContext())
-                            .setDefaultRequestOptions(requestOptions)
-                            .load(AppConfig.ServerAddress+cafePhotoList.get(0))
-                            .into(cafe_img_iv);
 
                 }else{
                     Toast.makeText(getApplicationContext(), cafeEtcInfoResponse.getError_msg(),Toast.LENGTH_SHORT).show();
