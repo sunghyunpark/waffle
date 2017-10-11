@@ -4,6 +4,7 @@ import api.response.CafeEtcInfoResponse;
 import api.response.CafeResponse;
 import api.response.CommonResponse;
 import api.response.LoginResponse;
+import api.response.MyCommentResponse;
 import api.response.MyFavoriteCntResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -131,5 +132,5 @@ public interface ApiInterface {
      * @return
      */
     @GET("cafe/my_favorite.php")
-    Call<CafeResponse> GetMyCommentCafeList(@Query("tag") String tag, @Query("uid") String uid);
+    Call<MyCommentResponse> GetMyCommentCafeList(@Query("tag") String tag, @Query("uid") String uid);
 }
