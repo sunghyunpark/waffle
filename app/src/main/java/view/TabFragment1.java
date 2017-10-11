@@ -104,7 +104,7 @@ public class TabFragment1 extends Fragment {
                 }else{
 
                 }
-                Toast.makeText(getActivity(), cafeResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), cafeResponse.getError_msg(),Toast.LENGTH_SHORT).show();
             }
 
             @Override

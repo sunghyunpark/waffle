@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +46,7 @@ public class AboutCafeCommentActivity extends AppCompatActivity {
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.empty_comment_layout) ViewGroup emptyCommentLayout;
     @BindView(R.id.go_comment_btn) Button goCommentBtn;
+    @BindView(R.id.back_btn) ImageButton backBtn;
     @BindString(R.string.network_error_txt) String networkErrorStr;
 
     private String cafeId, cafeName;
@@ -184,12 +186,10 @@ public class AboutCafeCommentActivity extends AppCompatActivity {
          * 리뷰 아이템
          */
         private class Comment_VH extends RecyclerView.ViewHolder{
-
             ImageView userProfile_iv;
             TextView userName_tv;
             TextView updated_tv;
             TextView comment_tv;
-
             private Comment_VH(View itemView){
                 super(itemView);
                 userProfile_iv = (ImageView)itemView.findViewById(R.id.user_profile_img);
@@ -208,6 +208,10 @@ public class AboutCafeCommentActivity extends AppCompatActivity {
         public int getItemCount() {
             return listItems.size();
         }
+    }
+
+    @OnClick(R.id.back_btn) void goBack(){
+        finish();
     }
 
     @OnClick(R.id.go_comment_btn) void goComment(){

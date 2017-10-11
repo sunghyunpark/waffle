@@ -4,6 +4,7 @@ import api.response.CafeEtcInfoResponse;
 import api.response.CafeResponse;
 import api.response.CommonResponse;
 import api.response.LoginResponse;
+import api.response.MyFavoriteCntResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -92,8 +93,25 @@ public interface ApiInterface {
     @POST("cafe/cafe_info.php")
     Call<CommonResponse> WriteCafeComment(@Field("tag") String tag, @Field("uid") String uid, @Field("cafe_id") String cafe_id, @Field("comment_text") String comment_text);
 
+    /**
+     * User Profile Image Upload
+     * @param tag -> profile
+     * @param uid
+     * @param loginMethod -> email /
+     * @param file
+     * @return
+     */
     @Multipart
     @POST("upload/upload_img.php")
     Call<CommonResponse> UploadUserProfile(@Part("tag") RequestBody tag, @Part("uid") RequestBody uid,
                                            @Part("login_method") RequestBody loginMethod, @Part MultipartBody.Part file);
+
+    /**
+     *
+     * @param tag -> my_favorite_cafe_cnt
+     * @param uid
+     * @return
+     */
+    @GET("cafe/my_favorite.php")
+    Call<MyFavoriteCntResponse> GetMyFavoriteCnt(@Query("tag") String tag, @Query("uid") String uid);
 }

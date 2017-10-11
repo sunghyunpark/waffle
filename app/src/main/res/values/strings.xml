@@ -78,7 +78,7 @@
 
     <!--tab4-->
     <string name="tab4_my_favorite_cafe_title">내가 좋아요한 맛집</string>
-    <string name="tab4_my_comment_cafe_title">내가 평가한 맛집</string>
+    <string name="tab4_my_comment_cafe_title">내가 평가한 리뷰</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
