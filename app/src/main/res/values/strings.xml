@@ -68,8 +68,12 @@
     <string name="about_cafe_review_title_txt">WAFFLE 리뷰</string>
     <string name="about_cafe_go_comment_btn">전체 보기</string>
 
-    <!--about cafe comment-->
-
+    <!--my favorite cafe-->
+    <string name="my_favorite_cafe_activity_title_txt">내가 좋아요한 맛집</string>
+    <string name="my_favorite_cafe_activity_empty_txt">좋아요한 맛집이 없습니다.</string>
+    <!--my comment cafe-->
+    <string name="my_comment_cafe_activity_title_txt">내가 평가한 리뷰</string>
+    <string name="my_comment_cafe_activity_empty_txt">평가한 리뷰가 없습니다.</string>
 
     <!--write comment-->
     <string name="write_comment_activity_title_txt">리뷰 쓰기</string>

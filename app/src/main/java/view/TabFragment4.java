@@ -1,5 +1,6 @@
 package view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,6 +21,7 @@ import api.response.MyFavoriteCntResponse;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import model.UserModel;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,6 +48,12 @@ public class TabFragment4 extends Fragment {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        LoadData(UserModel.getInstance().getUid());
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.fragment_tab_fragment4, container, false);
@@ -68,8 +76,6 @@ public class TabFragment4 extends Fragment {
                 .setDefaultRequestOptions(requestOptions)
                 .load(R.drawable.comment_cafe_img)
                 .into(my_comment_cafe_iv);
-
-        LoadData(UserModel.getInstance().getUid());
 
         return v;
     }
@@ -99,6 +105,15 @@ public class TabFragment4 extends Fragment {
                 Toast.makeText(getActivity(), networkErrorStr,Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @OnClick(R.id.my_favorite_cafe_img) void goFavoriteCafe(){
+        Intent intent = new Intent(getActivity(), MyFavoriteCafeActivity.class);
+        startActivity(intent);
+    }
+    @OnClick(R.id.my_comment_cafe_img) void goCommentCafe(){
+        Intent intent = new Intent(getActivity(), MyCommentCafeActivity.class);
+        startActivity(intent);
     }
 
 }

@@ -30,7 +30,9 @@
         <activity android:name="view.WriteCommentActivity" />
         <activity android:name="view.ImageCropActivity" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
-        <activity android:name="view.AboutCafeCommentActivity"></activity>
+        <activity android:name="view.AboutCafeCommentActivity" />
+        <activity android:name="view.MyFavoriteCafeActivity" />
+        <activity android:name="view.MyCommentCafeActivity"></activity>
     </application>
 
 </manifest>

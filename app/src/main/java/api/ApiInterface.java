@@ -107,11 +107,29 @@ public interface ApiInterface {
                                            @Part("login_method") RequestBody loginMethod, @Part MultipartBody.Part file);
 
     /**
-     *
+     * Tab4 Like / Comment Count
      * @param tag -> my_favorite_cafe_cnt
      * @param uid
      * @return
      */
     @GET("cafe/my_favorite.php")
     Call<MyFavoriteCntResponse> GetMyFavoriteCnt(@Query("tag") String tag, @Query("uid") String uid);
+
+    /**
+     * My Favorite Cafe List
+     * @param tag -> my_favorite_cafe
+     * @param uid
+     * @return
+     */
+    @GET("cafe/my_favorite.php")
+    Call<CafeResponse> GetMyFavoriteCafeList(@Query("tag") String tag, @Query("uid") String uid);
+
+    /**
+     * My Comment Cafe List
+     * @param tag -> my_comment_cafe
+     * @param uid
+     * @return
+     */
+    @GET("cafe/my_favorite.php")
+    Call<CafeResponse> GetMyCommentCafeList(@Query("tag") String tag, @Query("uid") String uid);
 }
