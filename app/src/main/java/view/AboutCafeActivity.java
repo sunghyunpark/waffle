@@ -62,6 +62,8 @@ public class AboutCafeActivity extends AppCompatActivity {
     @BindView(R.id.about_cafe_weekend_open_close_txt) TextView about_cafe_weekend_open_close_tv;
     @BindView(R.id.comment_btn_layout) ViewGroup commentBtn;    //상단 리뷰쓰기 버튼
     @BindView(R.id.empty_comment_layout) ViewGroup emptyCommentLayout;
+    @BindView(R.id.about_cafe_intro_layout) ViewGroup cafeIntroLayout;
+    @BindView(R.id.about_cafe_intro_txt) TextView about_cafe_intro_tv;
     @BindView(R.id.go_all_comment_btn) Button goAllCommentBtn;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindString(R.string.network_error_txt) String networkErrorStr;
@@ -102,6 +104,13 @@ public class AboutCafeActivity extends AppCompatActivity {
         about_cafe_phone_tv.setText(cafeModel.getCafePhoneNum());
         about_cafe_weekdays_open_close_tv.setText(cafeModel.getCafeWeekDaysOpenTime() + " ~ " + cafeModel.getCafeWeekDaysCloseTime());
         about_cafe_weekend_open_close_tv.setText(cafeModel.getCafeWeekendOpenTime() + " ~ " + cafeModel.getCafeWeekendCloseTime());
+
+        if(cafeModel.getCafeIntro().equals("")){
+            cafeIntroLayout.setVisibility(View.GONE);
+        }else{
+            cafeIntroLayout.setVisibility(View.VISIBLE);
+            about_cafe_intro_tv.setText(cafeModel.getCafeIntro());
+        }
 
         //recyclerview 초기화
         commentModelArrayList = new ArrayList<CommentModel>();
