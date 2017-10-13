@@ -37,6 +37,8 @@ public class CafeModel implements Serializable{
     private String cafeWeekendOpenTime;
     @SerializedName("cafe_weekend_close_time")
     private String cafeWeekendCloseTime;
+    @SerializedName("cafe_day_off")
+    private String cafeDayOff;
     @SerializedName("cafe_latitude")
     private String cafeLatitude;
     @SerializedName("cafe_longitude")
@@ -110,6 +112,14 @@ public class CafeModel implements Serializable{
 
     public void setCafeWeekendCloseTime(String cafeWeekendCloseTime) {
         this.cafeWeekendCloseTime = cafeWeekendCloseTime;
+    }
+
+    public String getCafeDayOff() {
+        return cafeDayOff;
+    }
+
+    public void setCafeDayOff(String cafeDayOff) {
+        this.cafeDayOff = cafeDayOff;
     }
 
     public String getCafeLatitude() {

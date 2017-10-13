@@ -199,6 +199,14 @@ public class AboutCafeActivity extends AppCompatActivity {
 
                 }else{
                     Toast.makeText(getApplicationContext(), cafeEtcInfoResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+                    //Glide Options
+                    RequestOptions requestOptions = new RequestOptions();
+                    requestOptions.centerCrop();
+
+                    Glide.with(getApplicationContext())
+                            .setDefaultRequestOptions(requestOptions)
+                            .load(AppConfig.ServerAddress+cafeModel.getCafeThumbnail())
+                            .into(cafe_img_iv);
                 }
                 //cafe like state init
                 cafeLikeState = cafeEtcInfoResponse.isLike_state();
