@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,21 +31,23 @@ import api.ApiClient;
 import api.ApiInterface;
 import api.response.CafeResponse;
 import butterknife.BindString;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import model.CafeModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TabFragment1 extends Fragment {
+public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
     View v;
     //리사이클러뷰
     RecyclerAdapter adapter;
-    RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private ArrayList<CafeModel> listItems;
 
+    @BindView(R.id.swipe_layout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindString(R.string.cafe_info_weekdays_time_txt) String cafeInfoWeekdaysTimeStr;
     @BindString(R.string.cafe_info_weekend_time_txt) String cafeInfoWeekendTimeStr;
     @BindString(R.string.cafe_open_state_txt) String cafeOpenStateStr;
@@ -53,6 +56,13 @@ public class TabFragment1 extends Fragment {
 
     public TabFragment1() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onRefresh() {
+        //새로고침시 이벤트 구현
+        LoadCafeList();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -74,6 +84,8 @@ public class TabFragment1 extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getContext());
         adapter = new RecyclerAdapter(listItems);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         /* recyclerview 구분선
         DividerItemDecoration dividerItemDecoration =

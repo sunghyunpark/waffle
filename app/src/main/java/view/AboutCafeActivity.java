@@ -58,6 +58,7 @@ public class AboutCafeActivity extends AppCompatActivity {
     @BindView(R.id.about_cafe_address_txt) TextView about_cafe_address_tv;
     @BindView(R.id.about_cafe_phone_txt) TextView about_cafe_phone_tv;
     @BindView(R.id.cafe_day_off_txt) TextView about_cafe_day_off_tv;
+    @BindView(R.id.cafe_day_off_layout) ViewGroup about_cafe_day_off_layout;
     @BindView(R.id.cafe_like_btn) ImageButton cafeLikeBtn;
     @BindView(R.id.about_cafe_weekdays_open_close_txt) TextView about_cafe_weekdays_open_close_tv;
     @BindView(R.id.about_cafe_weekend_open_close_txt) TextView about_cafe_weekend_open_close_tv;
@@ -107,9 +108,9 @@ public class AboutCafeActivity extends AppCompatActivity {
         about_cafe_weekend_open_close_tv.setText(cafeModel.getCafeWeekendOpenTime() + " ~ " + cafeModel.getCafeWeekendCloseTime());
         try{
             if(cafeModel.getCafeDayOff().equals("")){
-                about_cafe_day_off_tv.setVisibility(View.GONE);
+                about_cafe_day_off_layout.setVisibility(View.GONE);
             }else{
-                about_cafe_day_off_tv.setVisibility(View.VISIBLE);
+                about_cafe_day_off_layout.setVisibility(View.VISIBLE);
                 about_cafe_day_off_tv.setText(cafeModel.getCafeDayOff());
             }
         }catch (NullPointerException e){
