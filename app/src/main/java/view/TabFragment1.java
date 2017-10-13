@@ -169,6 +169,12 @@ public class TabFragment1 extends Fragment {
                 VHitem.cafe_weekdays_open_close_time_tv.setText(cafeInfoWeekdaysTimeStr + " " +currentItem.getCafeWeekDaysOpenTime() + " ~ "+currentItem.getCafeWeekDaysCloseTime());
                 VHitem.cafe_weekend_open_close_time_tv.setText(cafeInfoWeekendTimeStr + " " + currentItem.getCafeWeekendOpenTime() + " ~ "+currentItem.getCafeWeekendCloseTime());
 
+                try{
+                    VHitem.cafe_day_off_tv.setText(currentItem.getCafeDayOff());
+                }catch (NullPointerException e){
+
+                }
+
                 VHitem.cafe_address_tv.setText(currentItem.getCafeAddress());
                 VHitem.cafe_phone_tv.setText(currentItem.getCafePhoneNum());
 
@@ -235,6 +241,7 @@ public class TabFragment1 extends Fragment {
             ImageView cafeThumbnail;
             TextView cafe_weekdays_open_close_time_tv;
             TextView cafe_weekend_open_close_time_tv;
+            TextView cafe_day_off_tv;
             TextView cafe_address_tv;
             TextView cafe_phone_tv;
             ViewGroup cafe_phone_btn;
@@ -252,6 +259,7 @@ public class TabFragment1 extends Fragment {
                 cafeThumbnail = (ImageView)itemView.findViewById(R.id.cafe_thumb_img);
                 cafe_weekdays_open_close_time_tv = (TextView)itemView.findViewById(R.id.weekdays_open_close_time_txt);
                 cafe_weekend_open_close_time_tv = (TextView)itemView.findViewById(R.id.weekend_open_close_time_txt);
+                cafe_day_off_tv = (TextView)itemView.findViewById(R.id.cafe_day_off_txt);
                 cafe_address_tv = (TextView)itemView.findViewById(R.id.cafe_address_txt);
                 cafe_phone_tv = (TextView)itemView.findViewById(R.id.cafe_phone_txt);
                 cafe_phone_btn = (ViewGroup)itemView.findViewById(R.id.cafe_phone_btn);
@@ -263,6 +271,19 @@ public class TabFragment1 extends Fragment {
                 parking_img = (ImageView)itemView.findViewById(R.id.parking_img);
                 cafe_item_layout = (ViewGroup)itemView.findViewById(R.id.cafe_item_layout);
             }
+        }
+
+        private boolean cafeDayOff(int position){
+            boolean flag = false;
+            try {
+                if(getItem(position).getCafeDayOff().equals("")){
+                    flag = false;
+                }else{
+                    flag = true;
+                }
+            }catch (NullPointerException e){
+            }
+            return flag;
         }
 
         /**

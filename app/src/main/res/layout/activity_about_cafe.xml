@@ -272,6 +272,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="50dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -412,6 +413,20 @@
                     android:textColor="@color/colorGray"
                     android:singleLine="true"
                     android:ellipsize="end"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <TextView
+                    android:id="@+id/cafe_day_off_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="50dp"
+                    android:layout_centerVertical="true"
+                    android:textStyle="bold"
+                    android:textSize="14dp"
+                    android:textColor="@color/colorGray"
+                    android:visibility="gone"/>
             </RelativeLayout>
         </LinearLayout>
 

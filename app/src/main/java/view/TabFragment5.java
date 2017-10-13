@@ -1,18 +1,22 @@
 package view;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -31,7 +35,8 @@ import io.realm.Realm;
 import model.UserModel;
 
 public class TabFragment5 extends Fragment {
-
+    //os6.0 permission
+    private static final int REQUEST_PERMISSIONS_READ_EXTERNAL_STORAGE = 10;
     View v;
     @BindView(R.id.user_profile_img) ImageView user_profile_iv;
     @BindView(R.id.user_name_txt) TextView user_name_tv;
@@ -79,13 +84,6 @@ public class TabFragment5 extends Fragment {
                 .setDefaultRequestOptions(requestOptions)
                 .load(AppConfig.ServerAddress+UserModel.getInstance().getProfile_img())
                 .into(user_profile_iv);
-        user_profile_iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), ImageCropActivity.class);
-                startActivity(intent);
-            }
-        });
 
         user_name_tv.setText(UserModel.getInstance().getNick_name());
         user_email_tv.setText(UserModel.getInstance().getEmail());
@@ -98,6 +96,60 @@ public class TabFragment5 extends Fragment {
             app_version_tv.setText("v"+version);
         } catch(PackageManager.NameNotFoundException e) { }
 
+    }
+
+    /**
+     * os 6.0 권한
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_PERMISSIONS_READ_EXTERNAL_STORAGE:
+                //권한이 있는 경우
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(getActivity(), ImageCropActivity.class);
+                    startActivity(intent);
+                }
+                //권한이 없는 경우
+                else {
+                    Toast.makeText(getActivity(), "퍼미션을 허용해야 이용할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+        }
+    }
+
+    @OnClick(R.id.user_profile_img) void goProfile(){
+        /**
+         * os 6.0 권한체크 및 요청
+         */
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) + ContextCompat
+                .checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale
+                    (getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
+                    ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission
+                                .WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_PERMISSIONS_READ_EXTERNAL_STORAGE);
+            } else {
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission
+                                .WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
+                        REQUEST_PERMISSIONS_READ_EXTERNAL_STORAGE);
+            }
+
+        } else {
+            Intent intent = new Intent(getActivity(), ImageCropActivity.class);
+            startActivity(intent);
+        }
     }
 
     @OnClick(R.id.logout_btn) void Logout(){
