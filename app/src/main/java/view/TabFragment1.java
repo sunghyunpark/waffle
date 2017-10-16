@@ -1,11 +1,23 @@
 package view;
 
+import android.Manifest;
+import android.app.Service;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -43,9 +55,13 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
     View v;
     //리사이클러뷰
     RecyclerAdapter adapter;
-    private LinearLayoutManager linearLayoutManager;
     private ArrayList<CafeModel> listItems;
-
+    // GPSTracker class
+    //내 위치 정보
+    public static double my_latitude = 0;
+    public static double my_longitude = 0;
+    GpsInfo gps;
+    private static final int REQUEST_CODE_LOCATION = 10;
     @BindView(R.id.swipe_layout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindString(R.string.cafe_info_weekdays_time_txt) String cafeInfoWeekdaysTimeStr;
@@ -61,7 +77,7 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
         //새로고침시 이벤트 구현
-        LoadCafeList();
+        setGPS();
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -81,7 +97,7 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
         //recyclerview 초기화
         listItems = new ArrayList<CafeModel>();
         recyclerView = (RecyclerView)v.findViewById(R.id.recyclerView);
-        linearLayoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         adapter = new RecyclerAdapter(listItems);
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -93,12 +109,65 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
         recyclerView.addItemDecoration(dividerItemDecoration);
         */
 
-        LoadCafeList();
+
+        setGPS();
 
         return v;
     }
 
-    private void LoadCafeList(){
+    private void setGPS(){
+        // 사용자의 위치 수신을 위한 세팅 //
+        gps = new GpsInfo(getContext());
+
+        // GPS 사용유무 가져오기
+        if (gps.isGetLocation()) {
+
+            my_latitude = gps.getLatitude();
+            my_longitude = gps.getLongitude();
+            if((my_latitude==0.0) || (my_longitude == 0.0)){
+                Toast.makeText(getContext(),"정보를 불러오고 있습니다. 다시 새로고침 해주세요.", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(
+                        getContext(),
+                        "당신의 위치 - \n위도: " + my_latitude + "\n경도: " + my_longitude,
+                        Toast.LENGTH_LONG).show();
+            }
+            LoadCafeList(my_latitude, my_longitude);
+        } else {
+            // GPS 를 사용할수 없으므로
+            //gps.showSettingsAlert();
+            alertCheckGPS();
+        }
+    }
+
+    private void alertCheckGPS() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("GPS를 설정하시면 거리가 가까운 순으로 카페들을 볼 수 있어요!")
+                .setCancelable(false)
+                .setPositiveButton("GPS 사용",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                moveConfigGPS();
+                            }
+                        })
+                .setNegativeButton("취소",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    // GPS 설정화면으로 이동
+    private void moveConfigGPS() {
+        Intent gpsOptionsIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(gpsOptionsIntent);
+    }
+
+    private void LoadCafeList(Double lati, Double lon){
+        Log.d("LoadCafeList", "lati : "+lati+"\nlon : "+lon);
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
 
@@ -285,19 +354,6 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         }
 
-        private boolean cafeDayOff(int position){
-            boolean flag = false;
-            try {
-                if(getItem(position).getCafeDayOff().equals("")){
-                    flag = false;
-                }else{
-                    flag = true;
-                }
-            }catch (NullPointerException e){
-            }
-            return flag;
-        }
-
         /**
          * Cafe Feature 분기처리
          * @param position -> Item position
@@ -398,4 +454,210 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
             return listItems.size()+1;
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_LOCATION:
+                //권한이 있는 경우
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+
+                }
+                //권한이 없는 경우
+                else {
+                    Toast.makeText(getActivity(), "퍼미션을 허용해야 이용할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+        }
+    }
+
+    public class GpsInfo extends Service implements LocationListener {
+
+        private final Context mContext;
+        private static final int REQUEST_CODE_LOCATION = 10;
+        // 현재 GPS 사용유무
+        boolean isGPSEnabled = false;
+
+        // 네트워크 사용유무
+        boolean isNetworkEnabled = false;
+
+        // GPS 상태값
+        boolean isGetLocation = false;
+
+        Location location;
+        double lat; // 위도
+        double lon; // 경도
+
+        // 최소 GPS 정보 업데이트 거리 10미터
+        private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
+
+        // 최소 GPS 정보 업데이트 시간 밀리세컨이므로 1분
+        private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
+
+        protected LocationManager locationManager;
+
+        public GpsInfo(Context context) {
+            this.mContext = context;
+            getLocation();
+        }
+
+        public Location getLocation() {
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // 사용자 권한 요청
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION);
+            }else{
+                try {
+                    locationManager = (LocationManager) mContext
+                            .getSystemService(LOCATION_SERVICE);
+
+                    // GPS 정보 가져오기
+                    isGPSEnabled = locationManager
+                            .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+                    // 현재 네트워크 상태 값 알아오기
+                    isNetworkEnabled = locationManager
+                            .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+                    if (!isGPSEnabled && !isNetworkEnabled) {
+                        // GPS 와 네트워크사용이 가능하지 않을때 소스 구현
+                    } else {
+                        this.isGetLocation = true;
+                        // 네트워크 정보로 부터 위치값 가져오기
+                        if (isNetworkEnabled) {
+                            locationManager.requestLocationUpdates(
+                                    LocationManager.NETWORK_PROVIDER,
+                                    MIN_TIME_BW_UPDATES,
+                                    MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+
+                            if (locationManager != null) {
+                                location = locationManager
+                                        .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                                if (location != null) {
+                                    // 위도 경도 저장
+                                    lat = location.getLatitude();
+                                    lon = location.getLongitude();
+                                }
+                            }
+                        }
+
+                        if (isGPSEnabled) {
+                            if (location == null) {
+                                locationManager.requestLocationUpdates(
+                                        LocationManager.GPS_PROVIDER,
+                                        MIN_TIME_BW_UPDATES,
+                                        MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                                if (locationManager != null) {
+                                    location = locationManager
+                                            .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                                    if (location != null) {
+                                        lat = location.getLatitude();
+                                        lon = location.getLongitude();
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            return location;
+        }
+
+        /**
+         * GPS 종료
+         * */
+        public void stopUsingGPS(){
+            if(locationManager != null){
+                locationManager.removeUpdates(GpsInfo.this);
+            }
+        }
+
+        /**
+         * 위도값을 가져옵니다.
+         * */
+        public double getLatitude(){
+            if(location != null){
+                lat = location.getLatitude();
+            }
+            return lat;
+        }
+
+        /**
+         * 경도값을 가져옵니다.
+         * */
+        public double getLongitude(){
+            if(location != null){
+                lon = location.getLongitude();
+            }
+            return lon;
+        }
+
+        /**
+         * GPS 나 wife 정보가 켜져있는지 확인합니다.
+         * */
+        public boolean isGetLocation() {
+            return this.isGetLocation;
+        }
+
+        /**
+         * GPS 정보를 가져오지 못했을때
+         * 설정값으로 갈지 물어보는 alert 창
+         * */
+        public void showSettingsAlert(){
+            android.app.AlertDialog.Builder alertDialog = new android.app.AlertDialog.Builder(mContext);
+
+            alertDialog.setTitle("GPS 사용유무셋팅");
+            alertDialog.setMessage("GPS 셋팅이 되지 않았을수도 있습니다.\n 설정창으로 가시겠습니까?");
+
+            // OK 를 누르게 되면 설정창으로 이동합니다.
+            alertDialog.setPositiveButton("Settings",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            mContext.startActivity(intent);
+                        }
+                    });
+            // Cancle 하면 종료 합니다.
+            alertDialog.setNegativeButton("Cancel",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+            alertDialog.show();
+        }
+
+        @Override
+        public IBinder onBind(Intent arg0) {
+            return null;
+        }
+
+        public void onLocationChanged(Location location) {
+            // TODO Auto-generated method stub
+
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            // TODO Auto-generated method stub
+
+        }
+
+        public void onProviderEnabled(String provider) {
+            // TODO Auto-generated method stub
+            LoadCafeList(my_latitude, my_longitude);
+
+        }
+
+        public void onProviderDisabled(String provider) {
+            // TODO Auto-generated method stub
+
+        }
+    }
+
 }
