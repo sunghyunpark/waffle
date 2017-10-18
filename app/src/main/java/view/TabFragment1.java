@@ -167,16 +167,19 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void LoadCafeList(Double lati, Double lon){
+        if(listItems != null)
+            listItems.clear();
         Log.d("LoadCafeList", "lati : "+lati+"\nlon : "+lon);
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
 
-        Call<CafeResponse> call = apiService.GetCafeListFromMyLocation("cafe_list_from_user_location", "0");
+        Call<CafeResponse> call = apiService.GetCafeListFromMyLocation("cafe_list_from_user_location", "0", lati, lon);
         call.enqueue(new Callback<CafeResponse>() {
             @Override
             public void onResponse(Call<CafeResponse> call, Response<CafeResponse> response) {
                 CafeResponse cafeResponse = response.body();
                 if(!cafeResponse.isError()){
+                    recyclerView.setVisibility(View.VISIBLE);
                     int listSize = cafeResponse.getCafeList().size();
                     for (int i=0;i<listSize;i++){
                         listItems.add(cafeResponse.getCafeList().get(i));
@@ -250,6 +253,8 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
                 VHitem.cafe_weekdays_open_close_time_tv.setText(cafeInfoWeekdaysTimeStr + " " +currentItem.getCafeWeekDaysOpenTime() + " ~ "+currentItem.getCafeWeekDaysCloseTime());
                 VHitem.cafe_weekend_open_close_time_tv.setText(cafeInfoWeekendTimeStr + " " + currentItem.getCafeWeekendOpenTime() + " ~ "+currentItem.getCafeWeekendCloseTime());
 
+                VHitem.cafe_distance_tv.setText(currentItem.getCafeDistance()+" Km");
+
                 try{
                     VHitem.cafe_day_off_tv.setText(currentItem.getCafeDayOff());
                 }catch (NullPointerException e){
@@ -322,6 +327,7 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
             ImageView cafeThumbnail;
             TextView cafe_weekdays_open_close_time_tv;
             TextView cafe_weekend_open_close_time_tv;
+            TextView cafe_distance_tv;
             TextView cafe_day_off_tv;
             TextView cafe_address_tv;
             TextView cafe_phone_tv;
@@ -340,6 +346,7 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
                 cafeThumbnail = (ImageView)itemView.findViewById(R.id.cafe_thumb_img);
                 cafe_weekdays_open_close_time_tv = (TextView)itemView.findViewById(R.id.weekdays_open_close_time_txt);
                 cafe_weekend_open_close_time_tv = (TextView)itemView.findViewById(R.id.weekend_open_close_time_txt);
+                cafe_distance_tv = (TextView)itemView.findViewById(R.id.distance_txt);
                 cafe_day_off_tv = (TextView)itemView.findViewById(R.id.cafe_day_off_txt);
                 cafe_address_tv = (TextView)itemView.findViewById(R.id.cafe_address_txt);
                 cafe_phone_tv = (TextView)itemView.findViewById(R.id.cafe_phone_txt);
@@ -650,7 +657,6 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
 
         public void onProviderEnabled(String provider) {
             // TODO Auto-generated method stub
-            LoadCafeList(my_latitude, my_longitude);
 
         }
 

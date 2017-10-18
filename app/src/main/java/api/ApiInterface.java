@@ -58,7 +58,8 @@ public interface ApiInterface {
      * @return
      */
     @GET("cafe/cafe_info.php")
-    Call<CafeResponse> GetCafeListFromMyLocation(@Query("tag") String tag, @Query("uid") String uid);
+    Call<CafeResponse> GetCafeListFromMyLocation(@Query("tag") String tag, @Query("uid") String uid, @Query("user_latitude") Double user_latitude,
+                                                 @Query("user_longitude") Double user_longitude);
 
     /**
      * About Cafe Etc Info 불러오기

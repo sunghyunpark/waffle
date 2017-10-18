@@ -43,6 +43,8 @@ public class CafeModel implements Serializable{
     private String cafeLatitude;
     @SerializedName("cafe_longitude")
     private String cafeLongitude;
+    @SerializedName("cafe_distance")
+    private String cafeDistance;
     @SerializedName("cafe_address")
     private String cafeAddress;
     @SerializedName("cafe_phone")
@@ -138,6 +140,13 @@ public class CafeModel implements Serializable{
         this.cafeLongitude = cafeLongitude;
     }
 
+    public String getCafeDistance() {
+        return cafeDistance;
+    }
+
+    public void setCafeDistance(String cafeDistance) {
+        this.cafeDistance = cafeDistance;
+    }
 
     public String getCafeAddress() {
         return cafeAddress;
