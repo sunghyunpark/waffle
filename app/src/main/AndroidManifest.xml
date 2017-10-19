@@ -33,7 +33,8 @@
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity android:name="view.AboutCafeCommentActivity" />
         <activity android:name="view.MyFavoriteCafeActivity" />
-        <activity android:name="view.MyCommentCafeActivity"></activity>
+        <activity android:name="view.MyCommentCafeActivity" />
+        <activity android:name="view.EditUserProfileActivity"></activity>
     </application>
 
 </manifest>

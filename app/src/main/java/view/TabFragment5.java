@@ -42,6 +42,7 @@ public class TabFragment5 extends Fragment {
     @BindView(R.id.user_name_txt) TextView user_name_tv;
     @BindView(R.id.user_email_txt) TextView user_email_tv;
     @BindView(R.id.logout_btn) Button logoutBtn;
+    @BindView(R.id.user_profile_edit_layout) ViewGroup userProfileEditLayout;
     @BindString(R.string.logout_title_txt) String logoutTitleStr;
     @BindString(R.string.logout_sub_txt) String logoutSubStr;
     @BindView(R.id.app_version_txt) TextView app_version_tv;
@@ -182,6 +183,11 @@ public class TabFragment5 extends Fragment {
                     }
                 });
         alert.show();
+    }
+
+    @OnClick(R.id.user_profile_edit_layout) void goEditProfile(){
+        Intent intent = new Intent(getActivity(), EditUserProfileActivity.class);
+        startActivity(intent);
     }
 
 }
