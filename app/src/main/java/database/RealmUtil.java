@@ -65,6 +65,31 @@ public class RealmUtil {
         }
     }
 
+    /**
+     * User Info(nickName, intro)
+     * @param context
+     * @param nickName
+     * @param intro
+     */
+    public void UpdateUserEtcInfo(Context context, String uid, String nickName, String intro){
+        Realm mRealm;
+        RealmConfig realmConfig;
+        realmConfig = new RealmConfig();
+
+        mRealm = Realm.getInstance(realmConfig.UserRealmVersion(context));
+        UserVO userVO = mRealm.where(UserVO.class).equalTo("no",1).findFirst();
+        try{
+            mRealm.beginTransaction();
+            userVO.setNick_name(nickName);
+            userVO.setIntro(intro);
+        }catch (Exception e){
+
+        }finally {
+            mRealm.commitTransaction();
+            RefreshUserInfo(context, uid);
+        }
+    }
+
     public void RefreshUserInfo(Context context, String uid){
         Realm mRealm;
         RealmConfig realmConfig;

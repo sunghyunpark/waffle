@@ -134,4 +134,16 @@ public interface ApiInterface {
      */
     @GET("cafe/my_favorite.php")
     Call<MyCommentResponse> GetMyCommentCafeList(@Query("tag") String tag, @Query("uid") String uid);
+
+    /**
+     * Edit User Profile Info
+     * @param tag -> edit_user_info
+     * @param uid
+     * @param nick_name
+     * @param intro
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("login/login.php")
+    Call<CommonResponse> EditUserProfileInfo(@Field("tag") String tag, @Field("uid") String uid, @Field("nick_name") String nick_name, @Field("intro") String intro);
 }

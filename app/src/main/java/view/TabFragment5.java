@@ -46,6 +46,7 @@ public class TabFragment5 extends Fragment {
     @BindString(R.string.logout_title_txt) String logoutTitleStr;
     @BindString(R.string.logout_sub_txt) String logoutSubStr;
     @BindView(R.id.app_version_txt) TextView app_version_tv;
+    @BindString(R.string.permission_error_txt) String permissionStr;
 
 
     public TabFragment5() {
@@ -117,7 +118,7 @@ public class TabFragment5 extends Fragment {
                 }
                 //권한이 없는 경우
                 else {
-                    Toast.makeText(getActivity(), "퍼미션을 허용해야 이용할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), permissionStr, Toast.LENGTH_SHORT).show();
                 }
                 break;
 
