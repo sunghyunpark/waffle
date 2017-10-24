@@ -65,7 +65,7 @@ public class EmailRegisterActivity extends AppCompatActivity {
         }else if(pwStr.length()<6){
             Toast.makeText(getApplicationContext(), inputPwErrorStr, Toast.LENGTH_SHORT).show();
         }else{
-            PostUserData(emailStr, nickNameStr, pwStr, "N", "N", "N", "N");
+            PostUserData(emailStr, nickNameStr, pwStr, "N", "N", "N", "");
         }
     }
 
