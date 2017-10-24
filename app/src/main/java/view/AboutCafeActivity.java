@@ -46,6 +46,7 @@ import util.CommonUtil;
 public class AboutCafeActivity extends AppCompatActivity {
 
     CafeModel cafeModel;
+    private String cafe_id;
     @BindView(R.id.cafe_img) ImageView cafe_img_iv;
     @BindView(R.id.title_txt) TextView title_tv;
     @BindView(R.id.cafe_name_txt) TextView cafe_name_tv;
@@ -80,7 +81,6 @@ public class AboutCafeActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-        SetUI();
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +92,13 @@ public class AboutCafeActivity extends AppCompatActivity {
         Intent intent = getIntent();
         cafeModel = new CafeModel();
         cafeModel = (CafeModel)intent.getExtras().getSerializable("CafeModel");
+        if(cafeModel == null){
+            Log.d("asdf","null");
+            cafe_id = intent.getExtras().getString("cafe_id");
+            LoadAboutCafeInfoWithCafeId(cafe_id);
+        }else{
+            SetUI();
+        }
 
     }
 
@@ -153,6 +160,46 @@ public class AboutCafeActivity extends AppCompatActivity {
         }
 
         LoadCafeEtcInfo(UserModel.getInstance().getUid(), cafeModel.getCafeId());    //Load Cafe Etc Info
+    }
+
+    private void LoadAboutCafeInfoWithCafeId(String cafe_id){
+        ApiInterface apiService =
+                ApiClient.getClient().create(ApiInterface.class);
+
+        Call<CafeModel> call = apiService.GetAboutCafeInfo("about_cafe_info_with_cafe_id", cafe_id);
+        call.enqueue(new Callback<CafeModel>() {
+            @Override
+            public void onResponse(Call<CafeModel> call, Response<CafeModel> response) {
+                CafeModel cafeResponse = response.body();
+                //cafeModel.setCafeId(cafeResponse.getCafeId());
+                cafeModel.setCafeName(cafeResponse.getCafeName());
+                cafeModel.setCafeThumbnail(cafeResponse.getCafeThumbnail());
+                cafeModel.setCafePhoneNum(cafeResponse.getCafePhoneNum());
+                cafeModel.setCafeAddress(cafeResponse.getCafeAddress());
+                cafeModel.setCafeWeekendOpenTime(cafeResponse.getCafeWeekendOpenTime());
+                cafeModel.setCafeIntro(cafeResponse.getCafeIntro());
+                cafeModel.setCafeWeekDaysCloseTime(cafeResponse.getCafeWeekDaysCloseTime());
+                cafeModel.setCafeWeekDaysOpenTime(cafeResponse.getCafeWeekDaysOpenTime());
+                cafeModel.setCafeDayOff(cafeResponse.getCafeDayOff());
+                cafeModel.setCafeFullTimeState(cafeResponse.getCafeFullTimeState());
+                cafeModel.setCafeWifiState(cafeResponse.getCafeWifiState());
+                cafeModel.setCafeLatitude(cafeResponse.getCafeLatitude());
+                cafeModel.setCafeLongitude(cafeResponse.getCafeLongitude());
+                cafeModel.setCafeParkingState(cafeResponse.getCafeParkingState());
+                cafeModel.setCafeWeekendCloseTime(cafeResponse.getCafeWeekendCloseTime());
+                cafeModel.setCafeSmokeState(cafeResponse.getCafeSmokeState());
+                Log.d("cafeModel123", cafeResponse.getCafeId());
+                SetUI();
+                //Toast.makeText(getActivity(), cafeResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<CafeModel> call, Throwable t) {
+                // Log error here since request failed
+                Log.e("tag", t.toString());
+                Toast.makeText(getApplicationContext(), networkErrorStr,Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**

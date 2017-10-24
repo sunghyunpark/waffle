@@ -6,6 +6,7 @@ import api.response.CommonResponse;
 import api.response.LoginResponse;
 import api.response.MyCommentResponse;
 import api.response.MyFavoriteCntResponse;
+import model.CafeModel;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -146,4 +147,10 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("login/login.php")
     Call<CommonResponse> EditUserProfileInfo(@Field("tag") String tag, @Field("uid") String uid, @Field("nick_name") String nick_name, @Field("intro") String intro);
+
+    @GET("cafe/cafe_info.php")
+    Call<CafeModel> GetAboutCafeInfo(@Query("tag") String tag, @Query("cafe_id") String cafe_id);
+
+    @GET("cafe/cafe_info.php")
+    Call<CafeResponse> GetTab2Info(@Query("tag") String tag);
 }
