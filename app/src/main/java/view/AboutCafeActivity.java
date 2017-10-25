@@ -30,6 +30,7 @@ import java.util.List;
 import api.ApiClient;
 import api.ApiInterface;
 import api.response.CafeEtcInfoResponse;
+import api.response.CafeResponse;
 import api.response.CommonResponse;
 import butterknife.BindString;
 import butterknife.BindView;
@@ -91,13 +92,16 @@ public class AboutCafeActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         cafeModel = new CafeModel();
-        cafeModel = (CafeModel)intent.getExtras().getSerializable("CafeModel");
-        if(cafeModel == null){
-            Log.d("asdf","null");
+        //isData AboutCafeActivity에 접근하기전에 해당 카페에 대한 데이터를 가지고있는지 없는지에 대한 flag
+        String isData = intent.getExtras().getString("isData");
+        if(isData.equals("Y")){
+            //해당 카페에 대한 정보들을 가지고있는 상태에서 접근
+            cafeModel = (CafeModel)intent.getExtras().getSerializable("CafeModel");
+            SetUI();
+        }else{
+            //해당 카페에 대한 정보들을 가지고있지 않는 상태에서 접근
             cafe_id = intent.getExtras().getString("cafe_id");
             LoadAboutCafeInfoWithCafeId(cafe_id);
-        }else{
-            SetUI();
         }
 
     }
@@ -162,39 +166,51 @@ public class AboutCafeActivity extends AppCompatActivity {
         LoadCafeEtcInfo(UserModel.getInstance().getUid(), cafeModel.getCafeId());    //Load Cafe Etc Info
     }
 
+    /**
+     * 데이터가 없는 상태에서 접근 시 cafe_id로 서버에서 데이터를 불러옴
+     * @param cafe_id
+     */
     private void LoadAboutCafeInfoWithCafeId(String cafe_id){
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
 
-        Call<CafeModel> call = apiService.GetAboutCafeInfo("about_cafe_info_with_cafe_id", cafe_id);
-        call.enqueue(new Callback<CafeModel>() {
+        Call<CafeResponse> call = apiService.GetAboutCafeInfo("about_cafe_info_with_cafe_id", cafe_id);
+        call.enqueue(new Callback<CafeResponse>() {
             @Override
-            public void onResponse(Call<CafeModel> call, Response<CafeModel> response) {
-                CafeModel cafeResponse = response.body();
-                //cafeModel.setCafeId(cafeResponse.getCafeId());
-                cafeModel.setCafeName(cafeResponse.getCafeName());
-                cafeModel.setCafeThumbnail(cafeResponse.getCafeThumbnail());
-                cafeModel.setCafePhoneNum(cafeResponse.getCafePhoneNum());
-                cafeModel.setCafeAddress(cafeResponse.getCafeAddress());
-                cafeModel.setCafeWeekendOpenTime(cafeResponse.getCafeWeekendOpenTime());
-                cafeModel.setCafeIntro(cafeResponse.getCafeIntro());
-                cafeModel.setCafeWeekDaysCloseTime(cafeResponse.getCafeWeekDaysCloseTime());
-                cafeModel.setCafeWeekDaysOpenTime(cafeResponse.getCafeWeekDaysOpenTime());
-                cafeModel.setCafeDayOff(cafeResponse.getCafeDayOff());
-                cafeModel.setCafeFullTimeState(cafeResponse.getCafeFullTimeState());
-                cafeModel.setCafeWifiState(cafeResponse.getCafeWifiState());
-                cafeModel.setCafeLatitude(cafeResponse.getCafeLatitude());
-                cafeModel.setCafeLongitude(cafeResponse.getCafeLongitude());
-                cafeModel.setCafeParkingState(cafeResponse.getCafeParkingState());
-                cafeModel.setCafeWeekendCloseTime(cafeResponse.getCafeWeekendCloseTime());
-                cafeModel.setCafeSmokeState(cafeResponse.getCafeSmokeState());
-                Log.d("cafeModel123", cafeResponse.getCafeId());
-                SetUI();
-                //Toast.makeText(getActivity(), cafeResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<CafeResponse> call, Response<CafeResponse> response) {
+                CafeResponse cafeResponse = response.body();
+                if(!cafeResponse.isError()){
+                    try{
+                        cafeModel.setCafeId(cafeResponse.getCafeList().get(0).getCafeId());
+                        cafeModel.setCafeName(cafeResponse.getCafeList().get(0).getCafeName());
+                        cafeModel.setCafeThumbnail(cafeResponse.getCafeList().get(0).getCafeThumbnail());
+                        cafeModel.setCafePhoneNum(cafeResponse.getCafeList().get(0).getCafePhoneNum());
+                        cafeModel.setCafeAddress(cafeResponse.getCafeList().get(0).getCafeAddress());
+                        cafeModel.setCafeWeekendOpenTime(cafeResponse.getCafeList().get(0).getCafeWeekendOpenTime());
+                        cafeModel.setCafeIntro(cafeResponse.getCafeList().get(0).getCafeIntro());
+                        cafeModel.setCafeWeekDaysCloseTime(cafeResponse.getCafeList().get(0).getCafeWeekDaysCloseTime());
+                        cafeModel.setCafeWeekDaysOpenTime(cafeResponse.getCafeList().get(0).getCafeWeekDaysOpenTime());
+                        cafeModel.setCafeDayOff(cafeResponse.getCafeList().get(0).getCafeDayOff());
+                        cafeModel.setCafeFullTimeState(cafeResponse.getCafeList().get(0).getCafeFullTimeState());
+                        cafeModel.setCafeWifiState(cafeResponse.getCafeList().get(0).getCafeWifiState());
+                        cafeModel.setCafeLatitude(cafeResponse.getCafeList().get(0).getCafeLatitude());
+                        cafeModel.setCafeLongitude(cafeResponse.getCafeList().get(0).getCafeLongitude());
+                        cafeModel.setCafeParkingState(cafeResponse.getCafeList().get(0).getCafeParkingState());
+                        cafeModel.setCafeWeekendCloseTime(cafeResponse.getCafeList().get(0).getCafeWeekendCloseTime());
+                        cafeModel.setCafeSmokeState(cafeResponse.getCafeList().get(0).getCafeSmokeState());
+                    }catch (NullPointerException e){
+                        e.printStackTrace();
+                    }finally {
+                        SetUI();
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(), cafeResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+                }
+
             }
 
             @Override
-            public void onFailure(Call<CafeModel> call, Throwable t) {
+            public void onFailure(Call<CafeResponse> call, Throwable t) {
                 // Log error here since request failed
                 Log.e("tag", t.toString());
                 Toast.makeText(getApplicationContext(), networkErrorStr,Toast.LENGTH_SHORT).show();

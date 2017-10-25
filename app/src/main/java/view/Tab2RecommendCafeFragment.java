@@ -1,5 +1,6 @@
 package view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -76,9 +77,10 @@ public class Tab2RecommendCafeFragment extends Fragment {
     }
 
     @OnClick(R.id.recommend_cafe_img) void goAboutCafe(){
-        //Intent intent = new Intent(getActivity(), AboutCafeActivity.class);
-        //intent.putExtra("cafe_id", cafe_id);
-        //startActivity(intent);
+        Intent intent = new Intent(getActivity(), AboutCafeActivity.class);
+        intent.putExtra("isData", "N");
+        intent.putExtra("cafe_id", cafe_id);
+        startActivity(intent);
     }
 
 }

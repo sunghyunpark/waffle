@@ -1,5 +1,6 @@
 package view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -127,20 +128,24 @@ public class MyCommentCafeActivity extends AppCompatActivity {
                 final MyCommentResponse.MyComment currentItem = getItem(position);
                 final RecyclerAdapter.Comment_VH VHitem = (RecyclerAdapter.Comment_VH)holder;
                 //Glide Options
-                RequestOptions requestOptions = new RequestOptions();
-                requestOptions.placeholder(R.mipmap.not_cafe_img);
-                requestOptions.error(R.mipmap.not_cafe_img);
-                requestOptions.circleCrop();    //circle
+                RequestOptions requestOptions_cafe = new RequestOptions();
+                requestOptions_cafe.placeholder(R.mipmap.not_cafe_img);
+                requestOptions_cafe.error(R.mipmap.not_cafe_img);
+                requestOptions_cafe.circleCrop();    //circle
 
                 Glide.with(getApplicationContext())
-                        .setDefaultRequestOptions(requestOptions)
+                        .setDefaultRequestOptions(requestOptions_cafe)
                         .load(AppConfig.ServerAddress+currentItem.getCafe_thumbnail())
                         .into(VHitem.cafeProfile_iv);
 
                 VHitem.cafeName_tv.setText(currentItem.getCafe_name());
 
+                RequestOptions requestOptions_user = new RequestOptions();
+                requestOptions_user.placeholder(R.mipmap.user_profile_img);
+                requestOptions_user.error(R.mipmap.user_profile_img);
+                requestOptions_user.circleCrop();    //circle
                 Glide.with(getApplicationContext())
-                        .setDefaultRequestOptions(requestOptions)
+                        .setDefaultRequestOptions(requestOptions_user)
                         .load(AppConfig.ServerAddress+currentItem.getProfile_img())
                         .into(VHitem.userProfile_iv);
 
@@ -160,10 +165,10 @@ public class MyCommentCafeActivity extends AppCompatActivity {
                 VHitem.comment_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        /**
-                         * CafeModel 정보를 넘겨야하는데 현재 구조상 어려움...
-                         * 현재 페이지를 들어올때 카페들 정보들까지 다 가져올껀지 아니면 클릭했을 때 정보를 받아오고 성공하면 AboutCafeActivity로 넘길지 고민이 필요함
-                         */
+                        Intent intent = new Intent(getApplicationContext(), AboutCafeActivity.class);
+                        intent.putExtra("isData", "N");
+                        intent.putExtra("cafe_id", getItem(position).getCafe_id());
+                        startActivity(intent);
                     }
                 });
             }

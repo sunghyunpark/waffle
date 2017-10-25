@@ -212,6 +212,7 @@ public class MyFavoriteCafeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(getApplicationContext(), AboutCafeActivity.class);
+                        intent.putExtra("isData", "Y");
                         intent.putExtra("CafeModel", getItem(position));
                         startActivity(intent);
                     }

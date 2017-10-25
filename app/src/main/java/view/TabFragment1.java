@@ -307,6 +307,7 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(getActivity(), AboutCafeActivity.class);
+                        intent.putExtra("isData", "Y");
                         intent.putExtra("CafeModel", getItem(position));
                         startActivity(intent);
                     }
