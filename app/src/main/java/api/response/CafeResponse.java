@@ -3,6 +3,7 @@ package api.response;
 import java.util.ArrayList;
 
 import model.CafeModel;
+import model.RecentCommentModel;
 
 /**
  * Created by SungHyun on 2017-09-12.
@@ -10,6 +11,7 @@ import model.CafeModel;
 
 public class CafeResponse {
     private ArrayList<CafeModel> cafeList;
+    private ArrayList<RecentCommentModel> recentCommentList;
     private String last_cafe_id;
     private boolean error;
     private String error_msg;
@@ -20,6 +22,14 @@ public class CafeResponse {
 
     public void setCafeList(ArrayList<CafeModel> cafeList) {
         this.cafeList = cafeList;
+    }
+
+    public ArrayList<RecentCommentModel> getRecentCommentList() {
+        return recentCommentList;
+    }
+
+    public void setRecentCommentList(ArrayList<RecentCommentModel> recentCommentList) {
+        this.recentCommentList = recentCommentList;
     }
 
     public String getLast_cafe_id() {

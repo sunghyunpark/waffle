@@ -1,10 +1,10 @@
 package model;
 
 /**
- * Created by SungHyun on 2017-10-02.
+ * Created by NAVER on 2017-10-26.
  */
 
-public class CommentModel {
+public class RecentCommentModel {
     private String comment_id;
     private String cafe_id;
     private String uid;
@@ -12,6 +12,8 @@ public class CommentModel {
     private String profile_img_thumb;
     private String comment_text;
     private String created_at;
+    private String cafe_thumbnail;
+    private String cafe_name;
 
     public String getComment_id() {
         return comment_id;
@@ -69,4 +71,19 @@ public class CommentModel {
         this.created_at = created_at;
     }
 
+    public String getCafe_thumbnail() {
+        return cafe_thumbnail;
+    }
+
+    public void setCafe_thumbnail(String cafe_thumbnail) {
+        this.cafe_thumbnail = cafe_thumbnail;
+    }
+
+    public String getCafe_name() {
+        return cafe_name;
+    }
+
+    public void setCafe_name(String cafe_name) {
+        this.cafe_name = cafe_name;
+    }
 }

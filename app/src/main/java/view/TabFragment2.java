@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +23,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.yssh.waffle.AppConfig;
 import com.yssh.waffle.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import api.ApiClient;
 import api.ApiInterface;
@@ -31,9 +36,11 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import model.CafeModel;
+import model.RecentCommentModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import util.CommonUtil;
 
 public class TabFragment2 extends Fragment {
 
@@ -41,14 +48,19 @@ public class TabFragment2 extends Fragment {
     //viewpager item count
     private static int VIEWPAGER_PICTURE_COUNT = 3;
     private ArrayList<CafeModel> recommendListItems;
+    private ArrayList<RecentCommentModel> recentCommentListitems;
     //grid Adapter
-    RecyclerAdapter gridAdapter;
+    GridRecyclerAdapter gridAdapter;
+    //recentCommentAdapter
+    CommentRecyclerAdapter recentCommentAdapter;
     //viewpager auto-slide
     Thread thread = null;
     Handler handler = null;
     int pageNum=0;	//페이지번호
+    CommonUtil commonUtil = new CommonUtil();
     @BindView(R.id.viewPager) ViewPager viewPager;
-    @BindView(R.id.recyclerView) RecyclerView gridRecyclerView;
+    @BindView(R.id.recommend_grid_recyclerView) RecyclerView gridRecyclerView;
+    @BindView(R.id.recent_comment_recyclerView) RecyclerView recentCommentRecyclerView;
     @BindString(R.string.network_error_txt) String networkErrorStr;
 
     @Override
@@ -118,27 +130,51 @@ public class TabFragment2 extends Fragment {
          */
         GridLayoutManager lLayout = new GridLayoutManager(getActivity(),2);
         gridRecyclerView.setLayoutManager(lLayout);
-        gridAdapter = new RecyclerAdapter(recommendListItems);
+        gridAdapter = new GridRecyclerAdapter(recommendListItems);
         gridRecyclerView.setAdapter(gridAdapter);
         gridRecyclerView.setNestedScrollingEnabled(false);
 
+        /**
+         * recent comment reclerView
+         */
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        recentCommentAdapter = new CommentRecyclerAdapter(recentCommentListitems);
+        recentCommentRecyclerView.setLayoutManager(linearLayoutManager);
+        recentCommentRecyclerView.setNestedScrollingEnabled(false);
+        recentCommentRecyclerView.setAdapter(recentCommentAdapter);
     }
 
+    /**
+     * Data Load
+     */
     private void LoadData(){
+        if(recommendListItems != null)
+            recommendListItems.clear();
+        if(recentCommentListitems != null)
+            recentCommentListitems.clear();
+
         recommendListItems = new ArrayList<CafeModel>();
+        recentCommentListitems = new ArrayList<RecentCommentModel>();
+
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
 
-        Call<CafeResponse> call = apiService.GetTab2Info("tab2_info");
+        Call<CafeResponse> call = apiService.GetTab2Info("tab2_info", "N");
         call.enqueue(new Callback<CafeResponse>() {
             @Override
             public void onResponse(Call<CafeResponse> call, Response<CafeResponse> response) {
                 CafeResponse cafeResponse = response.body();
                 if(!cafeResponse.isError()){
-                    int listSize = cafeResponse.getCafeList().size();
-                    for (int i=0;i<listSize;i++){
+                    int recommendSize = cafeResponse.getCafeList().size();
+                    for (int i=0;i<recommendSize;i++){
                         recommendListItems.add(cafeResponse.getCafeList().get(i));
                     }
+                    int recentCommentSize = cafeResponse.getRecentCommentList().size();
+                    for(int i=0;i<recentCommentSize;i++){
+                        recentCommentListitems.add(cafeResponse.getRecentCommentList().get(i));
+                        Log.d("recentComment", cafeResponse.getRecentCommentList().get(i).getNick_name());
+                    }
+
                     SetUI();
                     //viewpager 자동슬라이드 쓰레드
                     thread = new Thread(){
@@ -153,8 +189,6 @@ public class TabFragment2 extends Fragment {
                                     // TODO Auto-generated catch block
                                     e.printStackTrace();
                                 }
-
-
                             }
                         }
                     };
@@ -162,7 +196,6 @@ public class TabFragment2 extends Fragment {
                 }else{
                     Log.d("random", "fail");
                 }
-                //Toast.makeText(getActivity(), cafeResponse.getError_msg(),Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -178,7 +211,6 @@ public class TabFragment2 extends Fragment {
      * auto slide adapter
      */
     private class PagerAdapter extends FragmentStatePagerAdapter {
-
         public PagerAdapter(android.support.v4.app.FragmentManager fm) {
             super(fm);
         }
@@ -214,12 +246,12 @@ public class TabFragment2 extends Fragment {
     /**
      * Grid RecyclerView Adapter
      */
-    private class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private class GridRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private static final int TYPE_ITEM = 1;
         ArrayList<CafeModel> listItems;
 
-        public RecyclerAdapter(ArrayList<CafeModel> listItems) {
+        public GridRecyclerAdapter(ArrayList<CafeModel> listItems) {
             for(int i=2;i>=0;i--){
                 listItems.remove(i);
             }
@@ -292,6 +324,118 @@ public class TabFragment2 extends Fragment {
                 thumbnail_layout = (ViewGroup)itemView.findViewById(R.id.thumbnail_layout);
             }
         }
+        @Override
+        public int getItemViewType(int position) {
+            return TYPE_ITEM;
+        }
+        //increasing getItemcount to 1. This will be the row of header.
+        @Override
+        public int getItemCount() {
+            return listItems.size();
+        }
+    }
+
+    private class CommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        private static final int TYPE_ITEM = 0;
+        List<RecentCommentModel> listItems;
+
+        private CommentRecyclerAdapter(List<RecentCommentModel> listItems) {
+            this.listItems = listItems;
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if (viewType == TYPE_ITEM) {
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_tab2_recent_comment_item, parent, false);
+                return new CommentRecyclerAdapter.Comment_VH(v);
+            }
+            throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
+        }
+
+        private RecentCommentModel getItem(int position) {
+            return listItems.get(position);
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+
+            if (holder instanceof CommentRecyclerAdapter.Comment_VH) {
+                final RecentCommentModel currentItem = getItem(position);
+                final CommentRecyclerAdapter.Comment_VH VHitem = (CommentRecyclerAdapter.Comment_VH)holder;
+
+                //Glide Options
+                RequestOptions requestOptions_user = new RequestOptions();
+                requestOptions_user.placeholder(R.mipmap.user_profile_img);
+                requestOptions_user.error(R.mipmap.user_profile_img);
+                requestOptions_user.circleCrop();    //circle
+
+                Glide.with(getActivity())
+                        .setDefaultRequestOptions(requestOptions_user)
+                        .load(AppConfig.ServerAddress+currentItem.getProfile_img_thumb())
+                        .into(VHitem.userProfile_iv);
+
+                //Glide Options
+                RequestOptions requestOptions_cafe = new RequestOptions();
+                requestOptions_cafe.placeholder(R.mipmap.not_cafe_img);
+                requestOptions_cafe.error(R.mipmap.not_cafe_img);
+                requestOptions_cafe.circleCrop();    //circle
+
+                Glide.with(getActivity())
+                        .setDefaultRequestOptions(requestOptions_cafe)
+                        .load(AppConfig.ServerAddress+currentItem.getCafe_thumbnail())
+                        .into(VHitem.cafeProfile_iv);
+
+                VHitem.userNickName_tv.setText(currentItem.getNick_name());
+                VHitem.comment_tv.setText(currentItem.getComment_text());
+                VHitem.cafeName_tv.setText(currentItem.getCafe_name());
+
+                Date to = null;
+                try{
+                    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    to = transFormat.parse(currentItem.getCreated_at());
+                }catch (ParseException p){
+                    p.printStackTrace();
+                }
+                VHitem.created_at_tv.setText(commonUtil.formatTimeString(to));
+
+                VHitem.comment_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), AboutCafeActivity.class);
+                        intent.putExtra("isData", "N");
+                        intent.putExtra("cafe_id", getItem(position).getCafe_id());
+                        startActivity(intent);
+                    }
+                });
+
+
+
+            }
+        }
+
+        private class Comment_VH extends RecyclerView.ViewHolder{
+
+            ImageView userProfile_iv;
+            TextView userNickName_tv;
+            TextView created_at_tv;
+            TextView comment_tv;
+            ImageView cafeProfile_iv;
+            TextView cafeName_tv;
+            ViewGroup comment_layout;
+
+            private Comment_VH(View itemView){
+                super(itemView);
+                userProfile_iv = (ImageView)itemView.findViewById(R.id.user_profile_img);
+                userNickName_tv = (TextView)itemView.findViewById(R.id.user_nickname_txt);
+                created_at_tv = (TextView)itemView.findViewById(R.id.created_at_txt);
+                comment_tv = (TextView)itemView.findViewById(R.id.comment_txt);
+                cafeProfile_iv = (ImageView)itemView.findViewById(R.id.cafe_profile_img);
+                cafeName_tv = (TextView)itemView.findViewById(R.id.cafe_name_txt);
+                comment_layout = (ViewGroup)itemView.findViewById(R.id.comment_layout);
+            }
+        }
+
         @Override
         public int getItemViewType(int position) {
             return TYPE_ITEM;

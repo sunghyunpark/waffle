@@ -151,5 +151,5 @@ public interface ApiInterface {
     Call<CafeResponse> GetAboutCafeInfo(@Query("tag") String tag, @Query("cafe_id") String cafe_id);
 
     @GET("cafe/cafe_info.php")
-    Call<CafeResponse> GetTab2Info(@Query("tag") String tag);
+    Call<CafeResponse> GetTab2Info(@Query("tag") String tag, @Query("comment_flag") String comment_flag);
 }
