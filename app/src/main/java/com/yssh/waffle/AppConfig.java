@@ -12,8 +12,8 @@ import android.view.WindowManager;
 public class AppConfig extends Application {
 
     public static String ServerAddress = "http://13.124.188.3/waffle/";
-    private int DISPLAY_WIDTH;
-    private int DISPLAY_HEIGHT;
+    public static int DISPLAY_WIDTH;
+    public static int DISPLAY_HEIGHT;
 
     @Override
     public void onCreate() {
