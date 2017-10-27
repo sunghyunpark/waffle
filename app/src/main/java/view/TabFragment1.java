@@ -61,7 +61,9 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
     public static double my_latitude = 0;
     public static double my_longitude = 0;
     GpsInfo gps;
+    private static final int LOAD_DATA_COUNT = 5;
     private static final int REQUEST_CODE_LOCATION = 10;
+    private String lastCafeId = "0";
     @BindView(R.id.swipe_layout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindString(R.string.cafe_info_weekdays_time_txt) String cafeInfoWeekdaysTimeStr;
@@ -77,7 +79,8 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onRefresh() {
         //새로고침시 이벤트 구현
-        setGPS();
+        lastCafeId = "0";
+        initView();
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -94,25 +97,32 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
         v = inflater.inflate(R.layout.fragment_tab_fragment1, container, false);
 
         ButterKnife.bind(this, v);
+        initView();
+
+        return v;
+    }
+
+    private void initView(){
         //recyclerview 초기화
         listItems = new ArrayList<CafeModel>();
         recyclerView = (RecyclerView)v.findViewById(R.id.recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         adapter = new RecyclerAdapter(listItems);
         recyclerView.setLayoutManager(linearLayoutManager);
-
+        recyclerView.setAdapter(adapter);
         swipeRefreshLayout.setOnRefreshListener(this);
-
-        /* recyclerview 구분선
-        DividerItemDecoration dividerItemDecoration =
-                new DividerItemDecoration(getActivity(),new LinearLayoutManager(getActivity()).getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
-        */
-
 
         setGPS();
 
-        return v;
+        recyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                // do something...
+                //Toast.makeText(getActivity(),"불러오는중...", Toast.LENGTH_SHORT).show();
+                LoadCafeList(my_latitude, my_longitude, lastCafeId);
+
+            }
+        });
     }
 
     private void setGPS(){
@@ -132,7 +142,6 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
                         "당신의 위치 - \n위도: " + my_latitude + "\n경도: " + my_longitude,
                         Toast.LENGTH_LONG).show();
             }
-            LoadCafeList(my_latitude, my_longitude);
         } else {
             // GPS 를 사용할수 없으므로
             //gps.showSettingsAlert();
@@ -166,14 +175,12 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
         startActivity(gpsOptionsIntent);
     }
 
-    private void LoadCafeList(Double lati, Double lon){
-        if(listItems != null)
-            listItems.clear();
-        Log.d("LoadCafeList", "lati : "+lati+"\nlon : "+lon);
+    private void LoadCafeList(Double lati, Double lon, final String last_cafe_id){
+        //Log.d("LoadCafeList", "lati : "+lati+"\nlon : "+lon);
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
 
-        Call<CafeResponse> call = apiService.GetCafeListFromMyLocation("cafe_list_from_user_location", "0", lati, lon);
+        Call<CafeResponse> call = apiService.GetCafeListFromMyLocation("cafe_list_from_user_location", "0", lati, lon, last_cafe_id);
         call.enqueue(new Callback<CafeResponse>() {
             @Override
             public void onResponse(Call<CafeResponse> call, Response<CafeResponse> response) {
@@ -183,14 +190,13 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
                     int listSize = cafeResponse.getCafeList().size();
                     for (int i=0;i<listSize;i++){
                         listItems.add(cafeResponse.getCafeList().get(i));
+                        lastCafeId = cafeResponse.getCafeList().get(i).getCafeId();
                     }
-                    recyclerView.setAdapter(adapter);
                 }else{
 
                 }
-                //Toast.makeText(getActivity(), cafeResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+                adapter.notifyDataSetChanged();
             }
-
             @Override
             public void onFailure(Call<CafeResponse> call, Throwable t) {
                 // Log error here since request failed
@@ -198,6 +204,52 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
                 Toast.makeText(getActivity(), networkErrorStr,Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener {
+
+
+        private int previousTotal = 0; // The total number of items in the dataset after the last load
+        private boolean loading = true; // True if we are still waiting for the last set of data to load.
+        private int visibleThreshold = LOAD_DATA_COUNT; // The minimum amount of items to have below your current scroll position before loading more.
+        int firstVisibleItem, visibleItemCount, totalItemCount;
+
+        private int current_page = 1;
+
+        private LinearLayoutManager mLinearLayoutManager;
+
+        public EndlessRecyclerOnScrollListener(LinearLayoutManager linearLayoutManager) {
+            this.mLinearLayoutManager = linearLayoutManager;
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+            visibleItemCount = recyclerView.getChildCount();
+            totalItemCount = mLinearLayoutManager.getItemCount();
+            firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+
+            if (loading) {
+                if (totalItemCount > previousTotal) {
+                    loading = false;
+                    previousTotal = totalItemCount;
+                }
+            }
+            if (!loading && (totalItemCount - visibleItemCount)
+                    <= (firstVisibleItem + visibleThreshold)) {
+                // End has been reached
+
+                // Do something
+                current_page++;
+
+                onLoadMore(current_page);
+
+                loading = true;
+            }
+        }
+
+        public abstract void onLoadMore(int current_page);
     }
 
     private class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
