@@ -181,6 +181,7 @@ public class AboutCafeActivity extends AppCompatActivity {
                 CafeResponse cafeResponse = response.body();
                 if(!cafeResponse.isError()){
                     try{
+                        /*
                         cafeModel.setCafeId(cafeResponse.getCafeList().get(0).getCafeId());
                         cafeModel.setCafeName(cafeResponse.getCafeList().get(0).getCafeName());
                         cafeModel.setCafeThumbnail(cafeResponse.getCafeList().get(0).getCafeThumbnail());
@@ -198,6 +199,8 @@ public class AboutCafeActivity extends AppCompatActivity {
                         cafeModel.setCafeParkingState(cafeResponse.getCafeList().get(0).getCafeParkingState());
                         cafeModel.setCafeWeekendCloseTime(cafeResponse.getCafeList().get(0).getCafeWeekendCloseTime());
                         cafeModel.setCafeSmokeState(cafeResponse.getCafeList().get(0).getCafeSmokeState());
+                        */
+                        cafeModel = cafeResponse.getCafeList().get(0);
                     }catch (NullPointerException e){
                         e.printStackTrace();
                     }finally {

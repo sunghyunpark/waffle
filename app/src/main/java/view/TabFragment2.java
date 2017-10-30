@@ -172,7 +172,6 @@ public class TabFragment2 extends Fragment {
                     int recentCommentSize = cafeResponse.getRecentCommentList().size();
                     for(int i=0;i<recentCommentSize;i++){
                         recentCommentListitems.add(cafeResponse.getRecentCommentList().get(i));
-                        Log.d("recentComment", cafeResponse.getRecentCommentList().get(i).getNick_name());
                     }
 
                     SetUI();
@@ -292,8 +291,6 @@ public class TabFragment2 extends Fragment {
 
                 //Glide Options
                 RequestOptions requestOptions = new RequestOptions();
-                requestOptions.placeholder(R.mipmap.not_cafe_img);
-                requestOptions.error(R.mipmap.not_cafe_img);
 
                 Glide.with(getActivity())
                         .setDefaultRequestOptions(requestOptions)

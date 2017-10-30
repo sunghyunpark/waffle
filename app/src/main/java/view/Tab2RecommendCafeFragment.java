@@ -62,8 +62,6 @@ public class Tab2RecommendCafeFragment extends Fragment {
 
         //Glide Options
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.placeholder(R.mipmap.not_cafe_img);
-        requestOptions.error(R.mipmap.not_cafe_img);
 
         Glide.with(getActivity())
                 .setDefaultRequestOptions(requestOptions)
