@@ -70,6 +70,7 @@ public class AboutCafeActivity extends AppCompatActivity {
     @BindView(R.id.about_cafe_intro_txt) TextView about_cafe_intro_tv;
     @BindView(R.id.go_all_comment_btn) Button goAllCommentBtn;
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.cafe_etc_photo_btn) ImageView cafeEtcPhotoBtn;
     @BindString(R.string.network_error_txt) String networkErrorStr;
     private ArrayList<String> cafePhotoList;
     //RecyclerView
@@ -456,6 +457,12 @@ public class AboutCafeActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), AboutCafeCommentActivity.class);
         intent.putExtra("cafe_id", cafeModel.getCafeId());
         intent.putExtra("cafe_name", cafeModel.getCafeName());
+        startActivity(intent);
+    }
+    @OnClick(R.id.cafe_etc_photo_btn) void goEtcPhoto(){
+        Intent intent = new Intent(getApplicationContext(), PhotoSelectActivity.class);
+        intent.putExtra("photoList", cafePhotoList);
+        intent.putExtra("cafeName", cafeModel.getCafeName());
         startActivity(intent);
     }
 }
