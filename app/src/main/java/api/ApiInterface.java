@@ -6,6 +6,7 @@ import api.response.CommonResponse;
 import api.response.LoginResponse;
 import api.response.MyCommentResponse;
 import api.response.MyFavoriteCntResponse;
+import api.response.NaverBlogResponse;
 import api.response.RecentAllCommentResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -13,6 +14,7 @@ import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -168,4 +170,14 @@ public interface ApiInterface {
 
     @GET("cafe/cafe_info.php")
     Call<RecentAllCommentResponse> GetAllCommentList(@Query("tag") String tag, @Query("comment_flag") String comment_flag, @Query("last_comment_id") String last_comment_id);
+
+    @Headers({
+            "X-Naver-Client-Id: 4oMsxTfLyhwRQwRU3bZK",
+            "X-Naver-Client-Secret: EZb3BLStu8"
+    })
+    @GET("v1/search/blog.json")
+    Call<NaverBlogResponse> GetNaver(
+            @Query("query") String query, @Query("start") int start);
+
+
 }

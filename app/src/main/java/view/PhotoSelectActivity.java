@@ -91,7 +91,7 @@ public class PhotoSelectActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
-            if (holder instanceof VHitem)//아이템(게시물)
+            if (holder instanceof VHitem)
             {
                 final VHitem VHitem = (VHitem)holder;
 
@@ -108,7 +108,6 @@ public class PhotoSelectActivity extends AppCompatActivity {
             }
         }
         class VHitem extends RecyclerView.ViewHolder{
-
             ImageView thumb_img_iv;
 
             public VHitem(View itemView){

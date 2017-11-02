@@ -139,7 +139,7 @@ public class TabFragment2 extends Fragment {
         gridRecyclerView.setNestedScrollingEnabled(false);
 
         /**
-         * recent comment reclerView
+         * recent comment recyclerView
          */
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         recentCommentAdapter = new CommentRecyclerAdapter(recentCommentListitems);
