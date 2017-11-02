@@ -105,7 +105,6 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
     private void initView(){
         //recyclerview 초기화
         listItems = new ArrayList<CafeModel>();
-        recyclerView = (RecyclerView)v.findViewById(R.id.recyclerView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         adapter = new RecyclerAdapter(listItems);
         recyclerView.setLayoutManager(linearLayoutManager);

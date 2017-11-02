@@ -6,6 +6,7 @@ import api.response.CommonResponse;
 import api.response.LoginResponse;
 import api.response.MyCommentResponse;
 import api.response.MyFavoriteCntResponse;
+import api.response.RecentAllCommentResponse;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -147,9 +148,24 @@ public interface ApiInterface {
     @POST("login/login.php")
     Call<CommonResponse> EditUserProfileInfo(@Field("tag") String tag, @Field("uid") String uid, @Field("nick_name") String nick_name, @Field("intro") String intro);
 
+    /**
+     * Get Cafe Info With CafeId
+     * @param tag -> about_cafe_info_with_cafe_id
+     * @param cafe_id
+     * @return
+     */
     @GET("cafe/cafe_info.php")
     Call<CafeResponse> GetAboutCafeInfo(@Query("tag") String tag, @Query("cafe_id") String cafe_id);
 
+    /**
+     * Tab2 Info
+     * @param tag -> tab2_info
+     * @param comment_flag -> N / all
+     * @return
+     */
     @GET("cafe/cafe_info.php")
     Call<CafeResponse> GetTab2Info(@Query("tag") String tag, @Query("comment_flag") String comment_flag);
+
+    @GET("cafe/cafe_info.php")
+    Call<RecentAllCommentResponse> GetAllCommentList(@Query("tag") String tag, @Query("comment_flag") String comment_flag, @Query("last_comment_id") String last_comment_id);
 }

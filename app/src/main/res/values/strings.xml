@@ -93,6 +93,14 @@
     <string name="tab4_my_favorite_cafe_title">내가 좋아요한 맛집</string>
     <string name="tab4_my_comment_cafe_title">내가 평가한 리뷰</string>
 
+    <!--tab2-->
+    <string name="tab2_recommend_cafe_title_txt">이런 카페는 어때요?</string>
+    <string name="tab2_comment_title_txt">WAFFLE, NOW</string>
+
+    <!--All Comment Activity-->
+    <string name="all_comment_activity_title_txt">WAFFLE, NOW</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_all_comment">AllCommentActivity</string>
 </resources>

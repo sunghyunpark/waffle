@@ -34,7 +34,11 @@
         <activity android:name="view.AboutCafeCommentActivity" />
         <activity android:name="view.MyFavoriteCafeActivity" />
         <activity android:name="view.MyCommentCafeActivity" />
-        <activity android:name="view.EditUserProfileActivity"></activity>
+        <activity android:name="view.EditUserProfileActivity" />
+        <activity
+            android:name="view.AllCommentActivity"
+            android:label="@string/title_activity_all_comment"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

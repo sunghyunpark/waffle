@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ import api.response.CafeResponse;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import model.CafeModel;
 import model.RecentCommentModel;
 import retrofit2.Call;
@@ -61,6 +63,8 @@ public class TabFragment2 extends Fragment {
     @BindView(R.id.viewPager) ViewPager viewPager;
     @BindView(R.id.recommend_grid_recyclerView) RecyclerView gridRecyclerView;
     @BindView(R.id.recent_comment_recyclerView) RecyclerView recentCommentRecyclerView;
+    @BindView(R.id.go_to_all_comment_btn) Button goToAllCommentBtn;
+    @BindView(R.id.go_to_all_comment_btn_bottom) Button goToAllCommentBottomBtn;
     @BindString(R.string.network_error_txt) String networkErrorStr;
 
     @Override
@@ -204,6 +208,15 @@ public class TabFragment2 extends Fragment {
                 Toast.makeText(getActivity(), networkErrorStr,Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    /**
+     * go to all comment Activity
+     */
+
+    @OnClick({R.id.go_to_all_comment_btn, R.id.go_to_all_comment_btn_bottom}) void goToAllComment(){
+        Intent intent = new Intent(getActivity(), AllCommentActivity.class);
+        startActivity(intent);
     }
 
     /**
