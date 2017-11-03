@@ -333,9 +333,9 @@ public class AboutCafeActivity extends AppCompatActivity {
             public void onResponse(Call<CommonResponse> call, Response<CommonResponse> response) {
                 CommonResponse commonResponse = response.body();
                 if(!commonResponse.isError()){
-                    Toast.makeText(getApplicationContext(), commonResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), commonResponse.getError_msg(),Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(getApplicationContext(), commonResponse.getError_msg(),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), commonResponse.getError_msg(),Toast.LENGTH_SHORT).show();
                 }
             }
 

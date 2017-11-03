@@ -189,8 +189,8 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
                     int listSize = cafeResponse.getCafeList().size();
                     for (int i=0;i<listSize;i++){
                         listItems.add(cafeResponse.getCafeList().get(i));
-                        lastCafeId = cafeResponse.getCafeList().get(i).getCafeId();
                     }
+                    lastCafeId = cafeResponse.getLast_cafe_id();
                 }else{
 
                 }
@@ -304,7 +304,7 @@ public class TabFragment1 extends Fragment implements SwipeRefreshLayout.OnRefre
                 VHitem.cafe_weekdays_open_close_time_tv.setText(cafeInfoWeekdaysTimeStr + " " +currentItem.getCafeWeekDaysOpenTime() + " ~ "+currentItem.getCafeWeekDaysCloseTime());
                 VHitem.cafe_weekend_open_close_time_tv.setText(cafeInfoWeekendTimeStr + " " + currentItem.getCafeWeekendOpenTime() + " ~ "+currentItem.getCafeWeekendCloseTime());
 
-                VHitem.cafe_distance_tv.setText(currentItem.getCafeDistance()+" Km");
+                VHitem.cafe_distance_tv.setText(currentItem.getCafeDistance().substring(0,4)+" Km");
 
                 try{
                     VHitem.cafe_day_off_tv.setText(currentItem.getCafeDayOff());
