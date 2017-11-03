@@ -73,6 +73,7 @@ public class AboutCafeActivity extends AppCompatActivity {
     @BindView(R.id.comment_recyclerView) RecyclerView commentRecyclerView;
     @BindView(R.id.menu_recyclerView) RecyclerView menuRecyclerView;
     @BindView(R.id.cafe_etc_photo_btn) ImageView cafeEtcPhotoBtn;
+    @BindView(R.id.menu_layout) ViewGroup menu_layout;
     @BindString(R.string.network_error_txt) String networkErrorStr;
     private ArrayList<String> cafePhotoList;
     //RecyclerView
@@ -142,15 +143,16 @@ public class AboutCafeActivity extends AppCompatActivity {
 
         //comment recyclerView 초기화
         commentModelArrayList = new ArrayList<CommentModel>();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        LinearLayoutManager li_comment = new LinearLayoutManager(getApplicationContext());
         comment_adapter = new CommentRecyclerAdapter(commentModelArrayList);
-        commentRecyclerView.setLayoutManager(linearLayoutManager);
+        commentRecyclerView.setLayoutManager(li_comment);
         commentRecyclerView.setNestedScrollingEnabled(false);
 
         //menu recyclerView 초기화
         cafeMenuModelArrayList = new ArrayList<CafeMenuModel>();
         menu_adapter = new MenuRecyclerAdapter(cafeMenuModelArrayList);
-        menuRecyclerView.setLayoutManager(linearLayoutManager);
+        LinearLayoutManager li_menu = new LinearLayoutManager(getApplicationContext());
+        menuRecyclerView.setLayoutManager(li_menu);
         menuRecyclerView.setNestedScrollingEnabled(false);
 
         if(cafeModel.getCafeFullTimeState().equals("Y")){
@@ -248,7 +250,7 @@ public class AboutCafeActivity extends AppCompatActivity {
             public void onResponse(Call<CafeEtcInfoResponse> call, Response<CafeEtcInfoResponse> response) {
                 CafeEtcInfoResponse cafeEtcInfoResponse = response.body();
                 if(!cafeEtcInfoResponse.isError()){
-                    /**
+                    /*
                      * Cafe Main Photo
                      */
                     String cafePhoto = "";
@@ -272,7 +274,7 @@ public class AboutCafeActivity extends AppCompatActivity {
                                 .load(cafePhoto)
                                 .into(cafe_img_iv);
                     }
-                    /**
+                    /*
                      * Cafe Comment Data
                      */
                     try{
@@ -291,14 +293,24 @@ public class AboutCafeActivity extends AppCompatActivity {
                     }catch (NullPointerException e){
                         e.printStackTrace();
                     }
-                    /**
+                    /*
                      * Cafe Menu Data
                      */
-
                     try{
+                        int menu_size = cafeEtcInfoResponse.getMenu_list().size();
+                        if(menu_size > 0){
+                            menuRecyclerView.setVisibility(View.VISIBLE);
+                            for(int i=0;i<menu_size;i++){
+                                cafeMenuModelArrayList.add(cafeEtcInfoResponse.getMenu_list().get(i));
+                            }
+                            menuRecyclerView.setAdapter(menu_adapter);
+                        }else{
+                            menuRecyclerView.setVisibility(View.GONE);
+                        }
 
                     }catch (NullPointerException e){
                         e.printStackTrace();
+                        menu_layout.setVisibility(View.GONE);
                     }
 
                 }else{
