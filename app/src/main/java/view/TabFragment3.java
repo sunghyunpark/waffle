@@ -1,5 +1,6 @@
 package view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import java.util.List;
 import api.ApiInterface;
 import api.NaverApiClient;
 import api.response.NaverBlogResponse;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import model.NaverBlogModel;
@@ -35,6 +37,7 @@ public class TabFragment3 extends Fragment {
     private static final int LOAD_DATA_COUNT = 10;
 
     @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindString(R.string.network_error_txt) String networkErrorStr;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,13 +100,12 @@ public class TabFragment3 extends Fragment {
             public void onFailure(Call<NaverBlogResponse> call, Throwable t) {
                 // Log error here since request failed
                 Log.e("tag", t.toString());
-                Toast.makeText(getActivity(), "fail",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), networkErrorStr,Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener {
-
 
         private int previousTotal = 0; // The total number of items in the dataset after the last load
         private boolean loading = true; // True if we are still waiting for the last set of data to load.
@@ -184,6 +186,15 @@ public class TabFragment3 extends Fragment {
                 VHitem.blogTitle_tv.setText(removeHTMLTAG(currentItem.getTitle()));
                 VHitem.blogDescription_tv.setText(removeHTMLTAG(currentItem.getDescription()));
 
+                VHitem.blog_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), NaverBlogWebViewActivity.class);
+                        intent.putExtra("url", currentItem.getLink());
+                        startActivity(intent);
+                    }
+                });
+
             }
         }
 
@@ -194,6 +205,7 @@ public class TabFragment3 extends Fragment {
             TextView blogNum_tv;
             TextView blogPostDate_tv;
             TextView blogDescription_tv;
+            ViewGroup blog_layout;
 
             private Blog_VH(View itemView){
                 super(itemView);
@@ -202,11 +214,15 @@ public class TabFragment3 extends Fragment {
                 blogNum_tv = (TextView)itemView.findViewById(R.id.blog_num_txt);
                 blogPostDate_tv = (TextView)itemView.findViewById(R.id.post_date_txt);
                 blogDescription_tv = (TextView)itemView.findViewById(R.id.description_txt);
-
-
+                blog_layout = (ViewGroup)itemView.findViewById(R.id.blog_layout);
             }
         }
 
+        /**
+         * HTML TAG 제거
+         * @param text
+         * @return
+         */
         private String removeHTMLTAG(String text){
             return text.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
         }

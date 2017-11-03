@@ -168,9 +168,22 @@ public interface ApiInterface {
     @GET("cafe/cafe_info.php")
     Call<CafeResponse> GetTab2Info(@Query("tag") String tag, @Query("comment_flag") String comment_flag);
 
+    /**
+     * All Comment
+     * @param tag -> recent_all_comment
+     * @param comment_flag -> all
+     * @param last_comment_id
+     * @return
+     */
     @GET("cafe/cafe_info.php")
     Call<RecentAllCommentResponse> GetAllCommentList(@Query("tag") String tag, @Query("comment_flag") String comment_flag, @Query("last_comment_id") String last_comment_id);
 
+    /**
+     * Naver Blog API
+     * @param query
+     * @param start
+     * @return
+     */
     @Headers({
             "X-Naver-Client-Id: 4oMsxTfLyhwRQwRU3bZK",
             "X-Naver-Client-Secret: EZb3BLStu8"
