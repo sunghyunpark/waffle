@@ -475,87 +475,11 @@
                     android:textSize="14dp"/>
             </RelativeLayout>
 
-            <RelativeLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/menu_recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/main_desert_1_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:layout_centerVertical="true"
-                    android:textSize="14dp"
-                    android:textColor="@color/color_HalfBlack"
-                    android:textStyle="bold"
-                    android:text="아메리카노"/>
-                <TextView
-                    android:id="@+id/price_1_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="20dp"
-                    android:textSize="14dp"
-                    android:textColor="@color/colorGray"
-                    android:singleLine="true"
-                    android:text="2,500원"
-                    android:ellipsize="end"/>
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/main_desert_2_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:layout_centerVertical="true"
-                    android:textSize="14dp"
-                    android:textColor="@color/color_HalfBlack"
-                    android:textStyle="bold"
-                    android:text="카페라떼"/>
-                <TextView
-                    android:id="@+id/price_2_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="20dp"
-                    android:textSize="14dp"
-                    android:textColor="@color/colorGray"
-                    android:singleLine="true"
-                    android:text="3,500원"
-                    android:ellipsize="end"/>
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/main_desert_3_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:layout_centerVertical="true"
-                    android:textSize="14dp"
-                    android:textColor="@color/color_HalfBlack"
-                    android:textStyle="bold"
-                    android:text="치즈케익"/>
-                <TextView
-                    android:id="@+id/price_3_txt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="20dp"
-                    android:textSize="14dp"
-                    android:textColor="@color/colorGray"
-                    android:singleLine="true"
-                    android:text="4,800원"
-                    android:ellipsize="end"/>
-            </RelativeLayout>
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -627,7 +551,7 @@
                 </RelativeLayout>
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                    android:id="@+id/comment_recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="15dp"/>

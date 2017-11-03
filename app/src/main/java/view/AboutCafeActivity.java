@@ -36,6 +36,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import model.CafeMenuModel;
 import model.CafeModel;
 import model.CommentModel;
 import model.UserModel;
@@ -69,13 +70,16 @@ public class AboutCafeActivity extends AppCompatActivity {
     @BindView(R.id.about_cafe_intro_layout) ViewGroup cafeIntroLayout;
     @BindView(R.id.about_cafe_intro_txt) TextView about_cafe_intro_tv;
     @BindView(R.id.go_all_comment_btn) Button goAllCommentBtn;
-    @BindView(R.id.recyclerView) RecyclerView recyclerView;
+    @BindView(R.id.comment_recyclerView) RecyclerView commentRecyclerView;
+    @BindView(R.id.menu_recyclerView) RecyclerView menuRecyclerView;
     @BindView(R.id.cafe_etc_photo_btn) ImageView cafeEtcPhotoBtn;
     @BindString(R.string.network_error_txt) String networkErrorStr;
     private ArrayList<String> cafePhotoList;
     //RecyclerView
-    RecyclerAdapter adapter;
+    CommentRecyclerAdapter comment_adapter;
+    MenuRecyclerAdapter menu_adapter;
     private ArrayList<CommentModel> commentModelArrayList;
+    private ArrayList<CafeMenuModel> cafeMenuModelArrayList;
     CommonUtil commonUtil = new CommonUtil();
 
     private boolean cafeLikeState = false;
@@ -136,12 +140,18 @@ public class AboutCafeActivity extends AppCompatActivity {
             about_cafe_intro_tv.setText(cafeModel.getCafeIntro());
         }
 
-        //recyclerview 초기화
+        //comment recyclerView 초기화
         commentModelArrayList = new ArrayList<CommentModel>();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-        adapter = new RecyclerAdapter(commentModelArrayList);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setNestedScrollingEnabled(false);
+        comment_adapter = new CommentRecyclerAdapter(commentModelArrayList);
+        commentRecyclerView.setLayoutManager(linearLayoutManager);
+        commentRecyclerView.setNestedScrollingEnabled(false);
+
+        //menu recyclerView 초기화
+        cafeMenuModelArrayList = new ArrayList<CafeMenuModel>();
+        menu_adapter = new MenuRecyclerAdapter(cafeMenuModelArrayList);
+        menuRecyclerView.setLayoutManager(linearLayoutManager);
+        menuRecyclerView.setNestedScrollingEnabled(false);
 
         if(cafeModel.getCafeFullTimeState().equals("Y")){
             full_time_state_iv.setBackgroundResource(R.mipmap.about_cafe_full_time_img);
@@ -238,6 +248,9 @@ public class AboutCafeActivity extends AppCompatActivity {
             public void onResponse(Call<CafeEtcInfoResponse> call, Response<CafeEtcInfoResponse> response) {
                 CafeEtcInfoResponse cafeEtcInfoResponse = response.body();
                 if(!cafeEtcInfoResponse.isError()){
+                    /**
+                     * Cafe Main Photo
+                     */
                     String cafePhoto = "";
                     try {
                         int photo_size = cafeEtcInfoResponse.getCafe_etc_photo_list().size();
@@ -259,19 +272,31 @@ public class AboutCafeActivity extends AppCompatActivity {
                                 .load(cafePhoto)
                                 .into(cafe_img_iv);
                     }
+                    /**
+                     * Cafe Comment Data
+                     */
                     try{
                         int comment_size = cafeEtcInfoResponse.getComment_text_list().size();
                         if(comment_size > 0){
-                            recyclerView.setVisibility(View.VISIBLE);
+                            commentRecyclerView.setVisibility(View.VISIBLE);
                             emptyCommentLayout.setVisibility(View.GONE);
                             for(int i=0;i<comment_size;i++){
                                 commentModelArrayList.add(cafeEtcInfoResponse.getComment_text_list().get(i));
                             }
-                            recyclerView.setAdapter(adapter);
+                            commentRecyclerView.setAdapter(comment_adapter);
                         }else{
-                            recyclerView.setVisibility(View.GONE);
+                            commentRecyclerView.setVisibility(View.GONE);
                             emptyCommentLayout.setVisibility(View.VISIBLE);
                         }
+                    }catch (NullPointerException e){
+                        e.printStackTrace();
+                    }
+                    /**
+                     * Cafe Menu Data
+                     */
+
+                    try{
+
                     }catch (NullPointerException e){
                         e.printStackTrace();
                     }
@@ -348,13 +373,16 @@ public class AboutCafeActivity extends AppCompatActivity {
         });
     }
 
-    private class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    /**
+     * Cafe Comment
+     */
+    private class CommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private static final int TYPE_ITEM = 0;
 
         List<CommentModel> listItems;
 
-        private RecyclerAdapter(List<CommentModel> listItems) {
+        private CommentRecyclerAdapter(List<CommentModel> listItems) {
             this.listItems = listItems;
         }
 
@@ -403,9 +431,6 @@ public class AboutCafeActivity extends AppCompatActivity {
             }
         }
 
-        /**
-         * 리뷰 아이템
-         */
         private class Comment_VH extends RecyclerView.ViewHolder{
 
             ImageView userProfile_iv;
@@ -419,6 +444,66 @@ public class AboutCafeActivity extends AppCompatActivity {
                 userName_tv = (TextView)itemView.findViewById(R.id.user_name_txt);
                 updated_tv = (TextView)itemView.findViewById(R.id.updated_at_txt);
                 comment_tv = (TextView)itemView.findViewById(R.id.comment_txt);
+            }
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return TYPE_ITEM;
+        }
+        //increasing getItemcount to 1. This will be the row of header.
+        @Override
+        public int getItemCount() {
+            return listItems.size();
+        }
+    }
+
+    /**
+     * Cafe Menu
+     */
+    private class MenuRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        private static final int TYPE_ITEM = 0;
+
+        List<CafeMenuModel> listItems;
+
+        private MenuRecyclerAdapter(List<CafeMenuModel> listItems) {
+            this.listItems = listItems;
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if (viewType == TYPE_ITEM) {
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_about_cafe_menu_item, parent, false);
+                return new Menu_VH(v);
+            }
+            throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
+        }
+
+        private CafeMenuModel getItem(int position) {
+            return listItems.get(position);
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+
+            if (holder instanceof Menu_VH) {
+                final CafeMenuModel currentItem = getItem(position);
+                final Menu_VH VHitem = (Menu_VH)holder;
+
+                VHitem.menuName_tv.setText(currentItem.getMenuName());
+                VHitem.menuPrice_tv.setText(currentItem.getMenuPrice());
+            }
+        }
+
+        private class Menu_VH extends RecyclerView.ViewHolder{
+            TextView menuName_tv;
+            TextView menuPrice_tv;
+
+            private Menu_VH(View itemView){
+                super(itemView);
+                menuName_tv = (TextView)itemView.findViewById(R.id.menu_name_txt);
+                menuPrice_tv = (TextView)itemView.findViewById(R.id.menu_price_txt);
             }
         }
 

@@ -2,6 +2,7 @@ package api.response;
 
 import java.util.ArrayList;
 
+import model.CafeMenuModel;
 import model.CommentModel;
 
 /**
@@ -12,6 +13,7 @@ public class CafeEtcInfoResponse {
 
     private ArrayList<String> cafe_etc_photo_list;
     private ArrayList<CommentModel> comment_text_list;
+    private ArrayList<CafeMenuModel> menu_list;
     private boolean like_state;
     private boolean error;
     private String error_msg;
@@ -31,6 +33,14 @@ public class CafeEtcInfoResponse {
 
     public void setComment_text_list(ArrayList<CommentModel> comment_text_list) {
         this.comment_text_list = comment_text_list;
+    }
+
+    public ArrayList<CafeMenuModel> getMenu_list() {
+        return menu_list;
+    }
+
+    public void setMenu_list(ArrayList<CafeMenuModel> menu_list) {
+        this.menu_list = menu_list;
     }
 
     public boolean isLike_state() {
