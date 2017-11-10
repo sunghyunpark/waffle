@@ -105,6 +105,16 @@ public class PhotoSelectActivity extends AppCompatActivity {
                         .into(VHitem.thumb_img_iv);
                 VHitem.thumb_img_iv.setLayoutParams(setSize());
 
+                VHitem.thumb_img_iv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getApplicationContext(), ImageViewer.class);
+                        intent.putExtra("imgPath", getItem(position));
+                        intent.putExtra("cafeName", titleStr);
+                        startActivity(intent);
+                    }
+                });
+
             }
         }
         class VHitem extends RecyclerView.ViewHolder{

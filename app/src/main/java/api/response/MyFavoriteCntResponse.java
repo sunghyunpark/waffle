@@ -7,7 +7,11 @@ package api.response;
 
 public class MyFavoriteCntResponse {
     private String myFavoriteCafeCnt;
+    private String myFavoriteCafeCreated_at;
+    private String myFavoriteCafeName;
     private String myCommentCafeCnt;
+    private String myCommentCafeCreated_at;
+    private String myCommentCafeName;
     private boolean error;
     private String error_msg;
 
@@ -41,5 +45,37 @@ public class MyFavoriteCntResponse {
 
     public void setError_msg(String error_msg) {
         this.error_msg = error_msg;
+    }
+
+    public String getMyFavoriteCafeCreated_at() {
+        return myFavoriteCafeCreated_at;
+    }
+
+    public void setMyFavoriteCafeCreated_at(String myFavoriteCafeCreated_at) {
+        this.myFavoriteCafeCreated_at = myFavoriteCafeCreated_at;
+    }
+
+    public String getMyCommentCafeCreated_at() {
+        return myCommentCafeCreated_at;
+    }
+
+    public void setMyCommentCafeCreated_at(String myCommentCafeCreated_at) {
+        this.myCommentCafeCreated_at = myCommentCafeCreated_at;
+    }
+
+    public String getMyFavoriteCafeName() {
+        return myFavoriteCafeName;
+    }
+
+    public void setMyFavoriteCafeName(String myFavoriteCafeName) {
+        this.myFavoriteCafeName = myFavoriteCafeName;
+    }
+
+    public String getMyCommentCafeName() {
+        return myCommentCafeName;
+    }
+
+    public void setMyCommentCafeName(String myCommentCafeName) {
+        this.myCommentCafeName = myCommentCafeName;
     }
 }
