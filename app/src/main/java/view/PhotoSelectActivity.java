@@ -57,7 +57,7 @@ public class PhotoSelectActivity extends AppCompatActivity {
         title_tv.setText(titleStr);
 
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-        GridLayoutManager lLayout = new GridLayoutManager(getApplicationContext(),4);
+        GridLayoutManager lLayout = new GridLayoutManager(getApplicationContext(),3);
         recyclerView.setLayoutManager(lLayout);
 
         adapter = new RecyclerAdapter(photoList);
@@ -116,8 +116,8 @@ public class PhotoSelectActivity extends AppCompatActivity {
             }
         }
         private RelativeLayout.LayoutParams setSize(){
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(AppConfig.DISPLAY_WIDTH/4,
-                    AppConfig.DISPLAY_WIDTH/4);
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(AppConfig.DISPLAY_WIDTH/3,
+                    AppConfig.DISPLAY_WIDTH/3);
             return params;
         }
         @Override

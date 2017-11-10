@@ -100,6 +100,9 @@
     <!--All Comment Activity-->
     <string name="all_comment_activity_title_txt">WAFFLE, NOW</string>
 
+    <!--Share Bottom Sheet-->
+    <string name="share_bottom_sheet_cancel_txt">취소</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_all_comment">AllCommentActivity</string>

@@ -1,18 +1,23 @@
 package view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,7 +79,15 @@ public class AboutCafeActivity extends AppCompatActivity {
     @BindView(R.id.menu_recyclerView) RecyclerView menuRecyclerView;
     @BindView(R.id.cafe_etc_photo_btn) ImageView cafeEtcPhotoBtn;
     @BindView(R.id.menu_layout) ViewGroup menu_layout;
+    @BindView(R.id.share_layout) ViewGroup share_layout;
     @BindString(R.string.network_error_txt) String networkErrorStr;
+
+    @BindView(R.id.rl_bottom_sheet) RelativeLayout rlBottomSheet;
+    @BindView(R.id.share_recyclerView) RecyclerView share_recyclerView;
+    @BindView(R.id.bottom_sheet_dim_layout) ViewGroup bottom_sheet_dim_layout;
+    @BindView(R.id.share_cancel_btn) Button shareCancelBtn;
+    private BottomSheetBehavior bottomSheetBehavior;
+
     private ArrayList<String> cafePhotoList;
     //RecyclerView
     CommentRecyclerAdapter comment_adapter;
@@ -177,6 +190,43 @@ public class AboutCafeActivity extends AppCompatActivity {
         }
 
         LoadCafeEtcInfo(UserModel.getInstance().getUid(), cafeModel.getCafeId());    //Load Cafe Etc Info
+
+        initShareBottomSheet();
+
+    }
+
+    /**
+     * Share Bottom Sheet Init
+     */
+    private void initShareBottomSheet(){
+        bottomSheetBehavior = BottomSheetBehavior.from(rlBottomSheet);
+        bottomSheetBehavior.setPeekHeight((int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 300.f, getResources().getDisplayMetrics()));
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        break;
+
+                    default:
+
+                        break;
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+
+        // BottomSheet에 사용할 Adapter을 정의한다
+        RecyclerBottomSheetAdapter adapter = new RecyclerBottomSheetAdapter(this);
+        adapter.setItem("Facebook");
+        adapter.setItem("기타");
+        share_recyclerView.setAdapter(adapter);
     }
 
     /**
@@ -530,6 +580,55 @@ public class AboutCafeActivity extends AppCompatActivity {
         }
     }
 
+    public class RecyclerBottomSheetAdapter extends RecyclerView.Adapter<RecyclerBottomSheetAdapter.RecyclerBottomSheetViewHolder> {
+
+        private ArrayList<String> itemList = new ArrayList<>();
+
+        private Context context;
+
+        public RecyclerBottomSheetAdapter(Context context) {
+            this.context = context;
+        }
+
+        public void setItem(String item) {
+            itemList.add(item);
+        }
+
+        public String getItem(int position) {
+            return itemList.get(position);
+        }
+
+        @Override
+        public RecyclerBottomSheetAdapter.RecyclerBottomSheetViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new RecyclerBottomSheetAdapter.RecyclerBottomSheetViewHolder(context, parent);
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerBottomSheetAdapter.RecyclerBottomSheetViewHolder holder, int position) {
+            holder.onBind(getItem(position), position);
+        }
+
+        @Override
+        public int getItemCount() {
+            return itemList.size();
+        }
+
+        public class RecyclerBottomSheetViewHolder extends RecyclerView.ViewHolder {
+            @BindView(R.id.tv_title)
+            TextView tvTitle;
+
+            public RecyclerBottomSheetViewHolder(Context context, ViewGroup parent) {
+                super(LayoutInflater.from(context).inflate(R.layout.recyclerview_share_bottom_item, parent, false));
+
+                ButterKnife.bind(this, itemView);
+            }
+
+            public void onBind(String item, int position) {
+                tvTitle.setText(item);
+            }
+        }
+    }
+
     @OnClick(R.id.back_btn) void goBack(){
         finish();
     }
@@ -561,5 +660,13 @@ public class AboutCafeActivity extends AppCompatActivity {
         intent.putExtra("photoList", cafePhotoList);
         intent.putExtra("cafeName", cafeModel.getCafeName());
         startActivity(intent);
+    }
+    @OnClick(R.id.share_layout) void goShare(){
+        bottom_sheet_dim_layout.setVisibility(View.VISIBLE);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+    @OnClick({R.id.bottom_sheet_dim_layout, R.id.share_cancel_btn}) void cancelShare(){
+        bottom_sheet_dim_layout.setVisibility(View.GONE);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 }

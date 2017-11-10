@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/colorBackgroundGray"
+    android:background="@android:color/transparent"
     tools:context="view.AboutCafeActivity">
 
     <ScrollView
@@ -238,6 +237,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/share_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -548,9 +548,24 @@
 
             </RelativeLayout>
         </LinearLayout>
-
-
-
     </LinearLayout>
     </ScrollView>
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/bottom_sheet_dim_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="#88212121"></RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rl_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@null"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="200dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <include layout="@layout/share_bottom_recycler" />
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>
