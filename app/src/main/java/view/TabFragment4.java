@@ -34,6 +34,10 @@ public class TabFragment4 extends Fragment {
     @BindView(R.id.my_comment_cafe_img) ImageView my_comment_cafe_iv;
     @BindView(R.id.like_cnt_txt) TextView my_favorite_cnt_tv;
     @BindView(R.id.comment_cnt_txt) TextView my_comment_cnt_tv;
+    @BindView(R.id.recent_favorite_created_at_txt) TextView recent_favorite_created_at_tv;
+    @BindView(R.id.recent_favorite_cafe_name_txt) TextView recent_favorite_cafe_name_tv;
+    @BindView(R.id.recent_comment_created_at_txt) TextView recent_comment_created_at_tv;
+    @BindView(R.id.recent_comment_cafe_name_txt) TextView recent_comment_cafe_name_tv;
     @BindString(R.string.network_error_txt) String networkErrorStr;
 
     public TabFragment4() {
@@ -65,16 +69,15 @@ public class TabFragment4 extends Fragment {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.mipmap.not_cafe_img);
         requestOptions.error(R.mipmap.not_cafe_img);
-        requestOptions.centerCrop();
 
         Glide.with(getActivity())
                 .setDefaultRequestOptions(requestOptions)
-                .load(R.drawable.like_cafe_img)
+                .load(R.drawable.tab4_myfavorite_cafe_round)
                 .into(my_favorite_cafe_iv);
 
         Glide.with(getActivity())
                 .setDefaultRequestOptions(requestOptions)
-                .load(R.drawable.comment_cafe_img)
+                .load(R.drawable.tab4_mycomment_cafe_round)
                 .into(my_comment_cafe_iv);
 
         return v;
@@ -92,10 +95,14 @@ public class TabFragment4 extends Fragment {
                 if(!myFavoriteCntResponse.isError()){
                     my_favorite_cnt_tv.setText(myFavoriteCntResponse.getMyFavoriteCafeCnt());
                     my_comment_cnt_tv.setText(myFavoriteCntResponse.getMyCommentCafeCnt());
+
+                    recent_favorite_created_at_tv.setText("최근 좋아요한 시간 : "+myFavoriteCntResponse.getMyFavoriteCafeCreated_at());
+                    recent_favorite_cafe_name_tv.setText("최근 좋아요한 맛집 : "+myFavoriteCntResponse.getMyFavoriteCafeName());
+                    recent_comment_created_at_tv.setText("최근 평가한 시간 : "+myFavoriteCntResponse.getMyCommentCafeCreated_at());
+                    recent_comment_cafe_name_tv.setText("최근 평가한 맛집 : "+myFavoriteCntResponse.getMyCommentCafeName());
                 }else{
                     Toast.makeText(getActivity(), myFavoriteCntResponse.getError_msg(),Toast.LENGTH_SHORT).show();
                 }
-
             }
 
             @Override
