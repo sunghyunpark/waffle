@@ -21,10 +21,19 @@ import butterknife.OnClick;
 public class IntroActivity extends AppCompatActivity {
 
     AppConfig appConfig;
+    Bitmap resized;
+    Bitmap bitmap;
     @BindView(R.id.background_layout) ViewGroup background_layout;
     @BindView(R.id.facebook_btn) Button facebookBtn;
     @BindView(R.id.register_btn) Button registerBtn;
     @BindView(R.id.login_btn) Button loginBtn;
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        resized.recycle();
+        bitmap.recycle();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +47,8 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private void setBackground(){
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.intro_img);
-        Bitmap resized = Bitmap.createScaledBitmap(bitmap, appConfig.getDISPLAY_WIDTH(),
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.intro_img);
+        resized = Bitmap.createScaledBitmap(bitmap, appConfig.getDISPLAY_WIDTH(),
                 appConfig.getDISPLAY_HEIGHT(), true);
 
         Drawable d = new BitmapDrawable(getResources(), resized);
