@@ -42,7 +42,7 @@ public class ImageViewer extends AppCompatActivity {
         title_tv.setText(cafeName);
         //Glide Options
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.centerCrop();
+        requestOptions.centerInside();
 
         Glide.with(getApplicationContext())
                 .setDefaultRequestOptions(requestOptions)

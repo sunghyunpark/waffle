@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.tab3_txt) TextView tab3_tv;
     @BindView(R.id.tab4_txt) TextView tab4_tv;
     @BindView(R.id.tab5_txt) TextView tab5_tv;
+    @BindString(R.string.app_exist) String appExistStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         else
         {
             backPressedTime = tempTime;
-            Toast.makeText(getApplicationContext(), "한번 더 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), appExistStr, Toast.LENGTH_SHORT).show();
         }
     }
 
